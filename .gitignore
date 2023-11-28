@@ -1,0 +1,12 @@
+/var
+/etc
+/tmp
+/straight
+/elpa
+/tree-sitter
+/auto-save-list
+/machine-early-init.el
+/machine-init.el
+/eln-cache
+/server
+*~

@@ -21,7 +21,7 @@
 (use-package ef-themes
   :defer t
   :custom
-  (ef-themes-to-toggle '(ef-melissa-dark ef-light)))
+  (ef-themes-to-toggle '(ef-bio ef-frost)))
 
 (use-package catppuccin-theme
   :defer t
@@ -31,7 +31,7 @@
 (use-package doom-themes
   :defer t)
 
-(defcustom my/themes-to-toggle '(modus-vivendi ef-frost)
+(defcustom my/themes-to-toggle '(modus-vivendi modus-operandi)
   "Themes to toggle between.")
 
 (defun my/themes-set-theme (theme)

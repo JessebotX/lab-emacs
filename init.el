@@ -31,11 +31,16 @@
   (my/define-leader-key
     "o" 'ace-window))
 
+(use-package my-config-fonts
+  :straight nil)
+
 (use-package my-config-mode-line
   :straight nil)
 
 (use-package my-config-themes
-  :straight nil)
+  :straight nil
+  :config
+  (keymap-global-set "<f5>" #'my/themes-toggle-themes))
 
 (use-package my-config-completion-vertico
   :straight nil
@@ -66,8 +71,19 @@
   :straight nil
   :config
   (my/define-leader-key
-    "nn" 'my/notes-new
-    "ng" 'my/notes-consult-ripgrep))
+    "nn" #'my/notes-new
+    "ng" #'my/notes-consult-ripgrep))
+
+(use-package my-config-app
+  :straight nil
+  :config
+  (my/define-leader-key
+    "ti"  'eat-project
+    "tee" 'eat
+    "teo" 'eat-project-other-window))
+
+(use-package my-config-utils
+  :straight nil)
 
 ;;; Other
 ;;;; Theme
@@ -81,6 +97,11 @@
   "."   'find-file
   "-"   'kill-this-buffer
   "cc"  'compile
+  "do"  'dictionary-lookup-definition
+  "hd"  'devdocs-lookup
+  "ho"  'describe-symbol
+  "hf"  'describe-face
+  "hk"  'describe-key
   "j"   'execute-extended-command
   "kjj" 'kill-buffer-and-window
   "kk"  'kill-buffer
@@ -88,6 +109,7 @@
   "qe"  'eval-last-sexp
   "tn"  'display-line-numbers-mode
   "twv" 'variable-pitch-mode
+  "us"  'scratch-buffer
   "wj"  'winner-undo
   "wk"  'winner-redo
   )

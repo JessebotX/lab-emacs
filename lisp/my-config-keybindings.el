@@ -26,6 +26,14 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
+  ;; Make sure some modes start in Emacs state
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  term-mode
+                  eat-mode
+                  vterm-mode))
+    (add-to-list 'evil-emacs-state-modes mode))
+
   ;; evil mode visual indentation
   (defun my/evil-shift-right ()
     (interactive)
@@ -44,7 +52,8 @@
 
 (use-package evil-collection
   :after evil
-  :hook (evil-mode . evil-collection-init))
+  :config
+  (evil-collection-init))
 
 (use-package evil-nerd-commenter
   :after evil
@@ -148,5 +157,10 @@
    '("<escape>" . ignore))
   ;(meow-global-mode)
   )
+
+(use-package which-key
+  :hook (emacs-startup . which-key-mode)
+  :custom
+  (which-key-idle-delay 0.2))
 
 (provide 'my-config-keybindings)

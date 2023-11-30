@@ -26,7 +26,7 @@
                 "README.md"
                 (expand-file-name (int-to-string i) my/notes-directory))))
   (find-file file-path)
-  (insert (format "---\ntitle: %s\n---\n\n# %s" title title)))
+  (insert (format "---\ntitle: \"%s\"\n---\n\n# %s\n\n" title title)))
 
 ;;; Denote
 ;; Used to resolve denote:id org links more rather than actually using it

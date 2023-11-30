@@ -71,20 +71,16 @@
   :straight nil
   :config
   (my/define-leader-key
-    "nn" #'my/notes-new
-    "ng" #'my/notes-consult-ripgrep))
+    "nn" 'my/notes-new
+    "ng" 'my/notes-consult-ripgrep))
 
 (use-package my-config-app
   :straight nil
   :config
   (my/define-leader-key
-    "ti"  'eat-project
     "tee" 'eat
-    "teo" 'eat-project-other-window))
-
-(use-package my-config-utils
-  :straight nil)
-
+    "tei" 'eat-project-other-window
+    "tej" 'eat-project))
 ;;; Other
 ;;;; Theme
 (my/themes-set-theme "modus-operandi")

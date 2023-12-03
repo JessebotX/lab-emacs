@@ -73,7 +73,7 @@
   :hook (org-mode . my/org--setup)
   :custom
   (org-id-link-to-org-use-id 'use-existing)
-  (org-agenda-files '("~/Sync/agenda.org" "~/Sync/cerebrum/notes"))
+  (org-agenda-files '("~/Sync/agenda.org"))
   (org-agenda-file-regexp "\\`[^.].*_project.*\\.org\\'")
   (org-ellipsis "…")
   (org-auto-align-tags nil)
@@ -126,5 +126,7 @@
 
 (use-package org-appear
   :hook (org-mode . org-appear-mode))
+
+(use-package ox-epub)
 
 (provide 'my-config-writing)

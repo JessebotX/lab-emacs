@@ -6,11 +6,6 @@
   (use-package jinx
     :defer t))
 
-;; Quick lookup Dictionary
-;(use-package define-word
-;  :bind (("C-c d d" . define-word-at-point)
-;         ("C-c d o" . define-word)))
-
 (use-package dictionary
   :straight nil
   :commands (dictionary-lookup-definition)

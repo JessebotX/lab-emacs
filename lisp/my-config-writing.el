@@ -22,10 +22,9 @@
 
 (use-package olivetti
   :commands (olivetti-mode)
+  :hook (markdown-mode . olivetti-mode)
   :custom
-  (olivetti-body-width 80)
-  :config
-  (add-hook 'markdown-mode-hook #'olivetti-mode))
+  (olivetti-body-width 80))
 
 (use-package imenu-list
   :commands (imenu-list-smart-toggle)

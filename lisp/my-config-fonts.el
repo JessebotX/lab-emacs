@@ -5,36 +5,34 @@
 
 (use-package nerd-icons)
 
-(use-package fontaine
-  :init
-  (defun my/set-proper-fontset ()
-    (set-fontset-font t '(#x2500 . #x25ff) "Cascadia Code")
-    (set-fontset-font t '(#x2733 . #x2733) "JetBrains Mono"))
-  (add-hook 'fontaine-set-preset-hook #'my/set-proper-fontset)
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
-  :custom
-  (fontaine-presets
-   `((regular)
-     (cascadia-code
-      :default-family "Cascadia Code"
-      :fixed-pitch-family "Cascadia Code")
-     (ubuntu
-      :default-family "Ubuntu Mono"
-      :variable-pitch-family "Ubuntu"
-      :default-height ,(+ my/default-font-size 40))
-     (gnome
-      :default-family "Source Code Pro"
-      :variable-pitch-family "Cantarell"
-      :fixed-pitch-family "Source Code Pro")
-     (t
-      :default-family "Maple Mono"
-      :default-weight regular
-      :default-height ,my/default-font-size
-      :fixed-pitch-family "JetBrains Mono"
-      :fixed-pitch-weight regular
-      :variable-pitch-family "Lato")))
-  :config
-  (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset))
+(when (display-graphic-p)
+  (use-package fontaine
+    :init
+    (defun my/set-proper-fontset ()
+      (set-fontset-font t '(#x2500 . #x25ff) "Cascadia Code")
+      (set-fontset-font t '(#x2733 . #x2733) "JetBrains Mono"))
+    (add-hook 'fontaine-set-preset-hook #'my/set-proper-fontset)
+    (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+    :custom
+    (fontaine-presets
+     `((regular)
+       (cascadia-code
+        :default-family "Cascadia Code"
+        :fixed-pitch-family "Cascadia Code")
+       (poppins-variable-pitch
+        :variable-pitch-family "Poppins")
+       (urbanist-variable-pitch
+        :variable-pitch-family "Urbanist")
+       (t
+        :default-family "Maple Mono"
+        :default-weight regular
+        :default-height ,my/default-font-size
+        :fixed-pitch-family "JetBrains Mono"
+        :fixed-pitch-weight regular
+        :variable-pitch-height ,(+ my/default-font-size 20)
+        :variable-pitch-family "Inter")))
+    :config
+    (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)))
 
 (defun my/font-reset-size ()
   "Reset the default font size (face height) to `my/default-font-size'"

@@ -72,6 +72,7 @@
   :config
   (my/define-leader-key
     "nn" 'my/notes-new
+    "ni" 'my/notes-new-and-link
     "ng" 'my/notes-consult-ripgrep))
 
 (use-package my-config-app

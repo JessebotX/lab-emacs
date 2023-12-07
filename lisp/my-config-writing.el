@@ -28,11 +28,17 @@
 (use-package olivetti
   :commands (olivetti-mode)
   :custom
-  (olivetti-body-width 80))
+  (olivetti-body-width 80)
+  :config
+  (add-hook 'markdown-mode-hook #'olivetti-mode))
 
 (use-package imenu-list
   :commands (imenu-list-smart-toggle)
   :bind ("C-'" . imenu-list-smart-toggle))
+
+(use-package adaptive-wrap-vp
+  :straight (:type git :host github :repo "brentonk/adaptive-wrap-vp")
+  :hook (markdown-mode . adaptive-wrap-prefix-vp-mode))
 
 ;;; Languages
 (use-package markdown-mode

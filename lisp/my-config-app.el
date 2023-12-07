@@ -1,5 +1,8 @@
 ;;; -*- lexical-binding: t; -*-
 
+(use-package nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
+
 (use-package dired
   :straight nil
   :custom
@@ -7,7 +10,6 @@
   (dired-listing-switches "-agho")
   :config
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook (lambda () (whitespace-mode -1)))
   )
 
 (use-package dashboard

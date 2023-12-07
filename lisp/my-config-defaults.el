@@ -38,7 +38,8 @@
         use-short-answers t
         visible-bell nil
         whitespace-style '(face tabs tab-mark trailing)
-        whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
+        whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9]))
+        )
 
 ;;; Load custom file
 (load custom-file 'noerror 'nomessage)
@@ -48,9 +49,11 @@
 (delete-selection-mode 1)
 (global-auto-revert-mode 1)
 (global-so-long-mode 1)
-(global-whitespace-mode 1)
 (save-place-mode 1)
 (winner-mode 1)
+
+(add-hook 'text-mode-hook 'whitespace-mode)
+(add-hook 'prog-mode-hook 'whitespace-mode)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 

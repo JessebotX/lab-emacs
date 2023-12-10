@@ -12,14 +12,12 @@
 (require 'my-config-straight-pkg)
 
 ;;;; General
-;; load `no-littering' first
+;; load no-littering first
 (use-package no-littering
   :config
   (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude
-                 (recentf-expand-file-name no-littering-var-directory))
-    (add-to-list 'recentf-exclude
-                 (recentf-expand-file-name no-littering-etc-directory)))
+    (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-var-directory))
+    (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-etc-directory)))
   (no-littering-theme-backups))
 
 (use-package my-config-defaults
@@ -114,3 +112,4 @@
 
 ;;; End
 (load (locate-user-emacs-file "machine-init.el") :noerror :nomessage)
+

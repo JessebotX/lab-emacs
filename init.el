@@ -62,6 +62,7 @@
   :config
   (my/define-leader-key
     "do"   #'dictionary-lookup-definition
+    "twh"  #'my/large-headings-mode
     "twbw" 'writeroom-mode
     "twbb" 'olivetti-mode))
 

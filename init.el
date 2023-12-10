@@ -82,6 +82,7 @@
     "tee" 'eat
     "tei" 'eat-project-other-window
     "tej" 'eat-project))
+
 ;;; Other
 ;;;; Theme
 (my/themes-set-theme "modus-operandi")

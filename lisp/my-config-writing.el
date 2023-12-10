@@ -34,6 +34,10 @@
   :straight (:type git :host github :repo "brentonk/adaptive-wrap-vp")
   :hook (markdown-mode . adaptive-wrap-prefix-vp-mode))
 
+(use-package my-large-headings
+  :straight nil
+  :commands my/large-headings-mode)
+
 ;;; Languages
 (use-package markdown-mode
   :preface

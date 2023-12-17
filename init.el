@@ -27,7 +27,7 @@
   :straight nil
   :config
   (my/define-leader-key
-    "o" 'ace-window))
+    "wo" 'ace-window))
 
 (use-package my-config-fonts
   :straight nil)
@@ -48,7 +48,9 @@
     "s"  'consult-line
     "tt" 'consult-theme
     "rr" 'consult-recent-file
-    "rb" 'consult-bookmark))
+    "rb" 'consult-bookmark
+    "rm" 'consult-bookmark
+    ))
 
 (use-package my-config-programming
   :straight nil
@@ -82,6 +84,12 @@
     "tei" 'eat-project-other-window
     "tej" 'eat-project))
 
+(use-package my-config-utils
+  :straight nil
+  :config
+  (my/define-leader-key
+    "lr" 'my/buffer-insert-relative-link-to-file))
+
 ;;; Other
 ;;;; Theme
 (my/themes-set-theme "modus-operandi")
@@ -90,25 +98,32 @@
 (keymap-global-set "C-," 'set-mark-command)
 
 (my/define-leader-key
+  "SPC" 'cycle-spacing
   "C-," 'set-mark-command
-  "."   'find-file
-  "-"   'kill-this-buffer
-  "cc"  'compile
-  "do"  'dictionary-lookup-definition
-  "hd"  'devdocs-lookup
-  "ho"  'describe-symbol
-  "hf"  'describe-face
-  "hk"  'describe-key
-  "j"   'execute-extended-command
+  "." 'find-file
+  "-" 'kill-this-buffer
+  "lk" 'downcase-dwim
+  "lj" 'capitalize-dwim
+  "cc" 'compile
+  "do" 'dictionary-lookup-definition
+  "hd" 'devdocs-lookup
+  "ho" 'describe-symbol
+  "hf" 'describe-face
+  "hk" 'describe-key
+  "j" 'execute-extended-command
+  "o" nil
+  "og" 'magit-status
   "kjj" 'kill-buffer-and-window
-  "kk"  'kill-buffer
-  "kl"  'delete-other-windows
-  "qe"  'eval-last-sexp
-  "tn"  'display-line-numbers-mode
+  "k SPC" 'kill-buffer
+  "kl" 'delete-other-windows
+  "kk" 'delete-window
+  "mf" 'make-frame
+  "qe" 'eval-last-sexp
+  "tn" 'display-line-numbers-mode
   "twv" 'variable-pitch-mode
-  "us"  'scratch-buffer
-  "wj"  'winner-undo
-  "wk"  'winner-redo
+  "us" 'scratch-buffer
+  "wj" 'winner-undo
+  "wk" 'winner-redo
   )
 
 ;;; End

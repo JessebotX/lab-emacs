@@ -69,7 +69,9 @@
   (denote-directory my/notes-org-directory
   (denote-keywords nil)
   (denote-prompts '(title keywords))
-  (denote-file-type 'org)))
+  (denote-file-type 'org))
+  :config
+  (add-hook 'dired-mode-hook #'denote-dired-mode))
 
 (defun my/notes-consult-grep ()
   (interactive)

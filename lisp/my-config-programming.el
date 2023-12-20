@@ -24,7 +24,15 @@
   :commands
   (treemacs
    treemacs-add-and-display-current-project-exclusively
-   treemacs-add-and-display-current-project))
+   treemacs-add-and-display-current-project)
+  :custom
+  (treemacs-width 30)
+  :config
+  (evil-define-key '(normal emacs) treemacs-mode-map
+    "d" 'treemacs-delete-file
+    "r" 'treemacs-rename-file
+    "o" 'treemacs-create-file
+    "gr" 'treemacs-refresh))
 
 ;;; Languages
 ;;;; C/C++

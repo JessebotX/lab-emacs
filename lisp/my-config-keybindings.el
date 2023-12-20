@@ -66,7 +66,11 @@
   (general-create-definer my/define-leader-key
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
-    :global-prefix "C-SPC"))
+    :global-prefix "C-SPC")
+
+  ;; unbind SPC in help-mode
+  (evil-define-key '(normal emacs) help-mode-map
+    (kbd "SPC") nil))
 
 ;;; Meow
 (use-package meow

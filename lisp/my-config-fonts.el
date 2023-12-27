@@ -9,6 +9,18 @@
   (use-package fontaine
     :init
     (defun my/set-proper-fontset ()
+      (set-fontset-font
+       t
+       (if (version< emacs-version "28.1")
+           '(#x1f300 . #x1fad0)
+         'emoji
+         )
+       (cond
+        ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+        ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+        ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+        ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+        ((member "Symbola" (font-family-list)) "Symbola")))
       (set-fontset-font t '(#x2500 . #x25ff) "Cascadia Code")
       (set-fontset-font t '(#x2733 . #x2733) "JetBrains Mono"))
     (add-hook 'fontaine-set-preset-hook #'my/set-proper-fontset)

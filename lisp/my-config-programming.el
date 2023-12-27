@@ -13,7 +13,11 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package devdocs
-  :bind (("C-h d" . devdocs-lookup)))
+  :commands (devdocs-lookup)
+  :bind (("C-h d" . devdocs-lookup))
+  :config
+  (evil-define-key '(normal emacs) devdocs-mode-map
+    (kbd "SPC") nil))
 
 (use-package dumb-jump
   :config

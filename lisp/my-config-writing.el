@@ -10,9 +10,15 @@
   :straight nil
   :commands (dictionary-lookup-definition)
   :custom
-  (dictionary-server "dict.org"))
+  (dictionary-server "dict.org")
+  :config
+  (evil-define-key '(normal emacs) dictionary-mode-map
+    (kbd "SPC") nil))
 
 (use-package writegood-mode
+  :defer t)
+
+(use-package edit-indirect
   :defer t)
 
 (use-package writeroom-mode
@@ -28,7 +34,9 @@
 
 (use-package imenu-list
   :commands (imenu-list-smart-toggle)
-  :bind ("C-'" . imenu-list-smart-toggle))
+  :bind ("C-'" . imenu-list-smart-toggle)
+  :init
+  (setq imenu-list-focus-after-activation t))
 
 (use-package adaptive-wrap-vp
   :straight (:type git :host github :repo "brentonk/adaptive-wrap-vp")
@@ -131,6 +139,7 @@
 (use-package org-appear
   :hook (org-mode . org-appear-mode))
 
-(use-package ox-epub)
+(use-package ox-epub
+  :commands (org-export-dispatch))
 
 (provide 'my-config-writing)

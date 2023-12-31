@@ -10,7 +10,7 @@
   :straight nil
   :commands (dictionary-lookup-definition)
   :custom
-  (dictionary-server "dict.org")
+  (dictionary-server 'automatic)
   :config
   (evil-define-key '(normal emacs) dictionary-mode-map
     (kbd "SPC") nil))

@@ -1,7 +1,8 @@
 ;;; -*- lexical-binding: t; -*-
 
-(use-package nerd-icons-dired
-  :hook (dired-mode . nerd-icons-dired-mode))
+(unless (eq system-type 'windows-nt)
+  (use-package nerd-icons-dired
+    :hook (dired-mode . nerd-icons-dired-mode)))
 
 (use-package dired
   :straight nil
@@ -12,37 +13,40 @@
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   )
 
-(use-package dashboard
-  :custom
-  (dashboard-items '((agenda . 3)
-                     (bookmarks . 3)
-                     (recents . 2)))
-  (dashboard-icon-type 'nerd-icons)
-  (dashboard-display-icons-p t)
-  (dashboard-set-heading-icons t)
-  (dashboard-set-file-icons t)
-  (dashboard-startup-banner 'logo)
-  :config
-  (dashboard-setup-startup-hook))
+(unless (eq system-type 'windows-nt)
+  (use-package dashboard
+    :custom
+    (dashboard-items '((agenda . 3)
+                       (bookmarks . 3)
+                       (recents . 2)))
+    (dashboard-icon-type 'nerd-icons)
+    (dashboard-display-icons-p t)
+    (dashboard-set-heading-icons t)
+    (dashboard-set-file-icons t)
+    (dashboard-startup-banner 'logo)
+    :config
+    (dashboard-setup-startup-hook)))
 
-(use-package elfeed
-  :commands (elfeed elfeed-update)
-  :custom
-  (elfeed-feeds '(("https://memorylane.cerelia.xyz/warp/rss.xml" my writing)
-                  ("https://www.mollymovieclub.com/feed" podcast)
-                  )
-                ))
+(unless (eq system-type 'windows-nt)
+  (use-package elfeed
+    :commands (elfeed elfeed-update)
+    :custom
+    (elfeed-feeds '(("https://memorylane.cerelia.xyz/warp/rss.xml" my writing)
+                    ("https://www.mollymovieclub.com/feed" podcast)
+                    )
+                  )))
 
-(use-package eat
-  :straight
-  (:type git
-         :host codeberg
-         :repo "akib/emacs-eat"
-         :files ("*.el" ("term" "term/*.el") "*.texi"
-                 "*.ti" ("terminfo/e" "terminfo/e/*")
-                 ("terminfo/65" "terminfo/65/*")
-                 ("integration" "integration/*")
-                 (:exclude ".dir-locals.el" "*-tests.el"))))
+(unless (eq system-type 'windows-nt)
+  (use-package eat
+    :straight
+    (:type git
+           :host codeberg
+           :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*.el") "*.texi"
+                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*")
+                   (:exclude ".dir-locals.el" "*-tests.el")))))
 
 (use-package magit
   :commands (magit magit-status))

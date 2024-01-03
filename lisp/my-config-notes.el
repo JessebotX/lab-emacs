@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
-(defcustom my/notes-directory "~/Sync/cerebrum"
+(defcustom my/notes-directory "~/Sync/man"
   "My main directory of notes")
 
 (defcustom my/notes-org-directory (expand-file-name "warp" my/notes-directory)

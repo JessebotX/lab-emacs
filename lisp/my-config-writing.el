@@ -75,9 +75,9 @@
   :preface
   (defun my/org--setup ()
     "Settings for `org-mode-hook'"
-    (setq-local tab-width 2
+    (setq-local tab-width 8
                 indent-tabs-mode nil
-                evil-shift-width 2)
+                evil-shift-width 8)
     (visual-line-mode 1)
     (display-line-numbers-mode -1)
     (org-indent-mode 1)

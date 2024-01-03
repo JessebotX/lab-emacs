@@ -3,7 +3,8 @@
 (defcustom my/default-font-size 140
   "Default font size (face height)")
 
-(use-package nerd-icons)
+(unless (eq system-type 'windows-nt)
+  (use-package nerd-icons))
 
 (when (display-graphic-p)
   (use-package fontaine

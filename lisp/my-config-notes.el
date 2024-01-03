@@ -31,16 +31,16 @@
   (setq-local file-path
               (convert-standard-filename
                (expand-file-name
-                "README.md"
+                "README.org"
                 (expand-file-name (int-to-string i) my/notes-directory))))
   (setq-local link (string-replace
                     (directory-file-name (expand-file-name my/notes-directory))
                     ".."
                     file-path))
   (if add-existing-link
-      (insert (format "- [%s](%s)" title link)))
+      (insert (format "- [%s][%s]" link title)))
   (find-file file-path)
-  (insert (format "---\ntitle: \"%s\"\n---\n\n# %s\n\n" title title)))
+  (insert (format "#+title: %s\n\n* %s" title title)))
 
 (defun my/notes-link (path)
   (interactive (list
@@ -53,14 +53,14 @@
                     (directory-file-name my/notes-directory)
                     ".."
                     path))
-  (setq-local node-num (string-replace "/README.md" ""
+  (setq-local node-num (string-replace "/README.org" ""
                                        (string-replace
                                         (concat (directory-file-name my/notes-directory) "/")
                                         ""
                                         path)))
   (insert
    (format
-    "- [Node %s](%s)" node-num link)))
+    "- [%s][Node %s]" link node-num)))
 
 ;;; Denote
 ;; Used to resolve denote:id org links more rather than actually using it

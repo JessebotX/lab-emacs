@@ -101,6 +101,7 @@
   "SPC" 'cycle-spacing
   "C-," 'set-mark-command
   "." 'find-file
+  "=" 'count-words
   "-" 'kill-this-buffer
   "lk" 'downcase-dwim
   "lj" 'capitalize-dwim

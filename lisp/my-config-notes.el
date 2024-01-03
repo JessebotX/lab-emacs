@@ -38,7 +38,7 @@
                     ".."
                     file-path))
   (if add-existing-link
-      (insert (format "- [%s][%s]" link title)))
+      (insert (format "+ [[%s][%s]]" link title)))
   (find-file file-path)
   (insert (format "#+title: %s\n\n* %s" title title)))
 
@@ -60,7 +60,7 @@
                                         path)))
   (insert
    (format
-    "- [%s][Node %s]" link node-num)))
+    "+ [[%s][Node %s]]" link node-num)))
 
 ;;; Denote
 ;; Used to resolve denote:id org links more rather than actually using it

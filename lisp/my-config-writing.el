@@ -28,7 +28,8 @@
 
 (use-package olivetti
   :commands (olivetti-mode)
-  :hook (markdown-mode . olivetti-mode)
+  :hook ((markdown-mode . olivetti-mode)
+         (org-mode      . olivetti-mode))
   :custom
   (olivetti-body-width 80))
 
@@ -121,6 +122,7 @@
 
   ;;; Binds
   (let ((map org-mode-map))
+    (define-key map (kbd "C-'") nil) ; remove org agenda cycle list
     (define-key map (kbd "C-,") nil) ; remove org agenda cycle list
     (define-key map (kbd "C-c m i") 'org-id-store-link)
     (define-key map (kbd "C-c m l") 'org-store-link)

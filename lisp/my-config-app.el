@@ -13,19 +13,18 @@
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   )
 
-(unless (eq system-type 'windows-nt)
-  (use-package dashboard
-    :custom
-    (dashboard-items '((agenda . 3)
-                       (bookmarks . 3)
-                       (recents . 2)))
-    (dashboard-icon-type 'nerd-icons)
-    (dashboard-display-icons-p t)
-    (dashboard-set-heading-icons t)
-    (dashboard-set-file-icons t)
-    (dashboard-startup-banner 'logo)
-    :config
-    (dashboard-setup-startup-hook)))
+(use-package dashboard
+  :custom
+  (dashboard-items '((agenda . 6)
+                     (recents . 2)))
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-display-icons-p t)
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-startup-banner 'logo)
+  (dashboard-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
 
 (unless (eq system-type 'windows-nt)
   (use-package elfeed

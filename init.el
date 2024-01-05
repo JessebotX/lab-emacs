@@ -27,6 +27,7 @@
   :straight nil
   :config
   (my/define-leader-key
+    "oo" 'ace-window
     "wo" 'ace-window))
 
 (use-package my-config-fonts
@@ -74,6 +75,7 @@
   (my/define-leader-key
     "nn" 'my/notes-new
     "ni" 'my/notes-new-and-link
+    "nl" 'my/notes-link
     "ng" 'my/notes-consult-ripgrep))
 
 (use-package my-config-app
@@ -103,6 +105,7 @@
   "." 'find-file
   "=" 'count-words
   "-" 'kill-this-buffer
+  "l" nil
   "lk" 'downcase-dwim
   "lj" 'capitalize-dwim
   "cc" 'compile
@@ -113,6 +116,7 @@
   "hk" 'describe-key
   "j" 'execute-extended-command
   "o" nil
+  "oa" 'org-agenda
   "og" 'magit-status
   "kjj" 'kill-buffer-and-window
   "k SPC" 'kill-buffer

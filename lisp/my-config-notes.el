@@ -38,7 +38,7 @@
                     ".."
                     file-path))
   (if add-existing-link
-      (insert (format "+ [[%s][%s]]" link title)))
+      (insert (format "+ [[%s][%s (%d)]]" link title i)))
   (find-file file-path)
   (insert (format "#+title: %s\n\n* %s" title title)))
 
@@ -48,7 +48,7 @@
                  "File: "
                  (directory-files-recursively
                   my/notes-directory
-                  ".*/?[^\\.]*.*"))))
+                  ".*/?README[^\\.]*.*"))))
   (setq-local link (string-replace
                     (directory-file-name my/notes-directory)
                     ".."
@@ -60,7 +60,20 @@
                                         path)))
   (insert
    (format
-    "+ [[%s][Node %s]]" link node-num)))
+    "+ [[%s][%s (%s)]]" link (my/notes--get-title path) node-num)))
+
+;(my/notes--get-title "~/Sync/man/5/README.org")
+(defun my/notes--get-title (path)
+  "Retrieve the org document's `title' keyword at PATH."
+  (let (title)
+    (when path
+      (with-temp-buffer
+        (insert-file-contents path)
+        (org-mode)
+        (pcase (org-collect-keywords '("TITLE"))
+          (`(("TITLE" . ,val))
+           (setq title (car val)))))
+      title)))
 
 ;;; Denote
 ;; Used to resolve denote:id org links more rather than actually using it

@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
+(require 'my-config-notes)
+
 ;;; Packages
 ;; Spellcheck only available for unix-like OSes
 (when (not (eq system-type 'windows-nt))
@@ -28,8 +30,8 @@
 
 (use-package olivetti
   :commands (olivetti-mode)
-  :hook ((markdown-mode . olivetti-mode)
-         (org-mode      . olivetti-mode))
+  :hook ((markdown-mode  . olivetti-mode)
+         (org-mode       . olivetti-mode))
   :custom
   (olivetti-body-width 80))
 
@@ -85,9 +87,21 @@
     )
   :hook (org-mode . my/org--setup)
   :custom
+  (org-directory my/notes-directory)
+  (org-default-notes-file (expand-file-name "2/README.org" org-directory))
+  (org-agenda-files '("~/Sync/man/2/README.org"))
+  (org-capture-templates '(("t" "Task" entry (file+headline "" "Agenda")
+                            "* TODO %?\n  %U\n")
+                           ("s" "Scheduled TODO" entry (file+headline "" "Agenda")
+                            "* TODO %?\nSCHEDULED: %^t\n  %U\n")
+                           ("d" "Deadline" entry (file+headline "" "Agenda")
+                            "* TODO %?\n  DEADLINE: %^t\n")
+                           ("a" "Appointment" entry (file+headline "" "Agenda")
+                            "* %?\n  %^t")
+                           ("n" "Note" entry (file+headline "" "Notes")
+                            "* %?\n%U\n")))
   (org-id-link-to-org-use-id 'use-existing)
-  (org-agenda-files '("~/Sync/agenda.org"))
-  (org-agenda-file-regexp "\\`[^.].*_project.*\\.org\\'")
+  ;(org-agenda-file-regexp "\\`[^.].*_project.*\\.org\\'")
   (org-ellipsis "…")
   (org-auto-align-tags nil)
   (org-src-preserve-indentation t)
@@ -98,6 +112,7 @@
                           (wl . wl-other-frame)))
   (org-link-file-path-type 'relative)
   (org-hide-emphasis-markers t)
+  (org-startup-folded 'showall)
   (org-todo-keywords '((sequence
                         "TODO(t)"
                         "WIP(w)"

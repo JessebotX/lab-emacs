@@ -40,7 +40,7 @@
   (if add-existing-link
       (insert (format "+ [[%s][%s (%d)]]" link title i)))
   (find-file file-path)
-  (insert (format "#+title: %s\n\n* %s" title title)))
+  (insert (format "#+title: %s\n\n" title)))
 
 (defun my/notes-link (path)
   (interactive (list

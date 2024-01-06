@@ -30,8 +30,9 @@
 
 (use-package olivetti
   :commands (olivetti-mode)
-  :hook ((markdown-mode  . olivetti-mode)
-         (org-mode       . olivetti-mode))
+  :hook ((markdown-mode   . olivetti-mode)
+         (org-mode        . olivetti-mode)
+         (org-agenda-mode . olivetti-mode))
   :custom
   (olivetti-body-width 80))
 
@@ -123,6 +124,13 @@
                         "ARCHIVE(a)"
                         "DONE(d)"
                         "CANCELLED(w)")))
+  (org-agenda-span 5)
+  (org-agenda-start-day "+0d")
+  (org-agenda-skip-timestamp-if-done t)
+  (org-agenda-skip-deadline-if-done t)
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (org-agenda-skip-timestamp-if-deadline-is-shown t)
   :config
   (add-to-list 'org-export-backends 'md)
 
@@ -144,7 +152,8 @@
     (define-key map (kbd "C-c C-x RET") #'my/org-toggle-markup)))
 
 (use-package org-modern
-  :hook ((org-mode . org-modern-mode))
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-mode . org-modern-mode))
   :custom
   (org-modern-star '("◉" "●" "○" "◈" "◇"))
   (org-modern-block-fringe nil)

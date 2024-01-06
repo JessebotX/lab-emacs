@@ -73,6 +73,7 @@
   :straight nil
   :config
   (my/define-leader-key
+    "n" '(nil :which-key "Notetaking")
     "nn" 'my/notes-new
     "ni" 'my/notes-new-and-link
     "nl" 'my/notes-link
@@ -115,9 +116,10 @@
   "hf" 'describe-face
   "hk" 'describe-key
   "j" 'execute-extended-command
-  "o" nil
+  "o" '(nil :which-key "Applications")
   "oa" 'org-agenda
   "og" 'magit-status
+  "nc" 'org-capture
   "kjj" 'kill-buffer-and-window
   "k SPC" 'kill-buffer
   "kl" 'delete-other-windows

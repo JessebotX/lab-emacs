@@ -163,8 +163,8 @@
     (define-key map (kbd "C-c C-x RET") #'my/org-toggle-markup)))
 
 (use-package org-modern
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-mode . org-modern-mode))
+  :hook ((org-mode . global-org-modern-mode)
+         (org-agenda-mode . global-org-modern-mode))
   :custom
   (org-modern-star '("◉" "●" "○" "◈" "◇"))
   (org-modern-block-fringe nil)

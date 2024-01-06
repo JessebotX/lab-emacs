@@ -27,7 +27,13 @@
   :straight nil
   :config
   (my/define-leader-key
+    "h" '(nil :which-key "Help")
+    "k" '(nil :which-key "Buffer/Window killing")
+    "l" '(nil :which-key "Transform Text")
+    "t" '(nil :which-key "Modes and Themes")
+    "o" '(nil :which-key "Applications + ace-window")
     "oo" 'ace-window
+    "w" '(nil :which-key "Window")
     "wo" 'ace-window))
 
 (use-package my-config-fonts
@@ -46,8 +52,9 @@
   :config
   (my/define-leader-key
     "b"  'consult-buffer
-    "s"  'consult-line
+    "r" '(nil :which-key "Consult")
     "tt" 'consult-theme
+    "rs" 'consult-line
     "rr" 'consult-recent-file
     "rb" 'consult-bookmark
     "rm" 'consult-bookmark
@@ -83,6 +90,7 @@
   :straight nil
   :config
   (my/define-leader-key
+    "og" 'magit-status
     "tee" 'eat
     "tei" 'eat-project-other-window
     "tej" 'eat-project))
@@ -106,7 +114,6 @@
   "." 'find-file
   "=" 'count-words
   "-" 'kill-this-buffer
-  "l" nil
   "lk" 'downcase-dwim
   "lj" 'capitalize-dwim
   "cc" 'compile
@@ -116,9 +123,7 @@
   "hf" 'describe-face
   "hk" 'describe-key
   "j" 'execute-extended-command
-  "o" '(nil :which-key "Applications")
   "oa" 'org-agenda
-  "og" 'magit-status
   "nc" 'org-capture
   "kjj" 'kill-buffer-and-window
   "k SPC" 'kill-buffer

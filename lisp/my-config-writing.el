@@ -2,6 +2,8 @@
 
 (require 'my-config-notes)
 
+(defvar my/org-agenda-main-file (expand-file-name "~/Sync/agenda.org"))
+
 ;;; Packages
 ;; Spellcheck only available for unix-like OSes
 (when (not (eq system-type 'windows-nt))
@@ -90,17 +92,17 @@
   :custom
   (org-directory my/notes-directory)
   (org-default-notes-file (expand-file-name "2/README.org" org-directory))
-  (org-agenda-files '("~/Sync/man/2/README.org"))
-  (org-capture-templates '(("t" "Task" entry (file+headline "" "Agenda")
-                            "* TODO %?\n  %U\n")
-                           ("s" "Scheduled TODO" entry (file+headline "" "Agenda")
-                            "* TODO %?\nSCHEDULED: %^t\n  %U\n")
-                           ("d" "Deadline" entry (file+headline "" "Agenda")
-                            "* TODO %?\n  DEADLINE: %^t\n")
-                           ("a" "Appointment" entry (file+headline "" "Agenda")
-                            "* %?\n  %^t")
-                           ("n" "Note" entry (file+headline "" "Notes")
-                            "* %?\n%U\n")))
+  (org-agenda-files `(,my/org-agenda-main-file ,org-default-notes-file))
+  (org-capture-templates '(("t" "General TODO" entry (file+headline org-default-notes-file "Tasks")
+                            "* TODO %?\n%U\n")
+                           ("n" "Quick Note" entry (file+headline org-default-notes-file "Notes")
+                            "* %?\n%U\n")
+                           ("s" "Scheduled TODO" entry (file+headline my/org-agenda-main-file "Agenda")
+                            "* TODO %?\nSCHEDULED: %^t\n%U\n")
+                           ("d" "Deadline" entry (file+headline my/org-agenda-main-file "Agenda")
+                            "* TODO %?\nDEADLINE: %^t\n")
+                           ("a" "Appointment" entry (file+headline my/org-agenda-main-file "Agenda")
+                            "* APPOINTMENT %?\nSCHEDULED: %^t")))
   (org-id-link-to-org-use-id 'use-existing)
   ;(org-agenda-file-regexp "\\`[^.].*_project.*\\.org\\'")
   (org-ellipsis "…")
@@ -120,8 +122,9 @@
                         "HOLD(h)"
                         "EDIT(e)"
                         "REDO(r)"
+                        "APPOINTMENT(a)"
                         "|" ; separate active and inactive states
-                        "ARCHIVE(a)"
+                        "ARCHIVED(s)"
                         "DONE(d)"
                         "CANCELLED(w)")))
   (org-agenda-span 5)
@@ -133,6 +136,14 @@
   (org-agenda-skip-timestamp-if-deadline-is-shown t)
   :config
   (add-to-list 'org-export-backends 'md)
+
+  ;; let j,k move around `org-agenda-mode'
+  (evil-define-key '(normal emacs) org-agenda-mode-map
+    (kbd "j") 'org-agenda-next-item
+    (kbd "k") 'org-agenda-previous-item
+    (kbd "N") 'org-agenda-goto-date
+    (kbd "P") 'org-agenda-capture
+    )
 
   ;;; Commands/functions/macros
   (defun my/org-toggle-markup ()

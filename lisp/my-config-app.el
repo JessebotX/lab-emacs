@@ -4,6 +4,12 @@
   (use-package nerd-icons-dired
     :hook (dired-mode . nerd-icons-dired-mode)))
 
+(use-package image
+  :straight nil
+  :custom
+  ;; Enable converting external formats (ie. webp) to internal ones.
+  (image-use-external-converter t))
+
 (use-package dired
   :straight nil
   :custom

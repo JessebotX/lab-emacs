@@ -85,7 +85,22 @@ Credit: xahlee.info"
      (t
       (call-process shell-file-name nil 0 nil
                     shell-command-switch
-                    (format "xdg-open %s" (file-name-directory path)))))))
+                    (format "xdg-open '%s'" (file-name-directory path)))))))
+
+(defun my/open-current-directory ()
+  "Open the current directory"
+  (interactive)
+  (cond
+   ((eq system-type 'windows-nt)
+    (shell-command
+     (format "PowerShell -Command invoke-item '%s'" (expand-file-name default-directory))))
+   ((eq system-type 'darwin)
+    (shell-command
+     (concat "open -R " (shell-quote-argument (expand-file-name default-directory)))))
+   (t
+    (call-process shell-file-name nil 0 nil
+                  shell-command-switch
+                  (format "xdg-open '%s'" (expand-file-name default-directory))))))
 
 ;;; End
 (provide 'my-config-utils)

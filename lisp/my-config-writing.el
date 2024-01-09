@@ -142,8 +142,7 @@
     (kbd "j") 'org-agenda-next-item
     (kbd "k") 'org-agenda-previous-item
     (kbd "N") 'org-agenda-goto-date
-    (kbd "P") 'org-agenda-capture
-    )
+    (kbd "P") 'org-agenda-capture)
 
   ;;; Commands/functions/macros
   (defun my/org-toggle-markup ()
@@ -166,6 +165,7 @@
   :hook ((org-mode . global-org-modern-mode)
          (org-agenda-mode . global-org-modern-mode))
   :custom
+  (org-modern-keyword nil)
   (org-modern-star '("◉" "●" "○" "◈" "◇"))
   (org-modern-block-fringe nil)
   (org-modern-hide-stars nil))

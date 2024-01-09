@@ -59,12 +59,11 @@ Credit: xahlee.info"
    ((eq system-type 'darwin)
     (shell-command
      (concat "open -a terminal " (shell-quote-argument (expand-file-name default-directory)))))
-   (t (start-process
-       "" nil my/terminal
-       (format "--working-directory \"%s\""
-               (expand-file-name default-directory))))))
+   (t (call-process shell-file-name nil 0 nil
+                    shell-command-switch
+                    (format "%s --working-directory '%s'" my/terminal (expand-file-name default-directory))))))
 
-(defun my/open ()
+(defun my/open-file ()
   "Open file.
 
 Credit: xahlee.info"

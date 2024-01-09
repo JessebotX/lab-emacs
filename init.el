@@ -101,7 +101,7 @@
   (my/define-leader-key
     "lr" 'my/buffer-insert-relative-link-to-file
     "et" 'my/open-in-terminal
-    "of" 'my/open
+    "of" 'my/open-file
     "od" 'my/open-current-directory))
 
 ;;; Other

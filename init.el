@@ -99,7 +99,9 @@
   :straight nil
   :config
   (my/define-leader-key
-    "lr" 'my/buffer-insert-relative-link-to-file))
+    "lr" 'my/buffer-insert-relative-link-to-file
+    "et" 'my/open-in-terminal
+    "of" 'my/open))
 
 ;;; Other
 ;;;; Theme

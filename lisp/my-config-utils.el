@@ -85,7 +85,7 @@ Credit: xahlee.info"
      (t
       (call-process shell-file-name nil 0 nil
                     shell-command-switch
-                    (format "xdg-open '%s'" (file-name-directory path)))))))
+                    (format "xdg-open '%s'" (expand-file-name path)))))))
 
 (defun my/open-current-directory ()
   "Open the current directory"

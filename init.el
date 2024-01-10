@@ -117,7 +117,7 @@
   "." 'find-file
   "=" 'count-words
   "-" 'kill-this-buffer
-  "lk" 'downcase-dwim
+  "lf" 'downcase-dwim
   "lj" 'capitalize-dwim
   "cc" 'compile
   "do" 'dictionary-lookup-definition

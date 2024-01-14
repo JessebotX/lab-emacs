@@ -31,7 +31,7 @@
   (setq-local file-path
               (convert-standard-filename
                (expand-file-name
-                "README.org"
+                "index.org"
                 (expand-file-name (int-to-string i) my/notes-directory))))
   (setq-local link (string-replace
                     (directory-file-name (expand-file-name my/notes-directory))
@@ -48,12 +48,12 @@
                  "File: "
                  (directory-files-recursively
                   my/notes-directory
-                  ".*/?README[^\\.]*.*"))))
+                  ".*/?index[^\\.]*.*"))))
   (setq-local link (string-replace
                     (directory-file-name my/notes-directory)
                     ".."
                     path))
-  (setq-local node-num (string-replace "/README.org" ""
+  (setq-local node-num (string-replace "/index.org" ""
                                        (string-replace
                                         (concat (directory-file-name my/notes-directory) "/")
                                         ""
@@ -62,7 +62,7 @@
    (format
     "+ [[%s][%s (%s)]]" link (my/notes--get-title path) node-num)))
 
-;(my/notes--get-title "~/Sync/man/5/README.org")
+;(my/notes--get-title "~/Sync/man/5/index.org")
 (defun my/notes--get-title (path)
   "Retrieve the org document's `title' keyword at PATH."
   (let (title)

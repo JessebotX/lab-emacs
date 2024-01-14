@@ -91,7 +91,7 @@
   :hook (org-mode . my/org--setup)
   :custom
   (org-directory my/notes-directory)
-  (org-default-notes-file (expand-file-name "2/README.org" org-directory))
+  (org-default-notes-file (expand-file-name "2/index.org" org-directory))
   (org-agenda-files `(,my/org-agenda-main-file ,org-default-notes-file))
   (org-capture-templates '(("t" "General TODO" entry (file+headline org-default-notes-file "Tasks")
                             "* TODO %?\n%U\n")

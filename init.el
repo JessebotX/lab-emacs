@@ -37,7 +37,10 @@
     "wo" 'ace-window))
 
 (use-package my-config-fonts
-  :straight nil)
+  :straight nil
+  :config
+  (my/define-leader-key
+    "tf=" 'my/font-size-hydra/body))
 
 (use-package my-config-mode-line
   :straight nil)
@@ -53,6 +56,7 @@
   (my/define-leader-key
     "b"  'consult-buffer
     "r" '(nil :which-key "Consult")
+    "p" 'consult-yank-from-kill-ring
     "tt" 'consult-theme
     "rs" 'consult-line
     "rr" 'consult-recent-file

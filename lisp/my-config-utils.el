@@ -101,6 +101,12 @@ Credit: xahlee.info"
                   shell-command-switch
                   (format "xdg-open '%s'" (expand-file-name default-directory))))))
 
+(defun my/kill-ring-clear ()
+  "Clear all saved text in the kill ring."
+  (interactive)
+  (setq kill-ring nil)
+  (garbage-collect))
+
 ;;; End
 (provide 'my-config-utils)
 

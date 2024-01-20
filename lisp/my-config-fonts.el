@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
+(require 'my-config-keybindings)
+
 (defcustom my/default-font-size 140
   "Default font size (face height)")
 
@@ -66,5 +68,12 @@ DECREMENT is provided, increase by 10."
   (if decrement
       (set-face-attribute 'default nil :height (- (face-attribute 'default :height) decrement))
     (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 10))))
+
+(defhydra my/font-size-hydra (:timeout 4)
+  "Increase/decrease/reset current font size."
+  ("=" my/font-increase-size "increase")
+  ("+" my/font-increase-size "increase")
+  ("-" my/font-decrease-size "decrease")
+  ("0" my/font-reset-size "reset"))
 
 (provide 'my-config-fonts)

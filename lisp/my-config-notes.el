@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
-(defcustom my/notes-directory "~/Sync/man"
+(defcustom my/notes-directory "~/Sync/notes"
   "My main directory of notes")
 
 (defcustom my/notes-org-directory (expand-file-name "warp" my/notes-directory)
@@ -31,7 +31,7 @@
   (setq-local file-path
               (convert-standard-filename
                (expand-file-name
-                "index.org"
+                "README.org"
                 (expand-file-name (int-to-string i) my/notes-directory))))
   (setq-local link (string-replace
                     (directory-file-name (expand-file-name my/notes-directory))
@@ -48,12 +48,12 @@
                  "File: "
                  (directory-files-recursively
                   my/notes-directory
-                  ".*/?index[^\\.]*.*"))))
+                  ".*/?README[^\\.]*.*"))))
   (setq-local link (string-replace
                     (directory-file-name my/notes-directory)
                     ".."
                     path))
-  (setq-local node-num (string-replace "/index.org" ""
+  (setq-local node-num (string-replace "/README.org" ""
                                        (string-replace
                                         (concat (directory-file-name my/notes-directory) "/")
                                         ""
@@ -62,7 +62,7 @@
    (format
     "+ [[%s][%s (%s)]]" link (my/notes--get-title path) node-num)))
 
-;(my/notes--get-title "~/Sync/man/5/index.org")
+;(my/notes--get-title "~/Sync/man/5/README.org")
 (defun my/notes--get-title (path)
   "Retrieve the org document's `title' keyword at PATH."
   (let (title)
@@ -77,14 +77,14 @@
 
 ;;; Denote
 ;; Used to resolve denote:id org links more rather than actually using it
-(use-package denote
-  :custom
-  (denote-directory my/notes-org-directory
-  (denote-keywords nil)
-  (denote-prompts '(title keywords))
-  (denote-file-type 'org))
-  :config
-  (add-hook 'dired-mode-hook #'denote-dired-mode))
+;; (use-package denote
+;;   :custom
+;;   (denote-directory my/notes-org-directory
+;;   (denote-keywords nil)
+;;   (denote-prompts '(title keywords))
+;;   (denote-file-type 'org))
+;;   :config
+;;   (add-hook 'dired-mode-hook #'denote-dired-mode))
 
 (defun my/notes-consult-grep ()
   (interactive)

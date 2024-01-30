@@ -22,6 +22,7 @@
   (my/notes--create title t))
 
 (defun my/notes--create (title add-existing-link)
+  (message "buffer: %s\n%s\n" buffer-file-name (expand-file-name "README.org" my/notes-directory))
   (setq-local i 1)
   (while
       (file-directory-p
@@ -35,7 +36,9 @@
                 (expand-file-name (int-to-string i) my/notes-directory))))
   (setq-local link (string-replace
                     (directory-file-name (expand-file-name my/notes-directory))
-                    ".."
+                    (if (string= buffer-file-name (expand-file-name "README.org" my/notes-directory))
+                        "."
+                      "..")
                     file-path))
   (if add-existing-link
       (insert (format "+ [[%s][%s (%d)]]" link title i)))
@@ -51,7 +54,9 @@
                   ".*/?README[^\\.]*.*"))))
   (setq-local link (string-replace
                     (directory-file-name my/notes-directory)
-                    ".."
+                    (if (string= buffer-file-name (expand-file-name "README.org" my/notes-directory))
+                        "."
+                      "..")
                     path))
   (setq-local node-num (string-replace "/README.org" ""
                                        (string-replace

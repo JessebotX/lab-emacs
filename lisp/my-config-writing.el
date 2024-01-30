@@ -38,6 +38,7 @@
   :custom
   (olivetti-body-width 80))
 
+
 (use-package imenu-list
   :commands (imenu-list-smart-toggle)
   :bind ("C-'" . imenu-list-smart-toggle)

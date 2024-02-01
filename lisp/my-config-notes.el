@@ -3,9 +3,6 @@
 (defcustom my/notes-directory "~/Sync/notes"
   "My main directory of notes")
 
-(defcustom my/notes-org-directory (expand-file-name "warp" my/notes-directory)
-  "Directory for org notes (using denote)")
-
 (defun my/notes-view-directory ()
   "View the path `my/notes-directory' in `dired'."
   (interactive)

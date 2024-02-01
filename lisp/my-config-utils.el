@@ -107,6 +107,16 @@ Credit: xahlee.info"
   (setq kill-ring nil)
   (garbage-collect))
 
+(defun my/directory-consult-grep ()
+  (interactive)
+  (require 'consult)
+  (consult-grep (expand-file-name default-directory)))
+
+(defun my/directory-consult-ripgrep ()
+  (interactive)
+  (require 'consult)
+  (consult-ripgrep (expand-file-name default-directory)))
+
 ;;; End
 (provide 'my-config-utils)
 

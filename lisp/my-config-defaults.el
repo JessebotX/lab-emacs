@@ -12,7 +12,8 @@
 (setq auto-window-vscroll nil)
 
 (setq-default tab-width 4
-              indent-tabs-mode nil)
+              indent-tabs-mode nil
+              compile-command "make")
 
 (setopt backward-delete-char-untabify-method 'hungry
         ad-redefinition-action 'accept

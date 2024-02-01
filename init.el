@@ -113,6 +113,11 @@
 (my/themes-set-theme "modus-operandi")
 
 ;;;; Keybindings
+(defhydra my/next-previous-error-hydra (:timeout 4)
+  "Increase/decrease/reset current font size."
+  ("j" next-error "Next")
+  ("k" previous-error "previous"))
+
 (keymap-global-set "C-," 'set-mark-command)
 
 (my/define-leader-key
@@ -121,6 +126,9 @@
   "." 'find-file
   "=" 'count-words
   "-" 'kill-this-buffer
+  "fj" 'next-error
+  "fk" 'previous-error
+  "ff" 'my/next-previous-error-hydra/body
   "lf" 'downcase-dwim
   "lj" 'capitalize-dwim
   "cc" 'compile

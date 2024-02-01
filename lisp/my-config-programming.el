@@ -74,7 +74,8 @@
 (use-package go-mode
   :preface
   (defun my/go--setup ()
-    (setq-local tab-width 4
+    (setq-local compile-command "go build"
+                tab-width 4
                 indent-tabs-mode t
                 evil-shift-width 4))
   :mode "\\.go\\'"

@@ -136,6 +136,7 @@
   (org-agenda-skip-scheduled-if-deadline-is-shown t)
   (org-agenda-skip-timestamp-if-deadline-is-shown t)
   (org-startup-with-inline-images t)
+  (org-tags-column 0)
   :config
   (add-to-list 'org-export-backends 'md)
 

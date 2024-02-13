@@ -38,7 +38,7 @@
         visible-bell nil
         whitespace-style '(face tabs tab-mark trailing)
         whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9]))
-        word-wrap t
+        word-wrap nil
         )
 
 ;;; Load custom file

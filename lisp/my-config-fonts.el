@@ -24,6 +24,7 @@
         ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
         ((member "Symbola" (font-family-list)) "Symbola")))
       ;; Cascadia Code symbols: ●
+      (set-fontset-font t '(#x25e6 . #x25e6) "Cascadia Code")
       (set-fontset-font t '(#x25cf . #x25cf) "Cascadia Code")
       (set-fontset-font t '(#x25c9 . #x25c9) "Cascadia Code")
       (set-fontset-font t '(#x25cb . #x25cb) "Cascadia Code"))

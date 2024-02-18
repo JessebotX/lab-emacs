@@ -132,6 +132,8 @@
   "lf" 'downcase-dwim
   "lj" 'capitalize-dwim
   "cc" 'compile
+  "cr" 'recompile
+  "cp" 'project-compile
   "do" 'dictionary-lookup-definition
   "hd" 'devdocs-lookup
   "ho" 'describe-symbol

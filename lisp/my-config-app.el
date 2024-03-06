@@ -21,8 +21,8 @@
 
 (use-package dashboard
   :custom
-  (dashboard-items '((agenda . 6)
-                     (recents . 2)))
+  (dashboard-items '((bookmarks . 3)
+                     (recents . 3)))
   (dashboard-icon-type 'nerd-icons)
   (dashboard-display-icons-p t)
   (dashboard-set-heading-icons t)

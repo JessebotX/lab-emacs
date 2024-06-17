@@ -736,8 +736,6 @@ Credit: xahlee.info"
 (use-package gemacs-large-headings-mode
   :straight nil
   :init
-  (gemacs/define-leader-key
-    "twh" 'gemacs/large-headings-mode)
   :commands (gemacs/large-headings-mode))
 
 ;;;; Spell-checker
@@ -917,7 +915,11 @@ Credit: xahlee.info"
     (setopt org-hide-leading-stars nil)
     (org-mode-restart)
     (gemacs/large-headings-mode -1)
-    (org-indent-mode 1)))
+    (org-indent-mode 1))
+
+  (gemacs/define-leader-key
+    "twhj" 'gemacs/org-modern-hide-star-headings
+    "twhk" 'gemacs/org-modern-star-headings))
 
 (use-package org-wc
   :commands org-wc-display)

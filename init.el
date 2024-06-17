@@ -7,7 +7,7 @@
 ;;; Straight.el Package Manager
 (require 'my-config-straight-bootstrap)
 
-;;; No Littering (keep folders clean of misc. emacs files)
+;;; No Littering
 (use-package no-littering
   :config
   (with-eval-after-load 'recentf

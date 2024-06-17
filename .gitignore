@@ -5,3 +5,4 @@ tree-sitter/
 *~
 machine-early-init.el
 machine-init.el
+/eln-cache/

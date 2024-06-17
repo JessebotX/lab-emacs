@@ -1,0 +1,6 @@
+etc/
+var/
+tmp/
+tree-sitter/
+*~
+

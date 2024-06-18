@@ -488,12 +488,15 @@ folder, otherwise delete a word."
       ("Notebook"
        ("Homepage" (find-file
                     (convert-standard-filename "~/Sync/notebook/_README/README.md"))
-        "a"))
+        "n"))
       ("Projects"
        ("The Nymphaeum: Draft" (find-file
                                 (convert-standard-filename "~/Sync/notebook/project-nymphaeum/the-nymphaeum.org")) "i"))
       )))
   :config
+  (keymap-set enlight-mode-map "j" 'enlight-menu-forward-item)
+  (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
+
   (with-eval-after-load 'evil
     (evil-set-initial-state 'enlight-mode 'emacs))
   (setopt initial-buffer-choice #'enlight))

@@ -477,6 +477,27 @@ folder, otherwise delete a word."
   (gemacs/define-leader-key
     "og" 'magit))
 
+(use-package enlight
+  :custom
+  (enlight-content
+   (enlight-menu
+    '(("General"
+       ("Open File" (call-interactively #'find-file) ".")
+       ("Bookmarks" (call-interactively #'consult-bookmark) "b")
+       ("Recent" (call-interactively #'consult-recent-file) "r"))
+      ("Notebook"
+       ("Homepage" (find-file
+                    (convert-standard-filename "~/Sync/notebook/_README/README.md"))
+        "a"))
+      ("Projects"
+       ("The Nymphaeum: Draft" (find-file
+                                (convert-standard-filename "~/Sync/notebook/project-nymphaeum/the-nymphaeum.org")) "i"))
+      )))
+  :config
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'enlight-mode 'emacs))
+  (setopt initial-buffer-choice #'enlight))
+
 ;;; Utils
 ;;;; Preface
 (defcustom gemacs/terminal "alacritty"

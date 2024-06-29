@@ -471,12 +471,14 @@ folder, otherwise delete a word."
   (corfu-quit-no-match 'separator))
 
 ;;; Applications
+;;;; Magit Git Interface
 (use-package magit
   :commands (magit magit-status)
   :init
   (gemacs/define-leader-key
     "og" 'magit))
 
+;;;; Dashboard
 (use-package enlight
   :custom
   (enlight-content
@@ -495,6 +497,8 @@ folder, otherwise delete a word."
       )))
   :config
   (keymap-set enlight-mode-map "j" 'enlight-menu-forward-item)
+  (keymap-set enlight-mode-map "SPC" nil)
+  (keymap-set enlight-mode-map "SPC j" 'execute-extended-command)
   (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
 
   (with-eval-after-load 'evil

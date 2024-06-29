@@ -77,6 +77,10 @@
 (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1))) ; Jump to new window on split
 (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1))) ; Jump to new window on split
 
+;;;; which key
+(use-package which-key
+  :hook (emacs-startup . which-key-mode))
+
 ;;;; hydra
 (use-package hydra
   :defer t)
@@ -498,6 +502,11 @@ folder, otherwise delete a word."
   :config
   (keymap-set enlight-mode-map "j" 'enlight-menu-forward-item)
   (keymap-set enlight-mode-map "SPC" nil)
+  (keymap-set enlight-mode-map "SPC ." 'find-file)
+  (with-eval-after-load 'consult
+    (keymap-set enlight-mode-map "SPC r r" 'consult-recent-file)
+    (keymap-set enlight-mode-map "SPC r m" 'consult-bookmark)
+    )
   (keymap-set enlight-mode-map "SPC j" 'execute-extended-command)
   (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
 

@@ -484,6 +484,8 @@ folder, otherwise delete a word."
 
 ;;;; Dashboard
 (use-package enlight
+  :init
+  (setq-default enlight-buffer-name "*Editor of the Gods*")
   :custom
   (enlight-content
    (enlight-menu

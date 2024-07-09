@@ -475,6 +475,22 @@ folder, otherwise delete a word."
   (corfu-quit-no-match 'separator))
 
 ;;; Applications
+;;;; Denote
+(use-package denote
+  :init
+  (gemacs/define-leader-key
+    "nn" #'denote
+    "ni" #'denote-link-or-create
+    "nl" #'denote-link)
+  :custom
+  (denote-directory "~/Sync/denote")
+  (denote-known-keywords nil)
+  (denote-prompts '(title keywords signature))
+  (denote-file-type 'org)
+  :config
+  (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
+  (add-hook 'dired-mode-hook #'denote-dired-mode))
+
 ;;;; Magit Git Interface
 (use-package magit
   :commands (magit magit-status)
@@ -485,7 +501,7 @@ folder, otherwise delete a word."
 ;;;; Dashboard
 (use-package enlight
   :init
-  (setq-default enlight-buffer-name "*Editor of the Gods*")
+  (setq-default enlight-buffer-name "*Emacs*")
   :custom
   (enlight-content
    (enlight-menu
@@ -496,21 +512,24 @@ folder, otherwise delete a word."
       ("Notebook"
        ("Homepage" (find-file
                     (convert-standard-filename "~/Sync/notebook/_README/README.md"))
-        "n"))
+        "n")
+       ("Denote Notes" (find-file
+                    (convert-standard-filename "~/Sync/denote/20240708T185856--note-index.org"))
+        "a"))
       ("Projects"
        ("The Nymphaeum: Draft" (find-file
                                 (convert-standard-filename "~/Sync/notebook/project-nymphaeum/the-nymphaeum.org")) "i"))
       )))
   :config
   (keymap-set enlight-mode-map "j" 'enlight-menu-forward-item)
+  (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
   (keymap-set enlight-mode-map "SPC" nil)
   (keymap-set enlight-mode-map "SPC ." 'find-file)
   (with-eval-after-load 'consult
     (keymap-set enlight-mode-map "SPC r r" 'consult-recent-file)
-    (keymap-set enlight-mode-map "SPC r m" 'consult-bookmark)
-    )
+    (keymap-set enlight-mode-map "SPC r m" 'consult-bookmark))
   (keymap-set enlight-mode-map "SPC j" 'execute-extended-command)
-  (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
+  (keymap-set enlight-mode-map "SPC b" 'switch-to-buffer)
 
   (with-eval-after-load 'evil
     (evil-set-initial-state 'enlight-mode 'emacs))
@@ -843,6 +862,9 @@ Credit: xahlee.info"
   :mode "\\.\\(?:md\\|txt\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'"
   :custom
   (markdown-italic-underscore t)
+  (markdown-enable-html nil)
+  (markdown-enable-math nil)
+  (markdown-gfm-use-electric-backquote nil)
   (markdown-list-indent-width 2)
   (markdown-fontify-code-blocks-natively t)
   (markdown-max-image-size '(512 . 512))

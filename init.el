@@ -485,7 +485,7 @@ folder, otherwise delete a word."
   :custom
   (denote-directory "~/Sync/denote")
   (denote-known-keywords nil)
-  (denote-prompts '(title keywords signature))
+  (denote-prompts '(title keywords subdirectory))
   (denote-file-type 'org)
   :config
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
@@ -671,8 +671,7 @@ Credit: xahlee.info"
 
 (use-package outline-minor-faces
   :after outline
-  :config (add-hook 'outline-minor-mode-hook
-                    #'outline-minor-faces-mode))
+  :hook (outline-minor-mode . outline-minor-faces-mode))
 
 (use-package backline
   :after outline
@@ -736,7 +735,7 @@ Credit: xahlee.info"
 
 ;;;; Emacs lisp
 (defun gemacs--lisp-mode-setup ()
-  (outline-minor-mode 1)
+  ;; (outline-minor-mode 1)
   (setq-local tab-width 8)
   (setq-local indent-tabs-mode nil)
   (setq-local evil-shift-width 8))
@@ -889,9 +888,10 @@ Credit: xahlee.info"
     (setq paragraph-separate "[     ]*$")
     (visual-line-mode 1)
     (display-line-numbers-mode -1)
-    (org-indent-mode 1))
+    (gemacs/large-headings-mode 1))
   :hook (org-mode . gemacs--org-mode-setup)
   :custom
+  (org-hide-leading-stars t)
   (org-id-link-to-org-use-id 'use-existing)
   (org-ellipsis " +")
   (org-auto-align-tags nil)
@@ -958,7 +958,7 @@ Credit: xahlee.info"
   (org-modern-keyword "» ")
   (org-modern-star '("◉" "●" "○" "◈" "◇"))
   (org-modern-block-fringe nil)
-  (org-modern-hide-stars nil)
+  (org-modern-hide-stars t)
   :config
   (defun gemacs/org-modern-hide-star-headings ()
     "Remove all stars from a heading, increase heading sizes and disable `org-indent-mode'."

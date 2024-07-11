@@ -512,11 +512,11 @@ folder, otherwise delete a word."
       ("Notebook"
        ("Homepage" (find-file
                     (convert-standard-filename "~/Sync/notebook/_README/README.md"))
-        "n")
-       ("Denote Notes" (find-file
-                    (convert-standard-filename "~/Sync/denote/20240708T185856--note-index.org"))
-        "a"))
+        "n"))
       ("Projects"
+       ("Alfheim" (find-file
+                   (convert-standard-filename "~/Sync/denote/untitled-planet/20240709T012605--alfheim-project__creative_project.org"))
+        "a")
        ("The Nymphaeum: Draft" (find-file
                                 (convert-standard-filename "~/Sync/notebook/project-nymphaeum/the-nymphaeum.org")) "i"))
       )))

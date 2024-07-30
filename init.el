@@ -194,7 +194,9 @@
     "wk" 'winner-redo)
 
   ;; unbind SPC in help-mode
-  (evil-define-key '(normal emacs) help-mode-map (kbd "SPC") nil))
+  (with-eval-after-load 'general
+    (evil-define-key '(normal emacs) help-mode-map (kbd "SPC") nil)
+    (evil-define-key '(normal emacs) debugger-mode-map (kbd "SPC") nil)))
 
 ;;;; ace-window
 (use-package ace-window
@@ -417,6 +419,9 @@ DECREMENT is provided, increase by 10."
   (doom-modeline-height 35)
   (doom-modeline-modal nil)
   (doom-modeline-enable-word-count t))
+
+;;;; Hide modeline
+(use-package hide-mode-line)
 
 ;;; Minibuffer / Completion
 (defun gemacs--minibuffer-backward-kill (arg)

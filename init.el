@@ -421,7 +421,10 @@ DECREMENT is provided, increase by 10."
   (doom-modeline-enable-word-count t))
 
 ;;;; Hide modeline
-(use-package hide-mode-line)
+(use-package hide-mode-line
+  :init
+  (gemacs/define-leader-key
+    "tm" 'hide-mode-line-mode))
 
 ;;; Minibuffer / Completion
 (defun gemacs--minibuffer-backward-kill (arg)
@@ -519,9 +522,6 @@ folder, otherwise delete a word."
                     (convert-standard-filename "~/Sync/notebook/_README/README.md"))
         "n"))
       ("Projects"
-       ("Alfheim" (find-file
-                   (convert-standard-filename "~/Sync/denote/untitled-planet/20240709T012605--alfheim-project__creative_project.org"))
-        "a")
        ("The Nymphaeum: Draft" (find-file
                                 (convert-standard-filename "~/Sync/notebook/project-nymphaeum/the-nymphaeum.org")) "i"))
       )))

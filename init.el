@@ -387,6 +387,10 @@ folder, otherwise delete a word."
                        evil-goto-line))
       (advice-add command :after #'my/pulse-line))))
 
+(use-package which-key
+  :ensure t
+  :hook (emacs-startup . which-key-mode))
+
 ;;; Text Editing / Programming
 
 ;;;; Utilities

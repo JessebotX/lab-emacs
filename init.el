@@ -133,7 +133,7 @@ e.g. \"tango-dark\" => 'tango-dark"
 
   (defun my/hook--after-init ()
     "Settings after emacs init."
-    (my/set-theme "adwaita-dark"))
+    (my/set-theme "modus-operandi-tinted"))
   ;; use `elpaca-after-init-hook' because we are using `elpaca' package manager
   (add-hook 'elpaca-after-init-hook #'my/hook--after-init)
 

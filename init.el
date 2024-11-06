@@ -110,7 +110,7 @@ e.g. \"tango-dark\" => 'tango-dark"
   (delete-selection-mode 1)
   (global-auto-revert-mode 1)
   (global-so-long-mode 1)
-  (save-place-mode 1)
+  ;(save-place-mode 1)
   (winner-mode 1)
   (recentf-mode 1)
 

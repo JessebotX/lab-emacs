@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
 ;;; Preface
+
 (defvar my/font-size-default 140)
 (defvar my/package-etc-directory (locate-user-emacs-file "etc"))
 (defvar my/package-var-directory (locate-user-emacs-file "var"))

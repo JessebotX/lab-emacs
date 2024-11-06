@@ -96,6 +96,9 @@ e.g. \"tango-dark\" => 'tango-dark"
   (whitespace-style '(face tabs tab-mark trailing))
   (word-wrap nil)
   :config
+;;;; Coding system
+  (set-default-coding-systems 'utf-8)
+
 ;;;; Other variables
 
   (setq auto-window-vscroll nil)

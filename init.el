@@ -329,6 +329,44 @@ folder, otherwise delete a word."
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
   (add-hook 'dired-mode-hook #'denote-dired-mode))
 
+(use-package dictionary
+  :ensure nil
+  :init
+  (my/define-leader-key "d o" 'dictionary-lookup-definition)
+  :commands (dictionary-lookup-definition)
+  :custom
+  (dictionary-server "dict.org"))
+
+(use-package enlight
+  :ensure t
+  :init
+  (setq-default enlight-buffer-name "*Emacs*")
+  :custom
+  (enlight-content
+   (enlight-menu
+    '(("General"
+       ("Open File" (call-interactively #'find-file)           ".")
+       ("Bookmarks" (call-interactively #'consult-bookmark)    "b")
+       ("Recent"    (call-interactively #'consult-recent-file) "r"))
+      ("Notebook"
+       ("Homepage" (find-file
+                    (convert-standard-filename "~/Sync/notebook2/_README/README.md"))
+        "n"))
+      )))
+  :config
+  (keymap-set enlight-mode-map "j" 'enlight-menu-forward-item)
+  (keymap-set enlight-mode-map "k" 'enlight-menu-backward-item)
+  (keymap-set enlight-mode-map "SPC" nil)
+  (keymap-set enlight-mode-map "SPC ." 'find-file)
+  (keymap-set enlight-mode-map "SPC r r" 'consult-recent-file)
+  (keymap-set enlight-mode-map "SPC r m" 'consult-bookmark)
+  (keymap-set enlight-mode-map "SPC j" 'execute-extended-command)
+  (keymap-set enlight-mode-map "SPC b" 'switch-to-buffer)
+
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'enlight-mode 'emacs))
+  (setopt initial-buffer-choice #'enlight))
+
 (use-package imenu-list
   :ensure t
   :commands (imenu-list-smart-toggle)

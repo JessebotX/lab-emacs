@@ -8,6 +8,10 @@
 
 ;;;; Commands
 
+(defvar my/define-leader-key-prefix "C-c")
+(defun my/define-leader-key (key action)
+  (keymap-global-set (concat my/define-leader-key-prefix " " key) action))
+
 (defun my/indent-with-spaces (width)
   "Set the local buffer's line indent size to WIDTH and insert as
 spaces.
@@ -317,9 +321,9 @@ folder, otherwise delete a word."
 (use-package denote
   :ensure t
   :init
-  (keymap-global-set "C-c n n" 'denote)
-  (keymap-global-set "C-c n l" 'denote-link)
-  (keymap-global-set "C-c n i" 'denote-link-or-create)
+  (my/define-leader-key "n n" 'denote)
+  (my/define-leader-key "n l" 'denote-link)
+  (my/define-leader-key "n i" 'denote-link-or-create)
   :custom
   (denote-directory "~/Sync/denote")
   (denote-known-keywords nil)

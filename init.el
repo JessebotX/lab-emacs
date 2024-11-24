@@ -443,6 +443,20 @@ folder, otherwise delete a word."
   :config
   (keymap-global-set "M-;" 'evilnc-comment-or-uncomment-lines))
 
+;;;; HTML
+
+(defun my/hook--html-mode ()
+  (setopt sgml-basic-offset 2)
+  (my/indent-with-spaces 2))
+(add-hook 'html-mode-hook #'my/hook--html-mode)
+
+;;;; CSS
+
+(defun my/hook--css-mode ()
+  (setopt css-indent-offset 2)
+  (my/indent-with-spaces 2))
+(add-hook 'css-mode-hook #'my/hook--css-mode)
+
 ;;;; Markdown mode
 
 (use-package markdown-mode

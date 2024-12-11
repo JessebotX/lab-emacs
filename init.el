@@ -99,6 +99,7 @@ e.g. \"tango-dark\" => 'tango-dark"
   (whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
   (whitespace-style '(face tabs tab-mark trailing))
   (word-wrap nil)
+  (warning-minimum-level :error)
   :config
 ;;;; Coding system
   (set-default-coding-systems 'utf-8)

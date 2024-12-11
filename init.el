@@ -5,6 +5,7 @@
 (defvar my/font-size-default 140)
 (defvar my/package-etc-directory (locate-user-emacs-file "etc"))
 (defvar my/package-var-directory (locate-user-emacs-file "var"))
+(defvar my/theme "modus-operandi-tinted")
 
 ;;;; Commands
 
@@ -141,7 +142,7 @@ e.g. \"tango-dark\" => 'tango-dark"
 
   (defun my/hook--after-init ()
     "Settings after emacs init."
-    (my/set-theme "modus-operandi-tinted"))
+    (my/set-theme my/theme))
   ;; use `elpaca-after-init-hook' because we are using `elpaca' package manager
   (add-hook 'elpaca-after-init-hook #'my/hook--after-init)
 

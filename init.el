@@ -433,6 +433,56 @@ folder, otherwise delete a word."
   :ensure t
   :hook (emacs-startup . which-key-mode))
 
+;;; General Utilities
+
+(defun my/open-file ()
+  "Open file.
+
+Credit: xahlee.info"
+  (interactive)
+  (let ((path (if (eq major-mode 'dired-mode)
+                  (if (eq nil (dired-get-marked-files))
+                      default-directory
+                    (car (dired-get-marked-files)))
+                (if buffer-file-name
+                    buffer-file-name
+                  default-directory))))
+    (cond
+     ((eq system-type 'windows-nt)
+      (shell-command
+       (format "PowerShell -Command invoke-item '%s'" (expand-file-name path))))
+     ((eq system-type 'darwin)
+      (shell-command (concat "open -R " (shell-quote-argument path))))
+     (t
+      (call-process shell-file-name nil 0 nil
+                    shell-command-switch
+                    (format "xdg-open '%s'" (expand-file-name path)))))))
+
+(my/define-leader-key "o f" #'my/open-file)
+
+(defun my/open-current-directory ()
+  "Open the current directory"
+  (interactive)
+  (cond
+   ((eq system-type 'windows-nt)
+    (shell-command
+     (format "PowerShell -Command invoke-item '%s'" (expand-file-name default-directory))))
+   ((eq system-type 'darwin)
+    (shell-command
+     (concat "open -R " (shell-quote-argument (expand-file-name default-directory)))))
+   (t
+    (call-process shell-file-name nil 0 nil
+                  shell-command-switch
+                  (format "xdg-open '%s'" (expand-file-name default-directory))))))
+
+(my/define-leader-key "o d" #'my/open-current-directory)
+
+(defun my/kill-ring-clear ()
+  "Clear all saved text in the kill ring."
+  (interactive)
+  (setq kill-ring nil)
+  (garbage-collect))
+
 ;;; Text Editing / Programming
 
 ;;;; Utilities

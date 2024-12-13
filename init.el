@@ -514,7 +514,7 @@ folder, otherwise delete a word."
 (use-package writeroom-mode
   :ensure t
   :init
-  (keymap-global-set "C-c t w" 'writeroom-mode)
+  (my/define-leader-key "t w" 'writeroom-mode)
   :commands (writeroom-mode global-writeroom-mode)
   :custom
   (writeroom-width 80))

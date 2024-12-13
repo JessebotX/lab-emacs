@@ -6,10 +6,11 @@
 (defvar my/package-etc-directory (locate-user-emacs-file "etc"))
 (defvar my/package-var-directory (locate-user-emacs-file "var"))
 (defvar my/theme "modus-operandi-tinted")
+(defvar my/theme-light "modus-operandi-tinted")
+(defvar my/define-leader-key-prefix "C-c")
 
 ;;;; Commands
 
-(defvar my/define-leader-key-prefix "C-c")
 (defun my/define-leader-key (key action)
   (keymap-global-set (concat my/define-leader-key-prefix " " key) action))
 
@@ -40,6 +41,63 @@ e.g. \"tango-dark\" => 'tango-dark"
   (mapc 'disable-theme custom-enabled-themes)
   (load-theme (intern theme) t)
   (enable-theme (intern theme)))
+
+(defun my/enable-light-mode-theme ()
+  "Set emacs current color theme to `my/theme-light'"
+  (interactive)
+  (my/set-theme my/theme-light))
+
+(my/define-leader-key "t l" #'my/enable-light-mode-theme)
+
+(defun my/open-current-file ()
+  "Open the current file.
+
+Credit: xahlee.info"
+  (interactive)
+  (let ((path (if (eq major-mode 'dired-mode)
+                  (if (eq nil (dired-get-marked-files))
+                      default-directory
+                    (car (dired-get-marked-files)))
+                (if buffer-file-name
+                    buffer-file-name
+                  default-directory))))
+    (cond
+     ((eq system-type 'windows-nt)
+      (shell-command
+       (format "PowerShell -Command invoke-item '%s'" (expand-file-name path))))
+     ((eq system-type 'darwin)
+      (shell-command (concat "open -R " (shell-quote-argument path))))
+     (t
+      (call-process shell-file-name nil 0 nil
+                    shell-command-switch
+                    (format "xdg-open '%s'" (expand-file-name path)))))))
+
+(my/define-leader-key "o f" #'my/open-current-file)
+
+(defun my/open-current-directory ()
+  "Open the current directory.
+
+Credit: xahlee.info"
+  (interactive)
+  (cond
+   ((eq system-type 'windows-nt)
+    (shell-command
+     (format "PowerShell -Command invoke-item '%s'" (expand-file-name default-directory))))
+   ((eq system-type 'darwin)
+    (shell-command
+     (concat "open -R " (shell-quote-argument (expand-file-name default-directory)))))
+   (t
+    (call-process shell-file-name nil 0 nil
+                  shell-command-switch
+                  (format "xdg-open '%s'" (expand-file-name default-directory))))))
+
+(my/define-leader-key "o d" #'my/open-current-directory)
+
+(defun my/kill-ring-clear ()
+  "Clear all saved text in the kill ring."
+  (interactive)
+  (setq kill-ring nil)
+  (garbage-collect))
 
 ;;;; Load path
 
@@ -428,58 +486,6 @@ folder, otherwise delete a word."
 (use-package which-key
   :ensure t
   :hook (emacs-startup . which-key-mode))
-
-;;; General Utilities
-
-(defun my/open-current-file ()
-  "Open the current file.
-
-Credit: xahlee.info"
-  (interactive)
-  (let ((path (if (eq major-mode 'dired-mode)
-                  (if (eq nil (dired-get-marked-files))
-                      default-directory
-                    (car (dired-get-marked-files)))
-                (if buffer-file-name
-                    buffer-file-name
-                  default-directory))))
-    (cond
-     ((eq system-type 'windows-nt)
-      (shell-command
-       (format "PowerShell -Command invoke-item '%s'" (expand-file-name path))))
-     ((eq system-type 'darwin)
-      (shell-command (concat "open -R " (shell-quote-argument path))))
-     (t
-      (call-process shell-file-name nil 0 nil
-                    shell-command-switch
-                    (format "xdg-open '%s'" (expand-file-name path)))))))
-
-(my/define-leader-key "o f" #'my/open-current-file)
-
-(defun my/open-current-directory ()
-  "Open the current directory.
-
-Credit: xahlee.info"
-  (interactive)
-  (cond
-   ((eq system-type 'windows-nt)
-    (shell-command
-     (format "PowerShell -Command invoke-item '%s'" (expand-file-name default-directory))))
-   ((eq system-type 'darwin)
-    (shell-command
-     (concat "open -R " (shell-quote-argument (expand-file-name default-directory)))))
-   (t
-    (call-process shell-file-name nil 0 nil
-                  shell-command-switch
-                  (format "xdg-open '%s'" (expand-file-name default-directory))))))
-
-(my/define-leader-key "o d" #'my/open-current-directory)
-
-(defun my/kill-ring-clear ()
-  "Clear all saved text in the kill ring."
-  (interactive)
-  (setq kill-ring nil)
-  (garbage-collect))
 
 ;;; Text Editing / Programming
 

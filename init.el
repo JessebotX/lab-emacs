@@ -194,12 +194,6 @@ e.g. \"tango-dark\" => 'tango-dark"
        (cascadia-code
         :default-family "Cascadia Code"
         :fixed-pitch-family "Cascadia Code")
-       (poppins-variable-pitch
-        :variable-pitch-family "Poppins")
-       (urbanist-variable-pitch
-        :variable-pitch-family "Urbanist")
-       (outfit-variable-pitch
-        :variable-pitch-family "Outfit")
        (tengwar-cursive-variable-pitch
         :variable-pitch-family "Tengwar Cursive")
        (julia-mono
@@ -217,7 +211,7 @@ e.g. \"tango-dark\" => 'tango-dark"
         :fixed-pitch-family "JetBrains Mono"
         :fixed-pitch-weight regular
         :variable-pitch-height ,(+ my/font-size-default 30)
-        :variable-pitch-family "Spectral")))
+        :variable-pitch-family "Inter")))
     :config
     (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset)))
 

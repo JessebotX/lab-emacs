@@ -75,7 +75,7 @@ e.g. \"tango-dark\" => 'tango-dark"
   :init
   ;; Load saved customizations file (after init using elpaca-after-init-hook)
   (setq custom-file (expand-file-name "custom.el" my/package-etc-directory))
-  (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
+  ;(add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
   :custom
   (ad-redefinition-action 'accept)
   (backward-delete-char-untabify-method 'hungry)

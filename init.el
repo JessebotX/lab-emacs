@@ -455,10 +455,11 @@ folder, otherwise delete a word."
 
 (use-package hungry-delete
   :ensure t
-  :hook (after-init . global-hungry-delete-mode)
   :custom
   ;; delete the following on backspace: SPC, TAB, ^M, ^L, ^K
-  (hungry-delete-chars-to-skip " 	"))
+  (hungry-delete-chars-to-skip " 	")
+  :config
+  (global-hungry-delete-mode 1))
 
 (use-package writeroom-mode
   :ensure t

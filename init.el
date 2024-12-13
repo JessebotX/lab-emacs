@@ -5,6 +5,7 @@
 (defvar my/font-size-default 140)
 (defvar my/package-etc-directory (locate-user-emacs-file "etc"))
 (defvar my/package-var-directory (locate-user-emacs-file "var"))
+(defvar my/theme "modus-operandi-tinted")
 
 ;;;; Commands
 
@@ -74,7 +75,7 @@ e.g. \"tango-dark\" => 'tango-dark"
   :init
   ;; Load saved customizations file (after init using elpaca-after-init-hook)
   (setq custom-file (expand-file-name "custom.el" my/package-etc-directory))
-  (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
+  ;(add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
   :custom
   (ad-redefinition-action 'accept)
   (backward-delete-char-untabify-method 'hungry)
@@ -99,6 +100,7 @@ e.g. \"tango-dark\" => 'tango-dark"
   (whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
   (whitespace-style '(face tabs tab-mark trailing))
   (word-wrap nil)
+  (warning-minimum-level :error)
   :config
 ;;;; Coding system
   (set-default-coding-systems 'utf-8)
@@ -140,7 +142,7 @@ e.g. \"tango-dark\" => 'tango-dark"
 
   (defun my/hook--after-init ()
     "Settings after emacs init."
-    (my/set-theme "modus-operandi-tinted"))
+    (my/set-theme my/theme))
   ;; use `elpaca-after-init-hook' because we are using `elpaca' package manager
   (add-hook 'elpaca-after-init-hook #'my/hook--after-init)
 
@@ -503,10 +505,11 @@ Credit: xahlee.info"
 
 (use-package hungry-delete
   :ensure t
-  :hook (after-init . global-hungry-delete-mode)
   :custom
   ;; delete the following on backspace: SPC, TAB, ^M, ^L, ^K
-  (hungry-delete-chars-to-skip " 	"))
+  (hungry-delete-chars-to-skip " 	")
+  :config
+  (global-hungry-delete-mode 1))
 
 (use-package writeroom-mode
   :ensure t

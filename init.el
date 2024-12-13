@@ -437,8 +437,8 @@ folder, otherwise delete a word."
 
 ;;; General Utilities
 
-(defun my/open-file ()
-  "Open file.
+(defun my/open-current-file ()
+  "Open the current file.
 
 Credit: xahlee.info"
   (interactive)
@@ -460,10 +460,12 @@ Credit: xahlee.info"
                     shell-command-switch
                     (format "xdg-open '%s'" (expand-file-name path)))))))
 
-(my/define-leader-key "o f" #'my/open-file)
+(my/define-leader-key "o f" #'my/open-current-file)
 
 (defun my/open-current-directory ()
-  "Open the current directory"
+  "Open the current directory.
+
+Credit: xahlee.info"
   (interactive)
   (cond
    ((eq system-type 'windows-nt)

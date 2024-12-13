@@ -541,18 +541,25 @@ Credit: xahlee.info"
 ;;;; HTML
 
 (defun my/hook--html-mode ()
-  (setopt sgml-basic-offset 2)
-  (my/indent-with-spaces 2))
+  (setopt sgml-basic-offset 4)
+  (my/indent-with-spaces 4))
 (add-hook 'html-mode-hook #'my/hook--html-mode)
 
 ;;;; CSS
 
 (defun my/hook--css-mode ()
-  (setopt css-indent-offset 2)
-  (my/indent-with-spaces 2))
+  (setopt css-indent-offset 4)
+  (my/indent-with-spaces 4))
 (add-hook 'css-mode-hook #'my/hook--css-mode)
 
-;;;; Markdown mode
+;;;; JavaScript
+
+(defun my/hook--js-mode ()
+  (setopt js-indent-level 4)
+  (my/indent-with-spaces 4))
+(add-hook 'js-mode-hook #'my/hook--js-mode)
+
+;;;; Markdown
 
 (use-package markdown-mode
   :ensure t

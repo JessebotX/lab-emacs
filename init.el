@@ -508,7 +508,7 @@ Credit: xahlee.info"
 (use-package writeroom-mode
   :ensure t
   :init
-  (keymap-global-set "C-c t t" 'writeroom-mode)
+  (keymap-global-set "C-c t w" 'writeroom-mode)
   :commands (writeroom-mode global-writeroom-mode)
   :custom
   (writeroom-width 80))

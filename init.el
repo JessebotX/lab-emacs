@@ -489,8 +489,6 @@ Credit: xahlee.info"
 
 ;;; Text Editing / Programming
 
-;;;; Utilities
-
 (use-package dumb-jump
   :ensure t
   :config

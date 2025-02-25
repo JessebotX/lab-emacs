@@ -262,6 +262,9 @@ Credit: xahlee.info"
         :default-family "Ubuntu Mono"
         :default-height ,(+ my/font-size-default 20)
         :variable-pitch-family "Ubuntu")
+       (writing
+        :default-family "iMWritingMono Nerd Font"
+        :variable-pitch-family "iMWritingDuo Nerd Font")
        (t
         :default-family "Maple Mono"
         :default-weight regular

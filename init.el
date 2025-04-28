@@ -27,17 +27,17 @@
 (require 'my-elpaca-pkgm-setup)
 
 ;;; MODULES
-
 (defcustom my/lang-indent-settings
-  '(
+  '((cc   :size 4 :use-tabs nil)
     (css  :size 4 :use-tabs nil)
-    (go   :size 8 :use-tabs t)
-    (html :size 4 :use-tabs nil)
+    (go   :size 8 :use-tabs   t)
     (js   :size 4 :use-tabs nil)
+    (json :size 4 :use-tabs nil)
+    (lisp :size 8 :use-tabs nil)
     (md   :size 2 :use-tabs nil)
     (ts   :size 4 :use-tabs nil)
-    (xml  :size 2 :use-tabs nil)
-    )
+    (xml  :size 4 :use-tabs nil)
+    (yaml :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.
 
@@ -55,7 +55,7 @@ if non-nil, indentation will use tabs instead of spaces."
   :group 'indent
   :type '(natnum))
 
-(defcustom my/indent-use-tabs-default t
+(defcustom my/indent-use-tabs-default nil
   "If non-nil, indentation will use tabs instead of spaces. Wrapper around
 `indent-tabs-mode'."
   :group 'indent
@@ -115,10 +115,28 @@ SIZE."
   (interactive)
   (find-file user-init-file))
 
+(defun my/open-in-terminal ()
+  "Open the current directory in the terminal
+
+Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
+  (interactive)
+  (cond
+   ((eq system-type 'windows-nt)
+    (shell-command (format "wt -d \"%s\"" default-directory)))
+   ((eq system-type 'darwin)
+    (shell-command
+     (format "open -a terminal %s" (shell-quote-argument (expand-file-name default-directory)))))
+   (t
+    (start-process "" nil "x-terminal-emulator"
+                   (format "--working-directory=%s"
+                           (shell-quote-argument
+                            (expand-file-name default-directory)))))))
+
 (setopt ad-redefinition-action 'accept) ; disable warning about advice de/activation
 (setopt backward-delete-char-untabify-method 'hungry)
 (setopt completion-ignore-case t)
 (setopt delete-by-moving-to-trash t)
+(setopt enable-recursive-minibuffers t)
 (setopt fast-but-imprecise-scrolling t)
 (setopt history-length 300)
 (setopt indent-tabs-mode my/indent-use-tabs-default)
@@ -140,7 +158,7 @@ SIZE."
 
 ;; Non-customization variables
 
-;(setq auto-window-vscroll nil)
+(setq auto-window-vscroll nil)
 (setq-default create-lockfiles nil)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq-default make-backup-files nil)
@@ -171,9 +189,10 @@ SIZE."
 
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
 (keymap-global-set "C-x C-b" 'ibuffer)
-(keymap-global-set "C-c C-s C-f" 'my/goto-config-init)
+;(keymap-global-set "C-c C-s C-f" 'my/goto-config-init)
 (keymap-global-set "M-]" 'forward-paragraph)
 (keymap-global-set "M-[" 'backward-paragraph)
+(keymap-global-set "C-c C-f" nil)
 
 ;;; AUTO REVERT MODE
 (setopt global-auto-revert-non-file-buffers t)
@@ -185,11 +204,49 @@ SIZE."
 (setopt display-line-numbers-width 3)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
-;; FONT
-(set-face-attribute 'default nil :family "Maple Mono" :height 105)
-
 ;;; ICOMPLETE
-(icomplete-vertical-mode 1)
+(defun my/minibuffer--backward-kill (arg)
+  "When minibuffer is completing a file name, delete up to parent
+folder, otherwise delete a word."
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+    (kill-word (- arg))))
+
+(let ((map minibuffer-local-map))
+  (define-key map (kbd "C-<backspace>") #'my/minibuffer--backward-kill)
+  (define-key map (kbd "M-<backspace>") #'my/minibuffer--backward-kill))
+
+(setopt icomplete-show-matches-on-no-input t)
+(setopt icomplete-delay-completions-threshold 0)
+;(icomplete-vertical-mode 1)
+
+;;; WHITESPACE
+(setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
+(setopt whitespace-style '(face tabs tab-mark trailing))
+
+(add-hook 'text-mode-hook #'whitespace-mode)
+(add-hook 'prog-mode-hook #'whitespace-mode)
+
+;; FONT
+(set-face-attribute 'default nil :family "Maple Mono" :height 120)
+(set-fontset-font
+ t
+ (if (version< emacs-version "28.1")
+     '(#x1f300 . #x1fad0)
+   'emoji)
+ (cond
+  ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+  ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+  ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+  ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+  ((member "Symbola" (font-family-list)) "Symbola")))
+
+;;; WHICH-KEY
+(setopt which-key-idle-delay 0.1)
+(which-key-mode 1)
 
 ;;; THEME
 (defun my/set-theme (theme)
@@ -213,9 +270,37 @@ SIZE."
 (use-package smart-hungry-delete
   :ensure t
   :bind (([remap backward-delete-char-untabify] . smart-hungry-delete-backward-char)
-	     ([remap delete-backward-char] . smart-hungry-delete-backward-char)
-	     ([remap delete-char] . smart-hungry-delete-forward-char))
+         ([remap delete-backward-char] . smart-hungry-delete-backward-char)
+         ([remap delete-char] . smart-hungry-delete-forward-char))
   :init (smart-hungry-delete-add-default-hooks))
+
+;;; VERTICO, CONSULT, MARGINALIA
+(use-package vertico
+  :ensure t
+  :bind (:map vertico-map
+              ("C-j" . vertico-next)
+              ("C-k" . vertico-previous))
+  :hook
+  (emacs-startup-hook . vertico-mode))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+  :ensure t
+  :hook (vertico-mode-hook . marginalia-mode))
+
+(use-package consult
+  :ensure t
+  :defer t
+  :bind (("C-c f"   . consult-line)
+         ("C-c r"   . nil)
+         ("C-c r b" . consult-bookmark)
+         ("C-c g g" . consult-ripgrep)))
 
 ;;; OLIVETTI
 (use-package olivetti
@@ -236,6 +321,94 @@ SIZE."
 (use-package tsi
   :ensure (:host github :repo "orzechowskid/tsi.el")
   :commands (tsi-typescript-mode))
+
+(use-package meow
+  :ensure t
+  :custom
+  (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-use-clipboard t)
+  :config
+  (meow-leader-define-key
+   ;; Use SPC (0-9) for digit arguments.
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet)
+   '("," . beginning-of-buffer)
+   '("." . end-of-buffer))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("9" . meow-expand-9)
+   '("8" . meow-expand-8)
+   '("7" . meow-expand-7)
+   '("6" . meow-expand-6)
+   '("5" . meow-expand-5)
+   '("4" . meow-expand-4)
+   '("3" . meow-expand-3)
+   '("2" . meow-expand-2)
+   '("1" . meow-expand-1)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("{" . meow-beginning-of-thing)
+   '("}" . meow-end-of-thing)
+   '("[" . backward-paragraph)
+   '("]" . forward-paragraph)
+   '("a" . meow-append)
+   '("A" . meow-open-below)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   '("e" . meow-next-word)
+   '("E" . meow-next-symbol)
+   '("f" . meow-find)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("i" . meow-insert)
+   '("I" . meow-open-above)
+   '("j" . meow-next)
+   '("J" . meow-next-expand)
+   '("k" . meow-prev)
+   '("K" . meow-prev-expand)
+   '("l" . meow-right)
+   '("L" . meow-right-expand)
+   '("m" . meow-join)
+   '("n" . meow-search)
+   '("o" . meow-block)
+   '("O" . meow-to-block)
+   '("p" . meow-yank)
+   '("q" . meow-quit)
+   '("Q" . meow-goto-line)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-kill)
+   '("t" . meow-till)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("v" . meow-visit)
+   '("w" . meow-mark-word)
+   '("W" . meow-mark-symbol)
+   '("x" . meow-line)
+   '("X" . meow-goto-line)
+   '("y" . meow-save)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("'" . repeat)
+   '("<escape>" . ignore))
+  (meow-global-mode 1))
 
 ;;; LANGUAGES
 
@@ -294,6 +467,17 @@ SIZE."
 
 (add-hook 'js-json-mode-hook #'my/hook--js-json-mode)
 
+;;;; LISP
+(defun my/hook--lisp-modes ()
+  "Settings for lisp language modes such as `emacs-lisp-mode'."
+  (electric-pair-local-mode 1)
+  (let ((size (my/lang-indent-size 'md))
+    (use-tabs (my/lang-indent-use-tabs 'md)))
+  (my/config-indent size use-tabs)))
+
+(add-hook 'lisp-mode-hook #'my/hook--lisp-modes)
+(add-hook 'emacs-lisp-mode-hook #'my/hook--lisp-modes)
+
 ;;;; MARKDOWN
 (use-package markdown-mode
   :ensure t
@@ -340,6 +524,20 @@ SIZE."
     (setq-local sgml-basic-offset size)))
 
 (add-hook 'html-mode-hook #'my/hook--xml-modes)
+
+;;;; YAML
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'"
+  :preface
+  (defun my/hook--yaml-mode ()
+    "Settings for `yaml-mode'."
+    (let ((size (my/lang-indent-size 'yaml))
+          (use-tabs (my/lang-indent-use-tabs 'yaml)))
+      (my/config-indent size use-tabs)
+      (setq-local yaml-indent-offset size)))
+  :config
+  (add-hook 'yaml-mode-hook #'my/hook--yaml-mode))
 
 ;; ═════════════════════════════[ Emacs ]═══════════════════════════════
 ;;

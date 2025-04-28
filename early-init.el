@@ -57,6 +57,7 @@
 (setq native-comp-verbose (if my/emacs-debug 1 0))
 
 ;;; [OTHER SETTINGS]
+(setq site-run-file nil)
 
 (set-language-environment "UTF-8")
 (setq default-input-method nil)
@@ -101,10 +102,11 @@
 
 ;;; [USE PACKAGE]
 
-(setq use-package-compute-statistics my/emacs-debug)
+(setq use-package-compute-statistics t)
 (setq use-package-expand-minimally (not my/emacs-debug))
 (setq use-package-verbose my/emacs-debug)
 (setq use-package-minimum-reported-time (if my/emacs-debug 0 0.1))
+(setq use-package-hook-name-suffix nil)
 
 ;;; [USER INTERFACE]
 

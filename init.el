@@ -266,6 +266,13 @@ folder, otherwise delete a word."
           (bg-line-number-active unspecified)))
 (my/set-theme 'modus-operandi)
 
+;;; DUMB JUMP
+(use-package dumb-jump
+  :ensure t
+  :hook (xref-backend-functions . dumb-jump-xref-activate)
+  :custom
+  (xref-show-definitions-function #'xref-show-definitions-completing-read))
+
 ;;; SMART HUNGRY DELETE
 (use-package smart-hungry-delete
   :ensure t

@@ -133,6 +133,32 @@ Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
                            (shell-quote-argument
                             (expand-file-name default-directory)))))))
 
+(defun my/font-size-increment ()
+  (interactive)
+  (let* ((font-size (face-attribute 'default :height))
+         (new-size  (+ font-size 15)) ; sometimes it doesn't add enough so I add 15 instead of 10
+         (mod-size  (mod new-size 10)))
+    (message "New: %d, Mod: %d" new-size mod-size)
+    (if (eq mod-size 0)
+          (set-face-attribute 'default nil :height new-size)
+      (set-face-attribute 'default nil :height (- new-size mod-size))))
+  (message "New font size %d" (face-attribute 'default :height)))
+
+(defun my/font-size-decrement ()
+  (interactive)
+  (let* ((font-size (face-attribute 'default :height))
+         (new-size  (- font-size 5)) ; sometimes it decrements too much so I subtract 5 instead of 10
+         (mod-size  (mod new-size 10)))
+    (message "New: %d, Mod: %d" new-size mod-size)
+    (if (eq mod-size 0)
+          (set-face-attribute 'default nil :height new-size)
+      (set-face-attribute 'default nil :height (- new-size mod-size))))
+  (message "New font size %d" (face-attribute 'default :height)))
+
+(defun my/font-size-set (value)
+  (interactive "nNew font size: ")
+  (set-face-attribute 'default nil :height value))
+
 (setopt ad-redefinition-action 'accept) ; disable warning about advice de/activation
 (setopt backward-delete-char-untabify-method 'hungry)
 (setopt completion-ignore-case t)
@@ -325,7 +351,11 @@ will occur."
 ;;; WRITEROOM
 (use-package writeroom-mode
   :ensure t
-  :commands (writeroom-mode global-writeroom-mode))
+  :commands (writeroom-mode global-writeroom-mode)
+  :config
+  (keymap-set writeroom-mode-map "C-c w" nil)
+  (keymap-set writeroom-mode-map "C-c w j" 'writeroom-increase-width)
+  (keymap-set writeroom-mode-map "C-c w k" 'writeroom-decrease-width))
 
 ;;; TREE-SITTER LANGUAGE SUPPORT
 (use-package tree-sitter

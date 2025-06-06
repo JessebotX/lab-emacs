@@ -134,6 +134,7 @@ Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
                             (expand-file-name default-directory)))))))
 
 (defun my/font-size-increment ()
+  "Increment base font size by approximately 10."
   (interactive)
   (let* ((font-size (face-attribute 'default :height))
          (new-size  (+ font-size 15)) ; sometimes it doesn't add enough so I add 15 instead of 10
@@ -145,6 +146,7 @@ Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
   (message "New font size %d" (face-attribute 'default :height)))
 
 (defun my/font-size-decrement ()
+  "Decrement base font size by approximately 10."
   (interactive)
   (let* ((font-size (face-attribute 'default :height))
          (new-size  (- font-size 5)) ; sometimes it decrements too much so I subtract 5 instead of 10
@@ -156,6 +158,7 @@ Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
   (message "New font size %d" (face-attribute 'default :height)))
 
 (defun my/font-size-set (value)
+  "Set the base font size to VALUE (integer)."
   (interactive "nNew font size: ")
   (set-face-attribute 'default nil :height value))
 
@@ -216,7 +219,6 @@ Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
 
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
 (keymap-global-set "C-x C-b" 'ibuffer)
-;(keymap-global-set "C-c C-s C-f" 'my/goto-config-init)
 (keymap-global-set "M-]" 'forward-paragraph)
 (keymap-global-set "M-[" 'backward-paragraph)
 (keymap-global-set "C-c C-f" nil)
@@ -379,6 +381,7 @@ will occur."
 
 ;;; MEOW KEYMAP
 (use-package meow
+  :disabled
   :ensure t
   :custom
   (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -708,6 +711,8 @@ will occur."
       (setq-local yaml-indent-offset size)))
   :config
   (add-hook 'yaml-mode-hook #'my/hook--yaml-mode))
+
+(load (locate-user-emacs-file "etc/machine-init.el") :noerror :nomessage)
 
 ;; ═════════════════════════════[ Emacs ]═══════════════════════════════
 ;;

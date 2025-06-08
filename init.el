@@ -298,15 +298,24 @@ will occur."
   (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
   :custom
   (fontaine-presets
-   `((regular)
+   `(
+     (default-small
+      :default-height 110)
+     (default)
+     (default-large
+      :default-height 220)
      (cascadia-code
       :default-family "Cascadia Code"
       :fixed-pitch-family "Cascadia Code")
+     (jetbrains-mono
+      :default-family "JetBrains Mono"
+      :fixed-pitch-family "JetBrains Mono")
      (departure-mono
       :default-family "Departure Mono"
+      :default-height 220
       :fixed-pitch-family "Departure Mono"
-      :default-height 110
-      :fixed-pitch-height 110)
+      :fixed-pitch-height 220)
+
      (t
       :default-family "Maple Mono"
       :default-weight regular
@@ -402,8 +411,8 @@ will occur."
   (with-eval-after-load 'hydra
     (defhydra my/writeroom-resize ()
       "Resize width of `writeroom-mode'."
-      ("j" 'writeroom-increase-width "increase width (+2)")
-      ("k" 'writeroom-decrease-width "decrease width (-2)"))
+      ("j" writeroom-increase-width "increase width (+2)")
+      ("k" writeroom-decrease-width "decrease width (-2)"))
     (keymap-set writeroom-mode-map "C-c w w" 'my/writeroom-resize/body)))
 
 ;;; TREE-SITTER LANGUAGE SUPPORT

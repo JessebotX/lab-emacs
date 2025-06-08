@@ -62,6 +62,11 @@ if non-nil, indentation will use tabs instead of spaces."
   :group 'indent
   :type '(boolean))
 
+(defcustom my/font-size-default 120
+  "Default font size (height for the `default' face)"
+  :group 'face
+  :type '(natnum))
+
 (defun my/lang-indent-size (lang)
   "Get the size of indentation, in columns, for LANG, where LANG is a
 symbol and a key to the `my/lang-indent-settings' list.
@@ -267,18 +272,51 @@ will occur."
   (interactive "sFont family: ")
   (set-face-attribute 'default nil :family family))
 
-(set-face-attribute 'default nil :family "Maple Mono" :height 120)
-(set-fontset-font
- t
- (if (version< emacs-version "28.1")
-     '(#x1f300 . #x1fad0)
-   'emoji)
- (cond
-  ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
-  ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-  ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-  ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-  ((member "Symbola" (font-family-list)) "Symbola")))
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-multimodal
+  :ensure (:host github :repo "abougouffa/nerd-icons-multimodal")
+  :config
+  (global-nerd-icons-multimodal-mode 1))
+
+(use-package fontaine
+  :ensure t
+  :init
+  (defun my/hook--fontaine-set-preset ()
+    "Settings for `fontaine' package."
+    ;; Set font for emojis
+    (set-fontset-font
+     t 'emoji
+     (cond
+      ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+      ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+      ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+      ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+      ((member "Symbola" (font-family-list)) "Symbola"))))
+  (add-hook 'fontaine-set-preset-hook #'my/hook--fontaine-set-preset)
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+  :custom
+  (fontaine-presets
+   `((regular)
+     (cascadia-code
+      :default-family "Cascadia Code"
+      :fixed-pitch-family "Cascadia Code")
+     (departure-mono
+      :default-family "Departure Mono"
+      :fixed-pitch-family "Departure Mono"
+      :default-height 110
+      :fixed-pitch-height 110)
+     (t
+      :default-family "Maple Mono"
+      :default-weight regular
+      :default-height ,my/font-size-default
+      :fixed-pitch-family "JetBrains Mono"
+      :fixed-pitch-weight regular
+      :variable-pitch-family "Cabin")))
+  :config
+  (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset))
+
 
 ;;; WHICH-KEY
 (setopt which-key-idle-delay 0.1)
@@ -308,6 +346,10 @@ will occur."
   :hook (xref-backend-functions . dumb-jump-xref-activate)
   :custom
   (xref-show-definitions-function #'xref-show-definitions-completing-read))
+
+;;; HYDRA KEYBINDINGS
+(use-package hydra
+  :ensure t)
 
 ;;; SMART HUNGRY DELETE
 (use-package smart-hungry-delete
@@ -356,8 +398,13 @@ will occur."
   :commands (writeroom-mode global-writeroom-mode)
   :config
   (keymap-set writeroom-mode-map "C-c w" nil)
-  (keymap-set writeroom-mode-map "C-c w j" 'writeroom-increase-width)
-  (keymap-set writeroom-mode-map "C-c w k" 'writeroom-decrease-width))
+
+  (with-eval-after-load 'hydra
+    (defhydra my/writeroom-resize ()
+      "Resize width of `writeroom-mode'."
+      ("j" 'writeroom-increase-width "increase width (+2)")
+      ("k" 'writeroom-decrease-width "decrease width (-2)"))
+    (keymap-set writeroom-mode-map "C-c w w" 'my/writeroom-resize/body)))
 
 ;;; TREE-SITTER LANGUAGE SUPPORT
 (use-package tree-sitter

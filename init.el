@@ -315,7 +315,8 @@ will occur."
       :default-height 220
       :fixed-pitch-family "Departure Mono"
       :fixed-pitch-height 220)
-
+     (liberation-mono
+      :default-family "Liberation Mono")
      (t
       :default-family "Maple Mono"
       :default-weight regular

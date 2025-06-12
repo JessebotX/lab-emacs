@@ -327,6 +327,10 @@ will occur."
   :config
   (add-hook 'kill-emacs-hook #'fontaine-store-latest-preset))
 
+;;; MODE-LINE
+(use-package my-toggle-mode-line-mode
+  :ensure nil ; stored in local lisp/ directory
+  :commands (my/toggle-mode-line-mode))
 
 ;;; WHICH-KEY
 (setopt which-key-idle-delay 0.1)

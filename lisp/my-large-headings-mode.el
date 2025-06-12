@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; -*-
+;;; my-large-headings-mode.el -*- lexical-binding: t; -*-
 
 (defun my/large-headings-mode--set-faces (_theme)
   (custom-set-faces
@@ -42,5 +42,5 @@
 
   (remove-hook #'enable-theme-functions #'my/large-headings-mode--set-faces))
 
-;;; End
+;; End
 (provide 'my-large-headings-mode)

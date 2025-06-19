@@ -28,7 +28,8 @@ load.")
   "Directory to store temporary auto-save files.")
 
 (defconst my/packages-load-list
-  '("markdown-mode"
+  '("compat"
+    "markdown-mode"
     "olivetti")
   "Package directories to add to load path, found in
 `my/packages-directory'.")

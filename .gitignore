@@ -1,0 +1,16 @@
+/var
+/etc
+/tmp
+/auto-save-list
+/machine-init.el
+/machine-early-init.el
+/tree-sitter
+/server
+/elpaca
+*~
+/projects
+#*
+/transient
+/fontaine-latest-state.eld
+/bookmarks
+/places

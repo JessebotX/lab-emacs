@@ -457,6 +457,7 @@ folder, otherwise delete a word."
 
 ;;; [DIRED]
 (setopt dired-hide-details-hide-symlink-targets nil)
+(setopt dired-recursive-copies 'always)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 ;;; [IBUFFER BUFFER LIST]

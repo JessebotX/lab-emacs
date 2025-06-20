@@ -27,10 +27,10 @@ load.")
 (defconst my/packages-directory (locate-user-emacs-file "packages")
   "Directory to store external emacs packages that are locally installed.")
 
-(defconst my/packages-load-list
-  '("compat")
-  "Package directories to add to `load-path', found in
-`my/packages-directory'.")
+;; (defconst my/packages-load-list
+;;   '()
+;;   "Package directories to add to `load-path', found in
+;; `my/packages-directory'.")
 
 (defcustom my/lang-indent-settings
   '((cc   :size 4 :use-tabs nil)
@@ -251,8 +251,8 @@ buffer/file contents."
   (add-to-list 'load-path (locate-user-emacs-file dir)))
 
 ;; Add packages to `load-path'
-(dolist (package my/packages-load-list)
-  (add-to-list 'load-path (expand-file-name package my/packages-directory)))
+;; (dolist (package my/packages-load-list)
+;;   (add-to-list 'load-path (expand-file-name package my/packages-directory)))
 
 ;;; [BASE CUSTOMIZATION VARIABLES]
 
@@ -509,44 +509,44 @@ folder, otherwise delete a word."
             (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;;; [PULSE]
-(defun my/pulse-line (&rest _)
-  "Pulse the current line."
-  (pulse-momentary-highlight-one-line (point)))
+;; (defun my/pulse-line (&rest _)
+;;   "Pulse the current line."
+;;   (pulse-momentary-highlight-one-line (point)))
 
-(dolist (command '(scroll-up-command
-                   scroll-down-command
-                   windmove-left
-                   windmove-right
-                   windmove-down
-                   windmove-up
-                   forward-paragraph
-                   backward-paragraph
-                   move-to-window-line-top-bottom
-                   recenter-top-bottom
-                   other-window
-                   beginning-of-buffer
-                   end-of-buffer))
-  (advice-add command :after #'my/pulse-line))
+;; (dolist (command '(scroll-up-command
+;;                    scroll-down-command
+;;                    windmove-left
+;;                    windmove-right
+;;                    windmove-down
+;;                    windmove-up
+;;                    forward-paragraph
+;;                    backward-paragraph
+;;                    move-to-window-line-top-bottom
+;;                    recenter-top-bottom
+;;                    other-window
+;;                    beginning-of-buffer
+;;                    end-of-buffer))
+;;   (advice-add command :after #'my/pulse-line))
 
-(with-eval-after-load 'markdown-mode
-  (dolist (command '(markdown-forward-block
-                     markdown-backward-block
-                     markdown-forward-paragraph
-                     markdown-backward-paragraph
-                     markdown-forward-page
-                     markdown-backward-page))
-    (advice-add command :after #'my/pulse-line)))
+;; (with-eval-after-load 'markdown-mode
+;;   (dolist (command '(markdown-forward-block
+;;                      markdown-backward-block
+;;                      markdown-forward-paragraph
+;;                      markdown-backward-paragraph
+;;                      markdown-forward-page
+;;                      markdown-backward-page))
+;;     (advice-add command :after #'my/pulse-line)))
 
-(with-eval-after-load 'org
-  (dolist (command '(org-forward-element
-                     org-backward-element
-                     org-forward-paragraph
-                     org-backward-paragraph
-                     org-forward-sentence
-                     org-backward-sentence
-                     org-forward-heading-same-level
-                     org-backward-heading-same-level))
-    (advice-add command :after #'my/pulse-line)))
+;; (with-eval-after-load 'org
+;;   (dolist (command '(org-forward-element
+;;                      org-backward-element
+;;                      org-forward-paragraph
+;;                      org-backward-paragraph
+;;                      org-forward-sentence
+;;                      org-backward-sentence
+;;                      org-forward-heading-same-level
+;;                      org-backward-heading-same-level))
+;;     (advice-add command :after #'my/pulse-line)))
 
 ;; Highlight on copy
 (defun my/pulse-region (orig-fn beg end &rest args)

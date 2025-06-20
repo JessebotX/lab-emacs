@@ -28,11 +28,7 @@ load.")
   "Directory to store external emacs packages that are locally installed.")
 
 (defconst my/packages-load-list
-  '("compat"
-    "nerd-icons"
-    "nerd-icons-dired"
-    "markdown-mode"
-    "olivetti")
+  '("compat")
   "Package directories to add to `load-path', found in
 `my/packages-directory'.")
 
@@ -114,12 +110,16 @@ may still need to modify the major-mode specific indent settings."
   (setq-local indent-tabs-mode (my/lang-indent-use-tabs lang)))
 
 (defun my/locate-user-var-file (path)
-  "Return absolute file path of PATH relatie to `my/var-directory'"
+  "Return absolute file path of PATH relatie to `my/var-directory'."
   (expand-file-name (convert-standard-filename path) my/var-directory))
 
 (defun my/locate-user-etc-file (path)
-  "Return absolute file path of PATH relative to `my/etc-directory'"
+  "Return absolute file path of PATH relative to `my/etc-directory'."
   (expand-file-name (convert-standard-filename path) my/etc-directory))
+
+(defun my/locate-user-packages-file (path)
+  "Return absolute file path of PATH relative to `my/packages-directory'."
+  (expand-file-name (convert-standard-filename path) my/packages-directory))
 
 (defun my/goto-config-init ()
   "Jump to user's init.el `user-init-file'"
@@ -239,6 +239,12 @@ Credit: xahlee.info"
   (load-theme theme t)
   (enable-theme theme))
 
+(defun my/diff-changes-to-saved-file ()
+  "Show diff between the current unsaved buffer/file contents and the saved
+buffer/file contents."
+  (interactive)
+  (diff-buffer-with-file (current-buffer)))
+
 ;;; [LISP MODULES]
 
 (dolist (dir my/lisp-modules-directory-list)
@@ -258,8 +264,8 @@ Credit: xahlee.info"
 (setopt delete-by-moving-to-trash t)
 (setopt enable-recursive-minibuffers t)
 (setopt fast-but-imprecise-scrolling t)
-(setopt fill-column 70)
-;(setopt grep-command "rg -nHS --no-heading --null ") ; errors out for some reason (on Windows)
+;; (setopt fill-column 70)
+(setopt grep-command "rg -nHS --no-heading --null ")
 (setopt grep-find-ignored-directories
         '("SCCS"
           "RCS"
@@ -314,7 +320,7 @@ Credit: xahlee.info"
 ;;; [FONTS]
 
 ;; 👋 Display emojis 🖥️⌨️🖱️
-(defun my/emacs--set-emoji-font ()
+(defun my/fonts-enable-emojis ()
   (set-fontset-font
    t 'emoji
    (cond
@@ -323,7 +329,8 @@ Credit: xahlee.info"
     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
     ((member "Symbola" (font-family-list)) "Symbola"))))
-(my/emacs--set-emoji-font)
+(add-hook 'emacs-startup-hook 'my/fonts-enable-emojis)
+;;(my/fonts-enable-emojis)
 
 ;;; [THEME]
 (setopt modus-themes-italic-constructs t)
@@ -333,16 +340,27 @@ Credit: xahlee.info"
           (fg-line-number-active fg-main)
           (bg-line-number-inactive unspecified)
           (bg-line-number-active unspecified)))
-(my/set-theme 'modus-operandi)
+(my/set-theme 'modus-operandi-tinted)
 
 ;;; [KEYBINDINGS]
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
 (keymap-global-set "M-[" 'backward-paragraph)
 (keymap-global-set "M-]" 'forward-paragraph)
-(keymap-global-set "C-z" nil)
-;(keymap-global-set "C-x C-k RET" nil)
-(keymap-global-set "C-x C-z" nil)
 (keymap-global-set "M-s M-s" 'grep)
+(keymap-global-set "C-z" nil)
+(keymap-global-set "C-x C-k RET" nil)
+(keymap-global-set "C-x C-z" nil)
+
+(defun my/toggle-fundamental-mode ()
+  (interactive)
+  (cond
+   ((eq major-mode 'fundamental-mode)
+    (lisp-interaction-mode))
+   ((eq major-mode 'lisp-interaction-mode)
+    (fundamental-mode))
+   (t
+    (message "Command only works in `fundamental-mode' or `lisp-interaction-mode'"))))
+(keymap-global-set "C-c m l" #'my/toggle-fundamental-mode)
 
 ;; Switch to new window on split
 (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
@@ -385,11 +403,11 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
    (insert (format ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;          Hello          ;;
 ;;                         ;;
-;;  ██╗  ██╗██╗███╗   ███╗ ;;
-;;  ██║  ██║██║████╗ ████║ ;;
-;;  ██║  ██║██║██╔████╔██║ ;;
-;;  ╚██╗██╔╝██║██║╚██╔╝██║ ;;
-;;   ╚███╔╝ ██║██║ ╚═╝ ██║ ;;
+;; ██╗   ██╗██╗███╗   ███╗ ;;
+;; ██║   ██║██║████╗ ████║ ;;
+;; ██║   ██║██║██╔████╔██║ ;;
+;; ╚██╗ ██╔╝██║██║╚██╔╝██║ ;;
+;;  ╚████╔╝ ██║██║ ╚═╝ ██║ ;;
 ;;    ╚══╝  ╚═╝╚═╝     ╚═╝ ;;
 ;;                         ;;
 ;;  Startup time :  %.2fs  ;;
@@ -419,7 +437,7 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (setopt mode-line-position-column-line-format '("%l:%c"))
 (setopt mode-line-compact t)
 
-(add-hook 'prog-mode-hook #'column-number-mode)
+;; (add-hook 'prog-mode-hook #'column-number-mode)
 
 ;;; [AUTO REVERT BUFFERS]
 (setopt global-auto-revert-non-file-buffers t)
@@ -431,6 +449,11 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 ;;; [COMPLETION AND MINIBUFFER]
+
+;; e.g. "hello" => match glob "*h*e*l*l*o*"
+(setopt completion-styles '(flex basic))
+(setopt completion-category-overrides '((file (styles basic partial-completion))))
+
 (defun my/minibuffer--backward-kill (arg)
   "When minibuffer is completing a file name, delete up to parent
 folder, otherwise delete a word."
@@ -441,9 +464,8 @@ folder, otherwise delete a word."
         (delete-minibuffer-contents))
     (kill-word (- arg))))
 
-(let ((map minibuffer-local-map))
-  (keymap-set map "C-<backspace>" #'my/minibuffer--backward-kill)
-  (keymap-set map "M-<backspace>" #'my/minibuffer--backward-kill))
+(keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
+(keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
 
 (setopt icomplete-show-matches-on-no-input t)
 (setopt icomplete-delay-completions-threshold 0)
@@ -481,10 +503,49 @@ folder, otherwise delete a word."
 (setopt ibuffer-show-empty-filter-groups nil)
 (keymap-global-set "C-x C-b" 'ibuffer)
 
-(defun my/hook--ibuffer-mode ()
-  "Configuration for `ibuffer-mode'."
-  (ibuffer-switch-to-saved-filter-groups "default"))
-(add-hook 'ibuffer-mode-hook #'my/hook--ibuffer-mode)
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
+
+;;; [PULSE]
+(defun my/pulse-line (&rest _)
+  "Pulse the current line."
+  (pulse-momentary-highlight-one-line (point)))
+
+(dolist (command '(scroll-up-command
+                   scroll-down-command
+                   windmove-left
+                   windmove-right
+                   windmove-down
+                   windmove-up
+                   forward-paragraph
+                   backward-paragraph
+                   move-to-window-line-top-bottom
+                   recenter-top-bottom
+                   other-window
+                   beginning-of-buffer
+                   end-of-buffer))
+  (advice-add command :after #'my/pulse-line))
+
+(with-eval-after-load 'markdown-mode
+  (dolist (command '(markdown-forward-block
+                     markdown-backward-block
+                     markdown-forward-paragraph
+                     markdown-backward-paragraph
+                     markdown-forward-page
+                     markdown-backward-page))
+    (advice-add command :after #'my/pulse-line)))
+
+(with-eval-after-load 'org
+  (dolist (command '(org-forward-element
+                     org-backward-element
+                     org-forward-paragraph
+                     org-backward-paragraph
+                     org-forward-sentence
+                     org-backward-sentence
+                     org-forward-heading-same-level
+                     org-backward-heading-same-level))
+    (advice-add command :after #'my/pulse-line)))
 
 ;;; [WHITESPACE]
 (setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
@@ -508,12 +569,17 @@ folder, otherwise delete a word."
 
 ;;; [OTHER PACKAGES]
 ;;; [NERD ICONS DIRED]
-(autoload #'nerd-icons-dired-mode "nerd-icons-dired"
-  "Minor mode for adding nerd font icons in `dired-mode'." t)
 
-(add-hook 'dired-mode-hook #'nerd-icons-dired-mode)
+(unless (eq system-type 'windows-nt)
+  (add-to-list 'load-path (my/locate-user-packages-file "nerd-icons"))
+  (add-to-list 'load-path (my/locate-user-packages-file "nerd-icons-dired"))
+  (autoload #'nerd-icons-dired-mode "nerd-icons-dired"
+    "Minor mode for adding nerd font icons in `dired-mode'." t)
+
+  (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
 
 ;;;; [OLIVETTI]
+(add-to-list 'load-path (my/locate-user-packages-file "olivetti"))
 (autoload #'olivetti-mode "olivetti"
   "Minor mode for providing a nice writing environment." t)
 
@@ -547,6 +613,17 @@ folder, otherwise delete a word."
   (setq-local css-indent-offset (my/lang-indent-size 'css)))
 (add-hook 'css-mode-hook #'my/hook--css-mode)
 
+;;;; [GO]
+(add-to-list 'load-path (my/locate-user-packages-file "go-mode"))
+(autoload #'go-mode "go-mode"
+  "Major mode for editing Go files." t)
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+
+(defun my/hook--go-mode ()
+  "Configuration for `go-mode'."
+  (my/lang-indent-set-local 'go))
+(add-hook 'go-mode-hook #'my/hook--go-mode)
+
 ;;;; [JAVASCRIPT]
 (defun my/hook--js-mode ()
   "Configuration for `js-mode' and `js-jsx-mode'."
@@ -574,6 +651,7 @@ folder, otherwise delete a word."
 (add-hook 'lisp-mode-hook #'my/hook--lisp-mode)
 
 ;;;; [MARKDOWN]
+(add-to-list 'load-path (my/locate-user-packages-file "markdown-mode"))
 (autoload #'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files." t)
 (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|txt\\)\\'" . markdown-mode))
@@ -594,7 +672,7 @@ folder, otherwise delete a word."
 (add-hook 'html-mode-hook #'my/hook--xml-mode)
 
 ;;; [END OF INIT.EL]
-(load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :noerror :nomessage)
+(load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :no-error-if-file-is-missing)
 
 ;; ══════════════════════════════════════════════════════════════════════
 ;;

@@ -340,7 +340,7 @@ buffer/file contents."
           (fg-line-number-active fg-main)
           (bg-line-number-inactive unspecified)
           (bg-line-number-active unspecified)))
-(my/set-theme 'modus-operandi-tinted)
+(my/set-theme 'modus-operandi)
 
 ;;; [KEYBINDINGS]
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
@@ -350,6 +350,7 @@ buffer/file contents."
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
+(keymap-global-set "C-w" 'delete-char)
 
 (defun my/toggle-fundamental-mode ()
   (interactive)
@@ -547,6 +548,16 @@ folder, otherwise delete a word."
                      org-backward-heading-same-level))
     (advice-add command :after #'my/pulse-line)))
 
+;; Highlight on copy
+(defun my/pulse-region (orig-fn beg end &rest args)
+  "Highlight region with `pulse'.
+
+Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
+  (pulse-momentary-highlight-region beg end)
+  (apply orig-fn beg end args))
+
+(advice-add 'kill-ring-save :around #'my/pulse-region)
+
 ;;; [WHITESPACE]
 (setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
 (setopt whitespace-style '(face tabs tab-mark trailing))
@@ -568,16 +579,6 @@ folder, otherwise delete a word."
   "Minor mode for showing the mode-line." t)
 
 ;;; [OTHER PACKAGES]
-;;; [NERD ICONS DIRED]
-
-(unless (eq system-type 'windows-nt)
-  (add-to-list 'load-path (my/locate-user-packages-file "nerd-icons"))
-  (add-to-list 'load-path (my/locate-user-packages-file "nerd-icons-dired"))
-  (autoload #'nerd-icons-dired-mode "nerd-icons-dired"
-    "Minor mode for adding nerd font icons in `dired-mode'." t)
-
-  (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
-
 ;;;; [OLIVETTI]
 (add-to-list 'load-path (my/locate-user-packages-file "olivetti"))
 (autoload #'olivetti-mode "olivetti"

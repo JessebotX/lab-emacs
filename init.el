@@ -1,4 +1,4 @@
-;;; init.el -*- lexical-binding: t; -*-
+;; init.el -*- lexical-binding: t; -*-
 ;; ══════════════════════════════════════════════════════════════════════
 ;;
 ;;               _|    _|              _|   _|
@@ -313,14 +313,16 @@ Credit: xahlee.info"
 ;;; [FONTS]
 
 ;; 👋 Display emojis 🖥️⌨️🖱️
-(set-fontset-font
- t 'emoji
- (cond
-  ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
-  ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-  ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-  ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-  ((member "Symbola" (font-family-list)) "Symbola")))
+(defun my/emacs--set-emoji-font ()
+  (set-fontset-font
+   t 'emoji
+   (cond
+    ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+    ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+    ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+    ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+    ((member "Symbola" (font-family-list)) "Symbola"))))
+(my/emacs--set-emoji-font)
 
 ;;; [THEME]
 (setopt modus-themes-italic-constructs t)
@@ -337,7 +339,7 @@ Credit: xahlee.info"
 (keymap-global-set "M-[" 'backward-paragraph)
 (keymap-global-set "M-]" 'forward-paragraph)
 (keymap-global-set "C-z" nil)
-(keymap-global-set "C-x C-k RET" nil)
+;(keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
 (keymap-global-set "M-s M-s" 'grep)
 
@@ -384,6 +386,7 @@ Credit: xahlee.info"
 (setopt mode-line-percent-position nil)
 (setopt mode-line-position-line-format '("L%l"))
 (setopt mode-line-position-column-line-format '("%l:%c"))
+(setopt mode-line-compact t)
 
 (add-hook 'prog-mode-hook #'column-number-mode)
 
@@ -397,6 +400,20 @@ Credit: xahlee.info"
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 ;;; [COMPLETION AND MINIBUFFER]
+(defun my/minibuffer--backward-kill (arg)
+  "When minibuffer is completing a file name, delete up to parent
+folder, otherwise delete a word."
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+    (kill-word (- arg))))
+
+(let ((map minibuffer-local-map))
+  (keymap-set map "C-<backspace>" #'my/minibuffer--backward-kill)
+  (keymap-set map "M-<backspace>" #'my/minibuffer--backward-kill))
+
 (setopt icomplete-show-matches-on-no-input t)
 (setopt icomplete-delay-completions-threshold 0)
 (setopt icomplete-compute-delay 0)

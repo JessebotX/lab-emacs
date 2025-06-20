@@ -41,7 +41,6 @@ load.")
     (lisp :size 8 :use-tabs nil)
     (md   :size 2 :use-tabs nil)
     (org  :size 8 :use-tabs nil)
-    (ts   :size 4 :use-tabs nil)
     (xml  :size 4 :use-tabs nil)
     (yaml :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the

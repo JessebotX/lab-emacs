@@ -21,17 +21,19 @@ load.")
 (defconst my/etc-directory (locate-user-emacs-file "etc")
   "Directory to store other emacs files such as extra configuration.")
 
-(defconst my/packages-directory (locate-user-emacs-file "packages")
-  "Directory to store external emacs packages that are locally installed.")
-
 (defconst my/auto-save-files-directory (expand-file-name "auto-saves" my/var-directory)
   "Directory to store temporary auto-save files.")
 
+(defconst my/packages-directory (locate-user-emacs-file "packages")
+  "Directory to store external emacs packages that are locally installed.")
+
 (defconst my/packages-load-list
   '("compat"
+    "nerd-icons"
+    "nerd-icons-dired"
     "markdown-mode"
     "olivetti")
-  "Package directories to add to load path, found in
+  "Package directories to add to `load-path', found in
 `my/packages-directory'.")
 
 (defcustom my/lang-indent-settings
@@ -230,16 +232,25 @@ Credit: xahlee.info"
   (interactive "nNew font size: ")
   (set-face-attribute 'default nil :height value))
 
+(defun my/set-theme (theme)
+  "Set the current emacs theme to THEME. Disables all other themes."
+  (interactive (list (intern (completing-read "Theme: " (custom-available-themes)))))
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme theme t)
+  (enable-theme theme))
+
 ;;; [LISP MODULES]
 
 (dolist (dir my/lisp-modules-directory-list)
   (add-to-list 'load-path (locate-user-emacs-file dir)))
 
+;; Add packages to `load-path'
 (dolist (package my/packages-load-list)
   (add-to-list 'load-path (expand-file-name package my/packages-directory)))
 
-;;; [GENERAL CUSTOMIZATION]
+;;; [BASE CUSTOMIZATION VARIABLES]
 
+;; Customization variables
 (setopt ad-redefinition-action 'accept) ; disable warning about advice de/activation
 (setopt backward-delete-char-untabify-method 'hungry)
 (setopt completion-ignore-case t)
@@ -247,7 +258,7 @@ Credit: xahlee.info"
 (setopt enable-recursive-minibuffers t)
 (setopt fast-but-imprecise-scrolling t)
 (setopt fill-column 80)
-;(setopt grep-command "rg -nH --null ") ; errors out for some reason (on Windows)
+;(setopt grep-command "rg -nHS --no-heading --null ") ; errors out for some reason (on Windows)
 (setopt grep-find-ignored-directories
         '("SCCS"
           "RCS"
@@ -276,7 +287,7 @@ Credit: xahlee.info"
 (setopt lazy-count-suffix-format "   (%s/%s)")
 (setopt read-answer-short t)
 (setopt ring-bell-function #'ignore) ; disable sound on invalid input
-(setopt scroll-conservatively 101)
+(setopt scroll-conservatively 101) ; scroll normally
 (setopt scroll-perserve-screen-position t)
 (setopt tab-width my/indent-size-default)
 (setopt undo-limit (* 13 160000))
@@ -290,33 +301,14 @@ Credit: xahlee.info"
 (setopt word-wrap t)
 
 ;; Non-customization variables
+(setq auto-window-vscroll nil)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
+;;; [AUTOSAVES, BACKUPS AND LOCKFILES]
 (setq auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory))
 (setq auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t)))
-(setq auto-window-vscroll nil)
 (setq-default create-lockfiles nil)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq-default make-backup-files nil)
-
-;; auto-save-mode doesn't create the path automatically!
-(make-directory my/auto-save-files-directory t)
-
-;;; [MODES]
-(defun my/after-init-hook-basic-modes ()
-  "Basic modes to start on `after-init-hook'."
-  (blink-cursor-mode -1)
-  (delete-selection-mode 1))
-(add-hook 'after-init-hook #'my/after-init-hook-basic-modes)
-
-;;; [AUTO REVERT BUFFERS]
-(setopt global-auto-revert-non-file-buffers t)
-(add-hook 'after-init-hook #'global-auto-revert-mode)
-
-;;; [WHITESPACE]
-(setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
-(setopt whitespace-style '(face tabs tab-mark trailing))
-(add-hook 'text-mode-hook #'whitespace-mode)
-(add-hook 'prog-mode-hook #'whitespace-mode)
 
 ;;; [FONTS]
 
@@ -331,26 +323,125 @@ Credit: xahlee.info"
   ((member "Symbola" (font-family-list)) "Symbola")))
 
 ;;; [THEME]
-(defun my/set-theme (theme)
-  "Set the current emacs theme to THEME. Disables all other themes."
-  (interactive (list (intern (completing-read "Theme: " (custom-available-themes)))))
-  (mapc #'disable-theme custom-enabled-themes)
-  (load-theme theme t)
-  (enable-theme theme))
+(setopt modus-themes-italic-constructs t)
+(setopt modus-themes-bold-constructs t)
+(setopt modus-themes-common-palette-overrides
+        '((fg-line-number-inactive "gray50")
+          (fg-line-number-active fg-main)
+          (bg-line-number-inactive unspecified)
+          (bg-line-number-active unspecified)))
+(my/set-theme 'modus-operandi)
 
 ;;; [KEYBINDINGS]
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
 (keymap-global-set "M-[" 'backward-paragraph)
 (keymap-global-set "M-]" 'forward-paragraph)
-(keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "C-z" nil)
+(keymap-global-set "C-x C-k RET" nil)
+(keymap-global-set "C-x C-z" nil)
+(keymap-global-set "M-s M-s" 'grep)
 
-;;; [ICOMPLETE]
+;; Switch to new window on split
+(advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
+(advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
+
+;;; [MODES]
+(defun my/hook--after-init ()
+  "Basic configuration on `after-init-hook'."
+  (with-current-buffer (get-buffer-create "*scratch*")
+   (insert (format ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;          Hello          ;;
+;;                         ;;
+;;  ██╗  ██╗██╗███╗   ███╗ ;;
+;;  ██║  ██║██║████╗ ████║ ;;
+;;  ██║  ██║██║██╔████╔██║ ;;
+;;  ╚██╗██╔╝██║██║╚██╔╝██║ ;;
+;;   ╚███╔╝ ██║██║ ╚═╝ ██║ ;;
+;;    ╚══╝  ╚═╝╚═╝     ╚═╝ ;;
+;;                         ;;
+;;  Startup time :  %.2fs  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+"
+                    (float-time
+                     (time-subtract after-init-time before-init-time)))))
+
+  (blink-cursor-mode -1)
+  (delete-selection-mode 1))
+(add-hook 'after-init-hook #'my/hook--after-init)
+
+;; Found in: https://github.com/LionyxML/emacs-solo/
+;; A Protesilaos life savier HACK
+;; Add option "d" to whenever using C-x s or C-x C-c, allowing a quick preview
+;; of the diff (if you choose `d') of what you're asked to save.
+(add-to-list 'save-some-buffers-action-alist
+             (list "d"
+                   (lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
+                   "show diff between the buffer and its file"))
+
+;;; [MODE-LINE]
+(setopt mode-line-right-align-edge 'window)
+(setopt mode-line-percent-position nil)
+(setopt mode-line-position-line-format '("L%l"))
+(setopt mode-line-position-column-line-format '("%l:%c"))
+
+(add-hook 'prog-mode-hook #'column-number-mode)
+
+;;; [AUTO REVERT BUFFERS]
+(setopt global-auto-revert-non-file-buffers t)
+(add-hook 'after-init-hook #'global-auto-revert-mode)
+
+;;; [COMPILE]
+(setopt compilation-always-kill t)
+(setopt compilation-scroll-output t)
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+
+;;; [COMPLETION AND MINIBUFFER]
 (setopt icomplete-show-matches-on-no-input t)
+(setopt icomplete-delay-completions-threshold 0)
 (setopt icomplete-compute-delay 0)
+(setopt icomplete-max-delay-chars 0)
+(setopt icomplete-scroll t)
 (icomplete-vertical-mode 1)
 (keymap-set icomplete-minibuffer-map "TAB" #'icomplete-force-complete)
 (keymap-set icomplete-minibuffer-map "C-M-i" #'minibuffer-complete)
+(advice-add 'completion-at-point :after #'minibuffer-hide-completions)
+
+;;; [DIRED]
+(setopt dired-hide-details-hide-symlink-targets nil)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+;;; [IBUFFER BUFFER LIST]
+(setopt ibuffer-saved-filter-groups
+        '(("Default"
+           ("Emacs" (or
+                     (name . "^\\*scratch\\*$")
+                     (name . "^\\*Messages\\*$")
+                     (name . "^\\*Warnings\\*$")
+                     (name . "^\\*Shell Command Output\\*$")
+                     (name . "^\\*Async-native-compile-log\\*$")))
+           ("Dired" (mode . dired-mode))
+           ("Terminal" (or
+                        (mode . term-mode)
+                        (mode . shell-mode)
+                        (mode . eshell-mode)))
+           ("Help" (or
+                    (mode . help-mode)
+                    (name . "^\\*Help\\*$")
+                    (name . "^\\*info\\*$"))))))
+(setopt ibuffer-show-empty-filter-groups nil)
+(keymap-global-set "C-x C-b" 'ibuffer)
+
+(defun my/hook--ibuffer-mode ()
+  "Configuration for `ibuffer-mode'."
+  (ibuffer-switch-to-saved-filter-groups "default"))
+(add-hook 'ibuffer-mode-hook #'my/hook--ibuffer-mode)
+
+;;; [WHITESPACE]
+(setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
+(setopt whitespace-style '(face tabs tab-mark trailing))
+(add-hook 'text-mode-hook #'whitespace-mode)
+(add-hook 'prog-mode-hook #'whitespace-mode)
 
 ;;; [OTHER LISP]
 ;;;; [SUBTLE MODE LINE COLORS]
@@ -367,6 +458,12 @@ Credit: xahlee.info"
   "Minor mode for showing the mode-line." t)
 
 ;;; [OTHER PACKAGES]
+;;; [NERD ICONS DIRED]
+(autoload #'nerd-icons-dired-mode "nerd-icons-dired"
+  "Minor mode for adding nerd font icons in `dired-mode'." t)
+
+(add-hook 'dired-mode-hook #'nerd-icons-dired-mode)
+
 ;;;; [OLIVETTI]
 (autoload #'olivetti-mode "olivetti"
   "Minor mode for providing a nice writing environment." t)
@@ -382,11 +479,6 @@ Credit: xahlee.info"
   (interactive)
   (my/toggle-mode-line-mode -1)
   (olivetti-mode -1))
-
-;;;; [ORDERLESS]
-
-(setopt completion-styles '(flex basic))
-(setopt completion-category-overrides '((file (styles basic partial-completion))))
 
 ;;; [LANGUAGES]
 ;;;; [C / C++]

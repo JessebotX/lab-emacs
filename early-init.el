@@ -142,16 +142,6 @@
 
 (add-hook 'enable-theme-functions #'my/emacs--set-invisible-window-dividers)
 
-;;; [THEME]
-(setopt modus-themes-italic-constructs t)
-(setopt modus-themes-bold-constructs t)
-(setopt modus-themes-common-palette-overrides
-        '((fg-line-number-inactive "gray50")
-          (fg-line-number-active fg-main)
-          (bg-line-number-inactive unspecified)
-          (bg-line-number-active unspecified)))
-(load-theme 'modus-operandi t)
-
 ;; End: load post-early-init files
 (load (locate-user-emacs-file "machine-early-init.el") :noerror :nomessage) ; should be ignored in version control
 

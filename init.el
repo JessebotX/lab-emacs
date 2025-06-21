@@ -11,10 +11,6 @@
 
 ;;; [PREFACE]
 
-(defconst my/lisp-modules-directory-list '("lisp" "modules")
-  "Directories relative to `user-emacs-directory' containing lisp files to
-load.")
-
 (defconst my/var-directory (locate-user-emacs-file "var")
   "Directory to store emacs' variable data.")
 
@@ -245,9 +241,8 @@ buffer/file contents."
   (diff-buffer-with-file (current-buffer)))
 
 ;;; [LISP MODULES]
-
-(dolist (dir my/lisp-modules-directory-list)
-  (add-to-list 'load-path (locate-user-emacs-file dir)))
+(add-to-list 'load-path (locate-user-emacs-file "lisp"))
+(add-to-list 'load-path (locate-user-emacs-file "modules"))
 
 ;; Add packages to `load-path'
 ;; (dolist (package my/packages-load-list)
@@ -261,6 +256,9 @@ buffer/file contents."
 (setopt bookmark-default-file (my/locate-user-etc-file "bookmarks"))
 (setopt completion-ignore-case t)
 (setopt delete-by-moving-to-trash t)
+(setopt display-line-numbers-width 3)
+(setopt display-line-numbers-widen t)
+(setopt display-line-numbers-type 'relative)
 (setopt enable-recursive-minibuffers t)
 (setopt fast-but-imprecise-scrolling t)
 ;; (setopt fill-column 70)
@@ -473,9 +471,7 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 ;;; [COMPLETION AND MINIBUFFER]
-
-;; e.g. "hello" => match glob "*h*e*l*l*o*"
-(setopt completion-styles '(flex basic))
+(setopt completion-styles '(flex initials basic))
 (setopt completion-category-overrides '((file (styles basic partial-completion))))
 
 (defun my/minibuffer--backward-kill (arg)
@@ -494,6 +490,7 @@ folder, otherwise delete a word."
 (setopt icomplete-show-matches-on-no-input t)
 (setopt icomplete-delay-completions-threshold 0)
 (setopt icomplete-compute-delay 0)
+(setopt icomplete-in-buffer t)
 (setopt icomplete-max-delay-chars 0)
 (setopt icomplete-scroll t)
 (icomplete-vertical-mode 1)
@@ -505,6 +502,61 @@ folder, otherwise delete a word."
 (setopt dired-hide-details-hide-symlink-targets nil)
 (setopt dired-recursive-copies 'always)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+;; Dired icons.
+;; Credit: https://github.com/LionyxML/emacs-solo
+;; TODO: Dired parent/current dir are not used
+(defvar my/dired-icons-file-icons
+  '(("zip"             . "📦")
+    ("zipx"            . "📦")
+    ("rar"             . "📦")
+    ("xz"              . "📦")
+    ("tar"             . "📦")
+    ("tgz"             . "📦")
+    ("gz"              . "📦")
+    ("bz2"             . "📦")
+    ("7z"              . "📦")
+    ("lz"              . "📦")
+    ("lzma"            . "📦")
+    ("zstd"            . "📦")
+    ("rpm"             . "📦")
+    ("deb"             . "📦")
+    ("direddir"        . "📁")
+    ("diredfile"       . "📄")
+    ("diredparentdir"  . "⬆️")
+    ("diredcurrentdir" . "⤵️")))
+
+(defun my/dired-icons-icon-for-file (filepath)
+  "Get icon based on filepath extension"
+  (if (file-directory-p filepath)
+      (assoc-default "direddir" my/dired-icons-file-icons)
+    (progn
+      (let* ((ext (file-name-extension filepath))
+             (icon (and ext (assoc-default (downcase ext) my/dired-icons-file-icons))))
+        (or icon (assoc-default "diredfile" my/dired-icons-file-icons))))))
+
+(defun my/dired-icons-icons-regexp ()
+  "Return a regexp that matches any icon we use."
+  (let ((icons (mapcar #'cdr my/dired-icons-file-icons)))
+    (concat "^\\(" (regexp-opt (cons "📁" icons)) "\\) ")))
+
+(defun my/dired-icons-add-icons ()
+  "Add icons to filenames in Dired buffer."
+  (when (derived-mode-p 'dired-mode)
+    (let ((inhibit-read-only t)
+          (icon-regex (my/dired-icons-icons-regexp)))
+      (save-excursion
+        (goto-char (point-min))
+        (while (not (eobp))
+          (condition-case nil
+              (when-let* ((file (dired-get-filename nil t)))
+                (dired-move-to-filename)
+                (unless (looking-at-p icon-regex)
+                  (insert (concat (my/dired-icons-icon-for-file file) " "))))
+            (error nil))  ;; gracefully skip invalid lines
+          (forward-line 1))))))
+
+(add-hook 'dired-after-readin-hook #'my/dired-icons-add-icons)
 
 ;;; [IBUFFER BUFFER LIST]
 (setopt ibuffer-saved-filter-groups
@@ -591,7 +643,19 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [SUBTLE MODE LINE COLORS]
 (autoload #'my/subtle-mode-line-colors-mode "my-subtle-mode-line-colors-mode"
   "Minor mode for making mode line colors more subtle." t)
-(add-hook 'after-init-hook #'my/subtle-mode-line-colors-mode)
+(defun my/subtle-mode-line-colors-mode-enable-and-refresh ()
+  (interactive)
+  (cond
+   ((or (member 'modus-operandi custom-enabled-themes)
+         (member 'modus-operandi-tinted custom-enabled-themes))
+    (setopt my/subtle-mode-line-colors-mode-color "#cccccc"))
+   ((or (member 'modus-vivendi custom-enabled-themes))
+    (setopt my/subtle-mode-line-colors-mode-color "#444444"))
+   (t
+    (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))))
+  (my/subtle-mode-line-colors-mode))
+(add-hook 'emacs-startup-hook #'my/subtle-mode-line-colors-mode-enable-and-refresh)
+(add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-enable-and-refresh)
 
 ;;;; [TOGGLE MODE-LINE]
 (autoload #'my/toggle-mode-line-mode "my-toggle-mode-line-mode"
@@ -707,7 +771,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (setq-local yaml-indent-offset (my/lang-indent-size 'yaml)))
 
 ;;; [END OF INIT.EL]
-(load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :no-error-if-file-is-missing)
+(load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :no-error-if-file-is-missing :nomessage)
 
 ;; ══════════════════════════════════════════════════════════════════════
 ;;

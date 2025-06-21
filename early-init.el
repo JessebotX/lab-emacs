@@ -144,5 +144,5 @@
 (add-hook 'enable-theme-functions #'my/emacs--set-invisible-window-dividers)
 
 ;; End: load post-early-init files
-(load (locate-user-emacs-file "etc/machine-early-init.el") :no-error-if-file-is-missing) ; should be ignored in version control
+(load (locate-user-emacs-file "etc/machine-early-init.el") :no-error-if-file-is-missing :nomessage) ; should be ignored in version control
 

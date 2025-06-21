@@ -39,7 +39,7 @@
 (defvar-local my/mode-line-buffer-narrowed
     '(:eval
       (when (buffer-narrowed-p)
-        (propertize "⮷" 'face 'bold))))
+        (propertize " ><" 'face 'shadow))))
 (put 'my/mode-line-buffer-narrowed 'risky-local-variable t)
 
 (defvar-local my/mode-line-buffer-modified

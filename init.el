@@ -503,7 +503,54 @@ folder, otherwise delete a word."
 (setopt dired-recursive-copies 'always)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
-;; Dired icons.
+;;;; [DIRED SIDE-TREE]
+;; Credit: https://github.com/LionyxML/emacs-solo
+(defun my/dired-side-open (&optional directory-path)
+  "Creates *Dired-Side* like an IDE side explorer."
+  (interactive)
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+
+  (let ((dir (if directory-path
+                 (dired-noselect directory-path)
+               (if (eq (vc-root-dir) nil)
+                   (dired-noselect default-directory)
+                 (dired-noselect (vc-root-dir))))))
+
+    (display-buffer-in-side-window
+     dir `((side . left)
+           (slot . 0)
+           (window-width . 30)
+           (window-parameters . ((no-other-window . t)
+                                 (no-delete-other-windows . t)
+                                 (mode-line-format . (""))))))
+    (with-current-buffer dir
+      (let ((window (get-buffer-window dir)))
+        (when window
+          (select-window window)
+          (rename-buffer "*Dired-Side*"))))))
+
+(defun my/dired-side-open-dir ()
+  "Open the current directory in *Dired-Side* side window."
+  (interactive)
+  (my/dired-side-open (dired-get-file-for-visit)))
+
+(defun my/dired-side-open-dir-back ()
+  "Open the parent directory in *Dired-Side* side window and refresh it."
+  (interactive)
+  (my/dired-side-open "../")
+  (when (get-buffer "*Dired-Side*")
+    (with-current-buffer "*Dired-Side*"
+      (revert-buffer t t))))
+
+(with-eval-after-load 'dired
+  ;; Users should navigate with p/n, enter new directories with =, go back with q,
+  ;; quit with several q's, only use - to access stuff up on the tree from initial
+  ;; directory.
+  (define-key dired-mode-map (kbd "=") 'my/dired-side-open-dir)
+  (define-key dired-mode-map (kbd "-") 'my/dired-side-open-dir-back))
+(keymap-global-set "C-c e" #'my/dired-side-open)
+
+;;;; [DIRED ICONS]
 ;; Credit: https://github.com/LionyxML/emacs-solo
 ;; TODO: Dired parent/current dir are not used
 (defvar my/dired-icons-file-icons
@@ -655,7 +702,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
     (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))))
   (my/subtle-mode-line-colors-mode))
 (add-hook 'emacs-startup-hook #'my/subtle-mode-line-colors-mode-enable-and-refresh)
-(add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-enable-and-refresh)
+(add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 
 ;;;; [TOGGLE MODE-LINE]
 (autoload #'my/toggle-mode-line-mode "my-toggle-mode-line-mode"

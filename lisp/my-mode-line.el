@@ -25,9 +25,9 @@
              mode-line-position))
     mode-line-format-right-align
     mode-line-misc-info
-    my/mode-line-encoding
-    my/mode-line-major-mode
+    ;; my/mode-line-encoding
     (:propertize "λ" face shadow)
+    my/mode-line-major-mode
     )
   "My custom mode-line format.")
 
@@ -70,7 +70,7 @@
                    (not (derived-mode-p 'conf-mode))
                    (not (eq major-mode 'fundamental-mode)))
               (derived-mode-p 'lisp-interaction-mode))
-        (list `(:propertize ("" mode-name) face bold) " "))))
+        (list " " `(:propertize ("" mode-name) face bold)))))
 (put 'my/mode-line-major-mode 'risky-local-variable t)
 
 (defvar-local my/mode-line-encoding

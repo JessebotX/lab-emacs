@@ -35,7 +35,7 @@
     (javascript :size 4 :use-tabs nil)
     (json       :size 4 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
-    (md         :size 2 :use-tabs nil)
+    (markdown   :size 2 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (xml        :size 4 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil))
@@ -648,7 +648,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (cond
    ((or (member 'modus-operandi custom-enabled-themes)
          (member 'modus-operandi-tinted custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#cccccc"))
+    (setopt my/subtle-mode-line-colors-mode-color "#dddddd"))
    ((or (member 'modus-vivendi custom-enabled-themes))
     (setopt my/subtle-mode-line-colors-mode-color "#444444"))
    (t
@@ -746,7 +746,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (defun my/hook--markdown-mode ()
   "Configuration for `markdown-mode'."
-  (my/lang-indent-set-local 'md)
+  (my/lang-indent-set-local 'markdown)
   (visual-line-mode 1))
 (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)
 

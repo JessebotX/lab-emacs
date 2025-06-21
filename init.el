@@ -33,16 +33,16 @@ load.")
 ;; `my/packages-directory'.")
 
 (defcustom my/lang-indent-settings
-  '((cc   :size 4 :use-tabs nil)
-    (css  :size 4 :use-tabs nil)
-    (go   :size 8 :use-tabs   t)
-    (js   :size 4 :use-tabs nil)
-    (json :size 4 :use-tabs nil)
-    (lisp :size 8 :use-tabs nil)
-    (md   :size 2 :use-tabs nil)
-    (org  :size 8 :use-tabs nil)
-    (xml  :size 4 :use-tabs nil)
-    (yaml :size 2 :use-tabs nil))
+  '((cc         :size 4 :use-tabs nil)
+    (css        :size 4 :use-tabs nil)
+    (go         :size 8 :use-tabs   t)
+    (javascript :size 4 :use-tabs nil)
+    (json       :size 4 :use-tabs nil)
+    (lisp       :size 8 :use-tabs nil)
+    (md         :size 2 :use-tabs nil)
+    (org        :size 8 :use-tabs nil)
+    (xml        :size 4 :use-tabs nil)
+    (yaml       :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.
 
@@ -349,7 +349,20 @@ buffer/file contents."
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
-(keymap-global-set "C-w" 'delete-char)
+
+(defun my/kill-region (start end)
+  "Improved `kill-region' to prevent accidentally deleting text when there
+is no region selected."
+  (interactive "r")
+  (if (not (eq start end))
+      (progn
+        (kill-ring-save start end)
+        (set-mark start)
+        (goto-char end)
+        (delete-region start end))
+    (message "No region selected.")))
+(keymap-global-set "C-w" #'my/kill-region) ; better kill region so it doesn't delete half the buffer
+(keymap-global-set "S-<delete>" #'my/kill-region)
 
 (defun my/toggle-fundamental-mode ()
   (interactive)
@@ -431,13 +444,24 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
                    "show diff between the buffer and its file"))
 
 ;;; [MODE-LINE]
-(setopt mode-line-right-align-edge 'window)
+(setopt mode-line-right-align-edge 'right-margin)
 (setopt mode-line-percent-position nil)
 (setopt mode-line-position-line-format '("L%l"))
 (setopt mode-line-position-column-line-format '("%l:%c"))
-(setopt mode-line-compact t)
+(setopt display-time-format "「%-l:%M %p」")
+(setopt display-time-default-load-average nil)
 
-;; (add-hook 'prog-mode-hook #'column-number-mode)
+(add-hook 'emacs-startup-hook (lambda () (line-number-mode -1)))
+(add-hook 'emacs-startup-hook #'display-time-mode)
+
+;; Only show line and column numbers in `prog-mode'-derived modes
+(add-hook 'prog-mode-hook #'line-number-mode)
+(add-hook 'prog-mode-hook #'column-number-mode)
+
+;; My custom mode line
+(autoload #'my/mode-line-mode "my-mode-line"
+  "Minor mode for enabling my custom mode-line." t)
+(add-hook 'emacs-startup-hook #'my/mode-line-mode)
 
 ;;; [AUTO REVERT BUFFERS]
 (setopt global-auto-revert-non-file-buffers t)
@@ -627,8 +651,8 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [JAVASCRIPT]
 (defun my/hook--js-mode ()
   "Configuration for `js-mode' and `js-jsx-mode'."
-  (my/lang-indent-set-local 'js)
-  (setq-local js-indent-level (my/lang-indent-size 'js)))
+  (my/lang-indent-set-local 'javascript)
+  (setq-local js-indent-level (my/lang-indent-size 'javascript)))
 
 (add-hook 'js-mode-hook #'my/hook--js-mode)
 (add-hook 'js-jsx-mode-hook #'my/hook--js-mode)
@@ -670,6 +694,17 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (add-hook 'xml-mode-hook #'my/hook--xml-mode)
 (add-hook 'html-mode-hook #'my/hook--xml-mode)
+
+;;;; [YAML]
+(add-to-list 'load-path (my/locate-user-packages-file "yaml-mode"))
+(autoload #'yaml-mode "yaml-mode"
+  "Major mode for editing YAML files." t)
+(add-to-list 'auto-mode-alist '("\\.\\(?:yml\\|yaml\\)\\'" . yaml-mode))
+
+(defun my/hook--yaml-mode ()
+  "Configuration for `yaml-mode'."
+  (my/lang-indent-set-local 'yaml)
+  (setq-local yaml-indent-offset (my/lang-indent-size 'yaml)))
 
 ;;; [END OF INIT.EL]
 (load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :no-error-if-file-is-missing)

@@ -6,8 +6,11 @@
 
 ;;; Code:
 
+(defcustom my/subtle-mode-line-colors-mode-color (face-foreground 'shadow)
+  "Face for less important mode-line elements.")
+
 (defun my/subtle-mode-line-colors-mode--set-faces (_theme)
-  (let ((subtle (face-foreground 'shadow)))
+  (let ((subtle my/subtle-mode-line-colors-mode-color))
     (custom-set-faces
      `(mode-line ((t :background unspecified :box unspecified :overline ,subtle)))
      `(mode-line-active ((t :inherit mode-line :box unspecified)))

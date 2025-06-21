@@ -448,7 +448,7 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (setopt mode-line-percent-position nil)
 (setopt mode-line-position-line-format '("L%l"))
 (setopt mode-line-position-column-line-format '("%l:%c"))
-(setopt display-time-format "「%-l:%M %p」")
+(setopt display-time-format "[%-l:%M %p]")
 (setopt display-time-default-load-average nil)
 
 (add-hook 'emacs-startup-hook (lambda () (line-number-mode -1)))

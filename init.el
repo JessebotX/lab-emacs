@@ -343,7 +343,13 @@ buffer/file contents."
           (fg-line-number-active fg-main)
           (bg-line-number-inactive unspecified)
           (bg-line-number-active unspecified)))
-(add-hook 'after-init-hook (lambda () (my/set-theme my/theme)))
+
+;; set the theme after init
+(defun my/reset-my-theme ()
+  "Set/reset theme based on the value of `my/theme'."
+  (interactive)
+  (my/set-theme my/theme))
+(add-hook 'after-init-hook #'my/reset-my-theme)
 
 ;; adwaita-dark
 (add-hook 'enable-theme-functions
@@ -647,50 +653,6 @@ folder, otherwise delete a word."
                        (name . "^\\*info\\*$"))))))
 (setopt ibuffer-show-empty-filter-groups nil)
 (keymap-global-set "C-x C-b" 'ibuffer)
-
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
-
-;;; [PULSE]
-;; (defun my/pulse-line (&rest _)
-;;   "Pulse the current line."
-;;   (pulse-momentary-highlight-one-line (point)))
-
-;; (dolist (command '(scroll-up-command
-;;                    scroll-down-command
-;;                    windmove-left
-;;                    windmove-right
-;;                    windmove-down
-;;                    windmove-up
-;;                    forward-paragraph
-;;                    backward-paragraph
-;;                    move-to-window-line-top-bottom
-;;                    recenter-top-bottom
-;;                    other-window
-;;                    beginning-of-buffer
-;;                    end-of-buffer))
-;;   (advice-add command :after #'my/pulse-line))
-
-;; (with-eval-after-load 'markdown-mode
-;;   (dolist (command '(markdown-forward-block
-;;                      markdown-backward-block
-;;                      markdown-forward-paragraph
-;;                      markdown-backward-paragraph
-;;                      markdown-forward-page
-;;                      markdown-backward-page))
-;;     (advice-add command :after #'my/pulse-line)))
-
-;; (with-eval-after-load 'org
-;;   (dolist (command '(org-forward-element
-;;                      org-backward-element
-;;                      org-forward-paragraph
-;;                      org-backward-paragraph
-;;                      org-forward-sentence
-;;                      org-backward-sentence
-;;                      org-forward-heading-same-level
-;;                      org-backward-heading-same-level))
-;;     (advice-add command :after #'my/pulse-line)))
 
 ;; Highlight on copy
 (defun my/pulse-region (orig-fn beg end &rest args)

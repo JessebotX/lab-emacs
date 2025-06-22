@@ -23,6 +23,9 @@
 (defconst my/packages-directory (locate-user-emacs-file "packages")
   "Directory to store external emacs packages that are locally installed.")
 
+(defcustom my/theme 'modus-operandi
+  "Default emacs color theme.")
+
 ;; (defconst my/packages-load-list
 ;;   '()
 ;;   "Package directories to add to `load-path', found in
@@ -32,6 +35,7 @@
   '((cc         :size 4 :use-tabs nil)
     (css        :size 4 :use-tabs nil)
     (go         :size 8 :use-tabs   t)
+    (html       :size 2 :use-tabs nil)
     (javascript :size 4 :use-tabs nil)
     (json       :size 4 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
@@ -74,7 +78,9 @@ symbol and a key to the `my/lang-indent-settings' list.
 If the key or the size property of the language does not exist, then
 return the default indentation size defined in `my/indent-size-default'."
   (let ((val (cdr (assoc lang my/lang-indent-settings))))
-    (plist-get val :size)))
+    (if (plist-get val :size)
+        (plist-get val :size)
+      tab-width)))
 
 (defun my/lang-indent-use-tabs (lang)
   "Get whether indentation will use tabs instead of spaces on
@@ -306,7 +312,7 @@ buffer/file contents."
 
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq custom-file (my/locate-user-etc-file "custom.el"))
 
 ;;; [AUTOSAVES, BACKUPS AND LOCKFILES]
 (setq auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory))
@@ -337,7 +343,18 @@ buffer/file contents."
           (fg-line-number-active fg-main)
           (bg-line-number-inactive unspecified)
           (bg-line-number-active unspecified)))
-(my/set-theme 'modus-operandi)
+(add-hook 'after-init-hook (lambda () (my/set-theme my/theme)))
+
+;; adwaita-dark
+(add-hook 'enable-theme-functions
+          (lambda (&optional _theme)
+            (if (member 'adwaita-dark custom-enabled-themes)
+                (custom-set-faces
+                 '(completions-first-difference ((t :weight normal)))
+                 '(highlight ((t :background "#64a6f6" :foreground "#303030" :distant-foreground "#111111"))))
+              (custom-set-faces
+               '(highlight (()))))))
+
 
 ;;; [KEYBINDINGS]
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
@@ -605,24 +622,29 @@ folder, otherwise delete a word."
 
 (add-hook 'dired-after-readin-hook #'my/dired-icons-add-icons)
 
+;;; [EGLOT LSP SERVER]
+(setopt eglot-autoshutdown t)
+
+;; Requires harper to be installed: https://github.com/Automattic/harper
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(text-mode . ("harper-ls" "--stdio"))))
+
 ;;; [IBUFFER BUFFER LIST]
 (setopt ibuffer-saved-filter-groups
         '(("Default"
-           ("Emacs" (or
-                     (name . "^\\*scratch\\*$")
-                     (name . "^\\*Messages\\*$")
-                     (name . "^\\*Warnings\\*$")
-                     (name . "^\\*Shell Command Output\\*$")
-                     (name . "^\\*Async-native-compile-log\\*$")))
+           ("Emacs" (or (name . "^\\*scratch\\*$")
+                        (name . "^\\*Messages\\*$")
+                        (name . "^\\*Warnings\\*$")
+                        (name . "^\\*Shell Command Output\\*$")
+                        (name . "^\\*Async-native-compile-log\\*$")))
            ("Dired" (mode . dired-mode))
-           ("Terminal" (or
-                        (mode . term-mode)
-                        (mode . shell-mode)
-                        (mode . eshell-mode)))
-           ("Help" (or
-                    (mode . help-mode)
-                    (name . "^\\*Help\\*$")
-                    (name . "^\\*info\\*$"))))))
+           ("Terminal" (or (mode . term-mode)
+                           (mode . shell-mode)
+                           (mode . eshell-mode)))
+           ("Help" (or (mode . help-mode)
+                       (name . "^\\*Help\\*$")
+                       (name . "^\\*info\\*$"))))))
 (setopt ibuffer-show-empty-filter-groups nil)
 (keymap-global-set "C-x C-b" 'ibuffer)
 
@@ -690,17 +712,19 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [SUBTLE MODE LINE COLORS]
 (autoload #'my/subtle-mode-line-colors-mode "my-subtle-mode-line-colors-mode"
   "Minor mode for making mode line colors more subtle." t)
-(defun my/subtle-mode-line-colors-mode-enable-and-refresh ()
+(defun my/subtle-mode-line-colors-mode-enable-and-refresh (&optional _theme)
   (interactive)
   (cond
    ((or (member 'modus-operandi custom-enabled-themes)
          (member 'modus-operandi-tinted custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#dddddd"))
+    (setopt my/subtle-mode-line-colors-mode-color "#dddddd")
+    (my/subtle-mode-line-colors-mode))
    ((or (member 'modus-vivendi custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#444444"))
+    (setopt my/subtle-mode-line-colors-mode-color "#444444")
+    (my/subtle-mode-line-colors-mode))
    (t
-    (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))))
-  (my/subtle-mode-line-colors-mode))
+    (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))
+    (my/subtle-mode-line-colors-mode -1))))
 (add-hook 'emacs-startup-hook #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 (add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 

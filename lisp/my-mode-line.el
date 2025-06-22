@@ -18,11 +18,12 @@
 (defcustom my/mode-line-format
   `("%e"
     my/mode-line-buffer-modified
+    " "
     my/mode-line-buffer-name
     my/mode-line-buffer-narrowed
-    (:propertize " λ " face shadow)
+    my/mode-line-buffer-prog-mode-indicator
     (:eval (when (derived-mode-p 'prog-mode)
-             mode-line-position))
+              mode-line-position))
     mode-line-format-right-align
     mode-line-misc-info
     ;; my/mode-line-encoding
@@ -34,12 +35,13 @@
 (defvar my/mode-line--default-mode-line mode-line-format
   "Default Emacs mode-line.")
 
+
 ;;; SEGMENTS
 
 (defvar-local my/mode-line-buffer-narrowed
     '(:eval
       (when (buffer-narrowed-p)
-        (propertize " ><" 'face 'shadow))))
+        (propertize "><" 'face 'shadow))))
 (put 'my/mode-line-buffer-narrowed 'risky-local-variable t)
 
 (defvar-local my/mode-line-buffer-modified
@@ -47,14 +49,16 @@
       (propertize
        (cond
         ((and buffer-read-only (buffer-file-name))
-         "🔒 ")
+         "🔒")
+        ((derived-mode-p 'dired-mode)
+         "📁")
         ((string-match-p "\\*.*\\*" (buffer-name))
-         "◈ ")
+         "◈")
         ((and (buffer-modified-p)
               (not (string-match-p "\\*.*\\*" (buffer-name))))
-         "○ ")
+         "○")
         (t
-         "● "))
+         "●"))
        'face 'font-lock-variable-name-face)))
 (put 'my/mode-line-buffer-modified 'risky-local-variable t)
 
@@ -63,15 +67,22 @@
       (propertize "%b" 'face 'mode-line-buffer-id)))
 (put 'my/mode-line-buffer-name 'risky-local-variable t)
 
+(defvar-local my/mode-line-buffer-prog-mode-indicator
+    '(:eval
+      (when (derived-mode-p 'prog-mode)
+        (propertize " λ " 'face 'shadow))))
+(put 'my/mode-line-buffer-prog-mode-indicator 'risky-local-variable t)
+
 (defvar-local my/mode-line-major-mode
     '(:eval
       (if (or (and (not (derived-mode-p 'prog-mode))
                    (not (derived-mode-p 'text-mode))
-                   (not (derived-mode-p 'conf-mode))
-                   (not (eq major-mode 'fundamental-mode)))
+                   (not (derived-mode-p 'conf-mode)))
+              (eq major-mode 'fundamental-mode)
               (derived-mode-p 'lisp-interaction-mode))
         (list " " `(:propertize ("" mode-name) face bold)))))
 (put 'my/mode-line-major-mode 'risky-local-variable t)
+
 
 (defvar-local my/mode-line-encoding
     '(:eval

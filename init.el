@@ -261,10 +261,6 @@ buffer/file contents."
 (add-to-list 'load-path (locate-user-emacs-file "lisp"))
 (add-to-list 'load-path (locate-user-emacs-file "modules"))
 
-;; Add packages to `load-path'
-;; (dolist (package my/packages-load-list)
-;;   (add-to-list 'load-path (expand-file-name package my/packages-directory)))
-
 ;;; [BASE CUSTOMIZATION VARIABLES]
 
 ;; Customization variables
@@ -310,7 +306,6 @@ buffer/file contents."
 (setopt ring-bell-function #'ignore) ; disable sound on invalid input
 (setopt scroll-conservatively 101) ; scroll normally
 (setopt scroll-perserve-screen-position t)
-(setopt tab-width my/indent-size-default)
 (setopt undo-limit (* 13 160000))
 (setopt undo-strong-limit (* 13 240000))
 (setopt undo-outer-limit (* 13 24000000))
@@ -324,6 +319,8 @@ buffer/file contents."
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
 (setq custom-file (my/locate-user-etc-file "custom.el"))
+(setq-default tab-width my/indent-size-default)
+(setq-default indent-tabs-mode my/indent-use-tabs-default)
 
 ;;; [AUTOSAVES, BACKUPS AND LOCKFILES]
 (setq auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory))

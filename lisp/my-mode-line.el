@@ -104,10 +104,14 @@
 
          (propertize
           (let* ((s (substring-no-properties vc-mode))
-                 (pos (string-match ":" s)))
+                 (pos (string-match ":" s))
+                 (pos-dash (string-match "-" s)))
             (if pos
                 (substring s (1+ pos))
-              s)) 'face 'shadow)
+              (if pos-dash
+                  (substring s (1+ pos-dash))
+                (string-trim s))))
+          'face 'shadow)
 
          " "))))
 (put 'my/mode-line-vc-branch 'risky-local-variable t)

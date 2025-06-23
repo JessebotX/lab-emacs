@@ -27,6 +27,7 @@
     mode-line-format-right-align
     mode-line-misc-info
     ;; my/mode-line-encoding
+    my/mode-line-vc-branch
     (:propertize "λ" face shadow)
     my/mode-line-major-mode
     )
@@ -41,7 +42,7 @@
 (defvar-local my/mode-line-buffer-narrowed
     '(:eval
       (when (buffer-narrowed-p)
-        (propertize "><" 'face 'shadow))))
+        (propertize " ><" 'face 'shadow))))
 (put 'my/mode-line-buffer-narrowed 'risky-local-variable t)
 
 (defvar-local my/mode-line-buffer-modified
@@ -94,6 +95,22 @@
          'face
          'shadow))))
 (put 'my/mode-line-encoding 'risky-local-variable t)
+
+(defvar-local my/mode-line-vc-branch
+    '(:eval
+      (when vc-mode
+        (list
+         (propertize "⎇ " 'face 'shadow)
+
+         (propertize
+          (let* ((s (substring-no-properties vc-mode))
+                 (pos (string-match ":" s)))
+            (if pos
+                (substring s (1+ pos))
+              s)) 'face 'shadow)
+
+         " "))))
+(put 'my/mode-line-vc-branch 'risky-local-variable t)
 
 ;;; DEFINE MODE
 

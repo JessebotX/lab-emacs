@@ -26,6 +26,10 @@
 (defcustom my/theme 'modus-operandi
   "Default emacs color theme.")
 
+(defcustom my/theme-toggle-options '(modus-operandi adwaita-dark)
+  "Two Emacs themes to toggle between that are available for
+loading (`custom-available-themes').")
+
 ;; (defconst my/packages-load-list
 ;;   '()
 ;;   "Package directories to add to `load-path', found in
@@ -239,6 +243,18 @@ Credit: xahlee.info"
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme theme t)
   (enable-theme theme))
+
+(defun my/theme-toggle ()
+  "Toggle between the two themes stored in `my/theme-toggle-options'"
+  (interactive)
+  ;; TODO
+  (if (= (length my/theme-toggle-options) 2)
+      (let ((theme-1 (car my/theme-toggle-options))
+            (theme-2 (car (cdr my/theme-toggle-options))))
+        (if (member theme-1 custom-enabled-themes)
+            (my/set-theme theme-2)
+          (my/set-theme theme-1)))
+    (message "Variable `my/theme-toggle-options' must have exactly 2 options.")))
 
 (defun my/diff-changes-to-saved-file ()
   "Show diff between the current unsaved buffer/file contents and the saved
@@ -473,7 +489,6 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (setopt display-time-default-load-average nil)
 
 (add-hook 'emacs-startup-hook (lambda () (line-number-mode -1)))
-(add-hook 'emacs-startup-hook #'display-time-mode)
 
 ;; Only show line and column numbers in `prog-mode'-derived modes
 (add-hook 'prog-mode-hook #'line-number-mode)
@@ -684,9 +699,12 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
    ((or (member 'modus-vivendi custom-enabled-themes))
     (setopt my/subtle-mode-line-colors-mode-color "#444444")
     (my/subtle-mode-line-colors-mode))
+   ((or (member 'adwaita-dark custom-enabled-themes))
+    (setopt my/subtle-mode-line-colors-mode-color "#343434")
+    (my/subtle-mode-line-colors-mode))
    (t
     (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))
-    (my/subtle-mode-line-colors-mode -1))))
+    (my/subtle-mode-line-colors-mode 1))))
 (add-hook 'emacs-startup-hook #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 (add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 

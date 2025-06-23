@@ -20,7 +20,7 @@
 (defconst my/auto-save-files-directory (expand-file-name "auto-saves" my/var-directory)
   "Directory to store temporary auto-save files.")
 
-(defconst my/packages-directory (locate-user-emacs-file "packages")
+(defconst my/packages-directory (locate-user-emacs-file "lisp")
   "Directory to store external emacs packages that are locally installed.")
 
 (defcustom my/theme 'modus-operandi
@@ -29,11 +29,6 @@
 (defcustom my/theme-toggle-options '(modus-operandi adwaita-dark)
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
-
-;; (defconst my/packages-load-list
-;;   '()
-;;   "Package directories to add to `load-path', found in
-;; `my/packages-directory'.")
 
 (defcustom my/lang-indent-settings
   '((cc         :size 4 :use-tabs nil)

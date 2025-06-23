@@ -13,6 +13,7 @@
 (define-minor-mode my/toggle-mode-line-mode
   "Toggle visibility of the mode-line."
   :global t
+  :group 'mode-line
   (if my/toggle-mode-line-mode
       (setq-default mode-line-format nil)
     (setq-default mode-line-format my/toggle-mode-line-mode--default-format)))

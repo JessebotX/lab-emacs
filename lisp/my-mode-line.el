@@ -31,7 +31,9 @@
     (:propertize "λ" face shadow)
     my/mode-line-major-mode
     )
-  "My custom mode-line format.")
+  "My custom mode-line format."
+  :group 'my/mode-line
+  :type '(list string))
 
 (defvar my/mode-line--default-mode-line mode-line-format
   "Default Emacs mode-line.")

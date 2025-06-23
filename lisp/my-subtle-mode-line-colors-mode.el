@@ -7,7 +7,9 @@
 ;;; Code:
 
 (defcustom my/subtle-mode-line-colors-mode-color (face-foreground 'shadow)
-  "Face for less important mode-line elements.")
+  "Face for less important mode-line elements."
+  :group 'mode-line
+  :type 'string)
 
 (defun my/subtle-mode-line-colors-mode--set-faces (_theme)
   (let ((subtle my/subtle-mode-line-colors-mode-color))
@@ -26,6 +28,7 @@
 (define-minor-mode my/subtle-mode-line-colors-mode
   "Make mode-line colors more subtle."
   :global t
+  :group 'mode-line
   (if my/subtle-mode-line-colors-mode
       (progn
         (my/subtle-mode-line-colors-mode--set-faces nil)

@@ -109,15 +109,15 @@ may still need to modify the major-mode specific indent settings."
   (setq-local tab-width (my/lang-indent-size lang))
   (setq-local indent-tabs-mode (my/lang-indent-use-tabs lang)))
 
-(defun my/locate-user-var-file (path)
+(defun my/get-var-file (path)
   "Return absolute file path of PATH relatie to `my/var-directory'."
   (expand-file-name (convert-standard-filename path) my/var-directory))
 
-(defun my/locate-user-etc-file (path)
+(defun my/get-etc-file (path)
   "Return absolute file path of PATH relative to `my/etc-directory'."
   (expand-file-name (convert-standard-filename path) my/etc-directory))
 
-(defun my/locate-user-packages-file (path)
+(defun my/get-packages-file (path)
   "Return absolute file path of PATH relative to `my/packages-directory'."
   (expand-file-name (convert-standard-filename path) my/packages-directory))
 
@@ -266,7 +266,7 @@ buffer/file contents."
 ;; Customization variables
 (setopt ad-redefinition-action 'accept) ; disable warning about advice de/activation
 (setopt backward-delete-char-untabify-method 'hungry)
-(setopt bookmark-default-file (my/locate-user-etc-file "bookmarks"))
+(setopt bookmark-default-file (my/get-etc-file "bookmarks"))
 (setopt completion-ignore-case t)
 (setopt delete-by-moving-to-trash t)
 (setopt display-line-numbers-width 3)
@@ -318,7 +318,7 @@ buffer/file contents."
 
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
-(setq custom-file (my/locate-user-etc-file "custom.el"))
+(setq custom-file (my/get-etc-file "custom.el"))
 (setq-default tab-width my/indent-size-default)
 (setq-default indent-tabs-mode my/indent-use-tabs-default)
 
@@ -710,7 +710,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 ;;; [OTHER PACKAGES]
 ;;;; [OLIVETTI]
-(add-to-list 'load-path (my/locate-user-packages-file "olivetti"))
+(add-to-list 'load-path (my/get-packages-file "olivetti"))
 (autoload #'olivetti-mode "olivetti"
   "Minor mode for providing a nice writing environment." t)
 
@@ -745,7 +745,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'css-mode-hook #'my/hook--css-mode)
 
 ;;;; [GO]
-(add-to-list 'load-path (my/locate-user-packages-file "go-mode"))
+(add-to-list 'load-path (my/get-packages-file "go-mode"))
 (autoload #'go-mode "go-mode"
   "Major mode for editing Go files." t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
@@ -782,7 +782,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'lisp-mode-hook #'my/hook--lisp-mode)
 
 ;;;; [MARKDOWN]
-(add-to-list 'load-path (my/locate-user-packages-file "markdown-mode"))
+(add-to-list 'load-path (my/get-packages-file "markdown-mode"))
 (autoload #'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files." t)
 (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|txt\\)\\'" . markdown-mode))
@@ -803,7 +803,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'html-mode-hook #'my/hook--xml-mode)
 
 ;;;; [YAML]
-(add-to-list 'load-path (my/locate-user-packages-file "yaml-mode"))
+(add-to-list 'load-path (my/get-packages-file "yaml-mode"))
 (autoload #'yaml-mode "yaml-mode"
   "Major mode for editing YAML files." t)
 (add-to-list 'auto-mode-alist '("\\.\\(?:yml\\|yaml\\)\\'" . yaml-mode))
@@ -814,7 +814,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (setq-local yaml-indent-offset (my/lang-indent-size 'yaml)))
 
 ;;; [END OF INIT.EL]
-(load (locate-user-emacs-file (my/locate-user-etc-file "machine-init.el")) :no-error-if-file-is-missing :nomessage)
+(load (my/get-etc-file "machine-init.el") :no-error-if-file-is-missing :nomessage)
 
 ;; ══════════════════════════════════════════════════════════════════════
 ;;

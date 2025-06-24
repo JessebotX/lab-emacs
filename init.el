@@ -671,6 +671,10 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (advice-add 'kill-ring-save :around #'my/pulse-region)
 
+;;; [PROJECTS]
+(with-eval-after-load 'project
+  (setopt project-list-file (my/get-var-file "projects.el")))
+
 ;;; [WHITESPACE]
 (setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
 (setopt whitespace-style '(face tabs tab-mark trailing))

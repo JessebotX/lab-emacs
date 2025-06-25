@@ -23,6 +23,14 @@
 (defconst my/packages-directory (locate-user-emacs-file "lisp")
   "Directory to store external emacs packages that are locally installed.")
 
+(defcustom my/terminal nil
+  "Default terminal to open for `my/open-in-terminal'. If nil, use
+platform-specific defaults defined in `my/open-in-terminal'.")
+
+(defcustom my/terminal-args nil
+  "Program arguments to pass into terminal. Used in `my/open-in-terminal'
+only when `my/terminal' is non-nil.")
+
 (defcustom my/theme 'modus-operandi
   "Default emacs color theme.")
 
@@ -132,6 +140,13 @@ may still need to modify the major-mode specific indent settings."
 Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"
   (interactive)
   (cond
+   (my/terminal
+    (start-process
+     ""
+     nil
+     my/terminal
+     (if my/terminal-args
+         (format my/terminal-args (expand-file-name default-directory)))))
    ((eq system-type 'windows-nt)
     (shell-command (format "wt -d \"%s\"" default-directory)))
    ((eq system-type 'darwin)
@@ -378,6 +393,7 @@ buffer/file contents."
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
+(keymap-global-set "C-c C-l" 'display-line-numbers-mode)
 
 (defun my/kill-region (start end)
   "Improved `kill-region' to prevent accidentally deleting text when there
@@ -673,7 +689,13 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 ;;; [PROJECTS]
 (with-eval-after-load 'project
+  (keymap-global-set "C-x C-p" 'project-find-file)
   (setopt project-list-file (my/get-var-file "projects.el")))
+
+;;; [WHICH-KEY]
+(setopt which-key-idle-delay 0.1)
+(add-hook 'emacs-startup-hook #'which-key-mode)
+
 
 ;;; [WHITESPACE]
 (setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))

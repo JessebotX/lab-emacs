@@ -59,9 +59,9 @@
 ;;; [OTHER SETTINGS]
 (setq site-run-file nil)
 
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
-(setq default-input-method nil)
+;(set-language-environment "UTF-8")
+;(set-default-coding-systems 'utf-8)
+;(setq default-input-method nil)
 
 (setq garbage-collection-messages my/emacs-debug)
 (setq package-enable-at-startup nil)

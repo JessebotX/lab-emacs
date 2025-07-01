@@ -688,8 +688,8 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (advice-add 'kill-ring-save :around #'my/pulse-region)
 
 ;;; [PROJECTS]
+(keymap-global-set "C-x C-p" 'project-find-file)
 (with-eval-after-load 'project
-  (keymap-global-set "C-x C-p" 'project-find-file)
   (setopt project-list-file (my/get-var-file "projects.el")))
 
 ;;; [WHICH-KEY]

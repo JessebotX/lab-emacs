@@ -247,6 +247,11 @@ Credit: xahlee.info"
   (interactive "nNew font size: ")
   (set-face-attribute 'default nil :height value))
 
+(defun my/font-family-set (family)
+  "Set emacs font family on the `default' face."
+  (interactive "sFont family: ")
+  (set-face-attribute 'default nil :family family))
+
 (defun my/set-theme (theme)
   "Set the current emacs theme to THEME. Disables all other themes."
   (interactive (list (intern (completing-read "Theme: " (custom-available-themes)))))

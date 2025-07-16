@@ -758,6 +758,28 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (olivetti-mode -1))
 
 ;;; [LANGUAGES]
+;;;; [TEXT MODES]
+(defun my/hook--text-mode ()
+  "Configuration for `text-mode' buffers."
+  (interactive)
+  (visual-line-mode 1))
+(add-hook 'text-mode-hook #'my/hook--text-mode)
+
+;;;; [ASCIIDOC]
+(add-to-list 'load-path (my/get-packages-file "adoc-mode"))
+(autoload #'adoc-mode "adoc-mode"
+  "Major mode for editing AsciiDoc files." t)
+(add-to-list 'auto-mode-alist '("\\.adoc\\'" . adoc-mode))
+
+(with-eval-after-load 'adoc-mode
+  (custom-set-faces
+   '(adoc-title-0-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-1-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-2-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-3-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-4-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-5-face ((t :height 1.0 :inherit adoc-title-face)))))
+
 ;;;; [C / C++]
 (defun my/hook--cc-mode ()
   "Settings for `c-mode' and `c++-mode'"

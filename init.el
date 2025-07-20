@@ -740,6 +740,13 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Minor mode for showing the mode-line." t)
 
 ;;; [OTHER PACKAGES]
+;;;; [ADAPTIVE WRAP]
+;; Visually indents wrapped lines
+(add-to-list 'load-path (my/get-packages-file "adaptive-wrap"))
+(autoload #'adaptive-wrap-prefix-mode "adaptive-wrap"
+  "Minor mode that visually indents wrapped lines." t)
+(add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)
+
 ;;;; [OLIVETTI]
 (add-to-list 'load-path (my/get-packages-file "olivetti"))
 (autoload #'olivetti-mode "olivetti"

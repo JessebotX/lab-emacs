@@ -740,6 +740,13 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Minor mode for showing the mode-line." t)
 
 ;;; [OTHER PACKAGES]
+;;;; [ADAPTIVE WRAP]
+;; Visually indents wrapped lines
+(add-to-list 'load-path (my/get-packages-file "adaptive-wrap"))
+(autoload #'adaptive-wrap-prefix-mode "adaptive-wrap"
+  "Minor mode that visually indents wrapped lines." t)
+(add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)
+
 ;;;; [OLIVETTI]
 (add-to-list 'load-path (my/get-packages-file "olivetti"))
 (autoload #'olivetti-mode "olivetti"
@@ -748,12 +755,14 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (defun my/writeroom-enable ()
   "Start nice writing environment."
   (interactive)
+  (whitespace-mode -1)
   (my/toggle-mode-line-mode 1) ; TODO: make this buffer-local action
   (olivetti-mode 1))
 
 (defun my/writeroom-disable ()
   "Quit nice writing environment."
   (interactive)
+  (whitespace-mode 1)
   (my/toggle-mode-line-mode -1)
   (olivetti-mode -1))
 

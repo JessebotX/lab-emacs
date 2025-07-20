@@ -399,6 +399,7 @@ buffer/file contents."
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
 (keymap-global-set "C-c C-l" 'display-line-numbers-mode)
+(keymap-global-set "C-c C-SPC" 'just-one-space)
 
 (defun my/kill-region (start end)
   "Improved `kill-region' to prevent accidentally deleting text when there
@@ -656,6 +657,13 @@ folder, otherwise delete a word."
 
 (add-hook 'dired-after-readin-hook #'my/dired-icons-add-icons)
 
+;;;; [DIRED IMAGES / IMAGE-DIRED]
+(setopt image-dired-db-file (my/get-var-file "image-dired/db.el"))
+(setopt image-dired-dir (my/get-var-file "image-dired/"))
+(setopt image-dired-gallery-dir (my/get-var-file "image-dired/gallery/"))
+(setopt image-dired-temp-image-file (my/get-var-file "image-dired/temp-image"))
+(setopt image-dired-temp-rotate-image-file (my/get-var-file "image-dired/temp-rotate-image"))
+
 ;;; [EGLOT LSP SERVER]
 (setopt eglot-autoshutdown t)
 
@@ -663,6 +671,12 @@ folder, otherwise delete a word."
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                '(text-mode . ("harper-ls" "--stdio"))))
+
+;;; [EWW BROWSER]
+(setopt url-cache-directory (my/get-var-file "url/cache/"))
+(setopt url-configuration-directory (my/get-var-file "url/"))
+(setopt url-cookie-file (my/get-var-file "url/cookies.el"))
+(setopt url-history-file (my/get-var-file "url/history.el"))
 
 ;;; [IBUFFER BUFFER LIST]
 (setopt ibuffer-saved-filter-groups

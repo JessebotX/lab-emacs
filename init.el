@@ -334,7 +334,7 @@ buffer/file contents."
 (setopt uniquify-separator "/")
 (setopt use-short-answers t)
 (setopt visible-bell nil) ; disable visual indicator of invalid input
-(setopt word-wrap t)
+;(setopt word-wrap nil)
 
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
@@ -859,6 +859,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (defun my/hook--xml-mode ()
   "Configuration for `html-mode'."
   (my/lang-indent-set-local 'html)
+  (setq-local word-wrap nil)
   (setq-local sgml-basic-offset (my/lang-indent-size 'html)))
 
 (add-hook 'xml-mode-hook #'my/hook--xml-mode)

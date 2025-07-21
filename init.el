@@ -24,11 +24,11 @@
   "Directory to store external emacs packages that are locally installed.")
 
 (defcustom my/terminal nil
-  "Default terminal to open for `my/open-in-terminal'. If nil, use
-platform-specific defaults defined in `my/open-in-terminal'.")
+  "Default terminal to open for `my/open-terminal'. If nil, use
+platform-specific defaults defined in `my/open-terminal'.")
 
 (defcustom my/terminal-args nil
-  "Program arguments to pass into terminal. Used in `my/open-in-terminal'
+  "Program arguments to pass into terminal. Used in `my/open-terminal'
 only when `my/terminal' is non-nil.")
 
 (defcustom my/theme 'modus-operandi
@@ -118,7 +118,7 @@ may still need to modify the major-mode specific indent settings."
   (setq-local indent-tabs-mode (my/lang-indent-use-tabs lang)))
 
 (defun my/get-var-file (path)
-  "Return absolute file path of PATH relatie to `my/var-directory'."
+  "Return absolute file path of PATH relative to `my/var-directory'."
   (expand-file-name (convert-standard-filename path) my/var-directory))
 
 (defun my/get-etc-file (path)
@@ -134,7 +134,7 @@ may still need to modify the major-mode specific indent settings."
   (interactive)
   (find-file user-init-file))
 
-(defun my/open-in-terminal ()
+(defun my/open-terminal ()
   "Open the current directory in the terminal
 
 Credit: http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html"

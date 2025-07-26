@@ -41,7 +41,7 @@ loading (`custom-available-themes').")
 (defcustom my/lang-indent-settings
   '((cc         :size 4 :use-tabs nil)
     (css        :size 4 :use-tabs nil)
-    (go         :size 8 :use-tabs   t)
+    (go         :size 4 :use-tabs   t)
     (html       :size 2 :use-tabs nil)
     (javascript :size 4 :use-tabs nil)
     (json       :size 4 :use-tabs nil)
@@ -294,7 +294,6 @@ buffer/file contents."
 (setopt display-line-numbers-type 'relative)
 (setopt enable-recursive-minibuffers t)
 (setopt fast-but-imprecise-scrolling t)
-;; (setopt fill-column 70)
 (setopt grep-command "rg -nHS --no-heading --null ")
 (setopt grep-find-ignored-directories
         '("SCCS"
@@ -339,6 +338,7 @@ buffer/file contents."
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
 (setq custom-file (my/get-etc-file "custom.el"))
+(setq-default fill-column 72)
 (setq-default tab-width my/indent-size-default)
 (setq-default indent-tabs-mode my/indent-use-tabs-default)
 

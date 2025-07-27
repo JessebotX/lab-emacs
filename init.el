@@ -400,6 +400,7 @@ buffer/file contents."
 (keymap-global-set "C-x C-z" nil)
 (keymap-global-set "C-c C-l" 'display-line-numbers-mode)
 (keymap-global-set "C-c C-SPC" 'just-one-space)
+(keymap-global-set "C-c C-c" 'compile)
 
 (defun my/kill-region (start end)
   "Improved `kill-region' to prevent accidentally deleting text when there
@@ -685,7 +686,10 @@ folder, otherwise delete a word."
                         (name . "^\\*Messages\\*$")
                         (name . "^\\*Warnings\\*$")
                         (name . "^\\*Shell Command Output\\*$")
-                        (name . "^\\*Async-native-compile-log\\*$")))
+                        (name . "^\\*Async-native-compile-log\\*$")
+                        (mode . compilation-mode)
+                        (mode . special-mode)
+                        (mode . vc-dir-mode)))
            ("Dired" (mode . dired-mode))
            ("Terminal" (or (mode . term-mode)
                            (mode . shell-mode)

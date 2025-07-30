@@ -553,6 +553,7 @@ folder, otherwise delete a word."
 
 ;;; [DIRED]
 (setopt dired-hide-details-hide-symlink-targets nil)
+(setopt dired-listing-switches "-al --group-directories-first")
 (setopt dired-recursive-copies 'always)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
@@ -834,6 +835,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (defun my/hook--go-mode ()
   "Configuration for `go-mode'."
+  (keymap-set go-mode-map "C-c g" #'gofmt)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)
 

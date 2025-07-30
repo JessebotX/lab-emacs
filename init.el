@@ -696,6 +696,7 @@ folder, otherwise delete a word."
                        (mode . special-mode)
                        (mode . change-log-mode)
                        (mode . vc-dir-mode)
+                       (mode . diff-mode)
                        (name . "^\\*vc\\*$")))
            ("Help" (or (mode . help-mode)
                        (name . "^\\*Help\\*$")

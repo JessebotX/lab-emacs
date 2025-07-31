@@ -836,6 +836,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (defun my/hook--go-mode ()
   "Configuration for `go-mode'."
+  (setq-local compile-command "go build ")
   (keymap-set go-mode-map "C-c g" #'gofmt)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)

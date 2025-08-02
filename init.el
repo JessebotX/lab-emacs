@@ -834,6 +834,9 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Major mode for editing Go files." t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 
+(with-eval-after-load 'go-mode
+  (setopt gofmt-args '("-s")))
+
 (defun my/hook--go-mode ()
   "Configuration for `go-mode'."
   (setq-local compile-command "go build ")

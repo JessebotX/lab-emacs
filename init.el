@@ -40,10 +40,10 @@ loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
   '((cc         :size 4 :use-tabs nil)
-    (css        :size 4 :use-tabs nil)
+    (css        :size 1 :use-tabs nil)
     (go         :size 4 :use-tabs   t)
-    (html       :size 2 :use-tabs nil)
-    (javascript :size 4 :use-tabs nil)
+    (html       :size 1 :use-tabs nil)
+    (javascript :size 1 :use-tabs nil)
     (json       :size 4 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)

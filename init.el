@@ -730,6 +730,8 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'text-mode-hook #'whitespace-mode)
 (add-hook 'prog-mode-hook #'whitespace-mode)
 
+(keymap-global-set "C-c m w" 'whitespace-mode)
+
 ;;; [OTHER LISP]
 ;;;; [SUBTLE MODE LINE COLORS]
 (autoload #'my/subtle-mode-line-colors-mode "my-subtle-mode-line-colors-mode"
@@ -774,19 +776,21 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (autoload #'olivetti-mode "olivetti"
   "Minor mode for providing a nice writing environment." t)
 
-(defun my/writeroom-enable ()
-  "Start nice writing environment."
-  (interactive)
-  (whitespace-mode -1)
-  (my/toggle-mode-line-mode 1) ; TODO: make this buffer-local action
-  (olivetti-mode 1))
+(defvar my/writeroom-mode)
+(define-minor-mode my/writeroom-mode
+  "Minor mode that toggles a nice writing environment"
+  :global t
+  (if my/writeroom-mode
+      (progn
+        (whitespace-mode -1)
+        (my/toggle-mode-line-mode 1) ; TODO: make this buffer-local action
+        (olivetti-mode 1))
+    (progn
+      (whitespace-mode 1)
+      (my/toggle-mode-line-mode -1)
+      (olivetti-mode -1))))
 
-(defun my/writeroom-disable ()
-  "Quit nice writing environment."
-  (interactive)
-  (whitespace-mode 1)
-  (my/toggle-mode-line-mode -1)
-  (olivetti-mode -1))
+(keymap-global-set "C-c m t t" #'my/writeroom-mode)
 
 ;;; [LANGUAGES]
 ;;;; [TEXT MODES]

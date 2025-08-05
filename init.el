@@ -39,7 +39,7 @@ only when `my/terminal' is non-nil.")
 loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
-  '((cc         :size 4 :use-tabs nil)
+  '((cc         :size 1 :use-tabs nil)
     (css        :size 1 :use-tabs nil)
     (go         :size 1 :use-tabs   t)
     (html       :size 1 :use-tabs nil)
@@ -48,7 +48,7 @@ loading (`custom-available-themes').")
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)
     (org        :size 8 :use-tabs nil)
-    (xml        :size 4 :use-tabs nil)
+    (xml        :size 1 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.

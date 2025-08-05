@@ -41,10 +41,10 @@ loading (`custom-available-themes').")
 (defcustom my/lang-indent-settings
   '((cc         :size 4 :use-tabs nil)
     (css        :size 1 :use-tabs nil)
-    (go         :size 4 :use-tabs   t)
+    (go         :size 1 :use-tabs   t)
     (html       :size 1 :use-tabs nil)
     (javascript :size 1 :use-tabs nil)
-    (json       :size 4 :use-tabs nil)
+    (json       :size 1 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)
     (org        :size 8 :use-tabs nil)
@@ -845,6 +845,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Configuration for `go-mode'."
   (setq-local compile-command "go build ")
   (keymap-set go-mode-map "C-c g" #'gofmt)
+  (whitespace-mode -1)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)
 
@@ -860,6 +861,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [JSON]
 (defun my/hook--js-json-mode ()
   "Configuration for `js-json-mode'"
+  (setq-local js-indent-level (my/lang-indent-size 'json))
   (my/lang-indent-set-local 'json))
 
 (add-hook 'js-json-mode-hook #'my/hook--js-json-mode)

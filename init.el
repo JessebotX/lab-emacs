@@ -820,6 +820,8 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Settings for `c-mode' and `c++-mode'"
   (c-set-style "bsd")
   (my/lang-indent-set-local 'cc)
+  (keymap-set c-mode-map "C-c C-c" 'compile)
+  (keymap-set c++-mode-map "C-c C-c" 'compile)
   (setq-local c-basic-offset (my/lang-indent-size 'cc)))
 
 (add-hook 'c-mode-hook #'my/hook--cc-mode)

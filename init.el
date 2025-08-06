@@ -790,7 +790,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
       (my/toggle-mode-line-mode -1)
       (olivetti-mode -1))))
 
-(keymap-global-set "C-c m t t" #'my/writeroom-mode)
+(keymap-global-set "C-c m t t" #'my/writeroom-)
 
 ;;; [LANGUAGES]
 ;;;; [TEXT MODES]
@@ -847,7 +847,6 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   "Configuration for `go-mode'."
   (setq-local compile-command "go build ")
   (keymap-set go-mode-map "C-c g" #'gofmt)
-  (whitespace-mode -1)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)
 

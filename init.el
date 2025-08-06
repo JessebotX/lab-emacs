@@ -44,11 +44,11 @@ loading (`custom-available-themes').")
     (go         :size 3 :use-tabs   t)
     (html       :size 3 :use-tabs nil)
     (javascript :size 3 :use-tabs nil)
-    (json       :size 3 :use-tabs nil)
+    (json       :size 2 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)
     (org        :size 8 :use-tabs nil)
-    (xml        :size 1 :use-tabs nil)
+    (xml        :size 2 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.
@@ -725,7 +725,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 
 ;;; [WHITESPACE]
-(setopt whitespace-display-mappings '((tab-mark 9 [#x21e5 9] [92 9])))
+(setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9]))) ; 7C = |
 (setopt whitespace-style '(face tabs tab-mark trailing))
 (add-hook 'text-mode-hook #'whitespace-mode)
 (add-hook 'prog-mode-hook #'whitespace-mode)

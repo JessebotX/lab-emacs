@@ -39,12 +39,12 @@ only when `my/terminal' is non-nil.")
 loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
-  '((cc         :size 1 :use-tabs nil)
-    (css        :size 1 :use-tabs nil)
-    (go         :size 1 :use-tabs   t)
-    (html       :size 1 :use-tabs nil)
-    (javascript :size 1 :use-tabs nil)
-    (json       :size 1 :use-tabs nil)
+  '((cc         :size 3 :use-tabs nil)
+    (css        :size 3 :use-tabs nil)
+    (go         :size 3 :use-tabs   t)
+    (html       :size 3 :use-tabs nil)
+    (javascript :size 3 :use-tabs nil)
+    (json       :size 3 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)
     (org        :size 8 :use-tabs nil)
@@ -62,7 +62,7 @@ is the width of each indent in columns, and USE-TABS is a boolean where
 if non-nil, indentation will use tabs instead of spaces."
   :group 'indent)
 
-(defcustom my/indent-size-default 4
+(defcustom my/indent-size-default 3
   "Size of indentation, in columns. Wrapper around `tab-width'."
   :group 'indent
   :type '(natnum))

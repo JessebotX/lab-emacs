@@ -39,14 +39,14 @@ only when `my/terminal' is non-nil.")
 loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
-  '((cc         :size 3 :use-tabs   t)
-    (css        :size 3 :use-tabs   t)
-    (go         :size 3 :use-tabs   t)
-    (html       :size 1 :use-tabs nil)
-    (javascript :size 3 :use-tabs   t)
-    (json       :size 2 :use-tabs nil)
+  '((cc         :size 3 :use-tabs t)
+    (css        :size 3 :use-tabs t)
+    (go         :size 3 :use-tabs t)
+    (html       :size 3 :use-tabs t)
+    (javascript :size 3 :use-tabs t)
+    (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
-    (markdown   :size 2 :use-tabs   t)
+    (markdown   :size 2 :use-tabs t)
     (org        :size 8 :use-tabs nil)
     (xml        :size 2 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil))
@@ -735,7 +735,9 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 
 ;;; [WHITESPACE]
-(setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9]))) ; 7C = |
+(setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))
+                                        ; 7C = |
+;; (setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9])))
 (setopt whitespace-style '(face tabs tab-mark trailing))
 (add-hook 'text-mode-hook #'whitespace-mode)
 (add-hook 'prog-mode-hook #'whitespace-mode)
@@ -838,6 +840,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'c++-mode-hook #'my/hook--cc-mode)
 
 ;;;; [CSS]
+(setq-default css-indent-offset (my/lang-indent-size 'css))
 (defun my/hook--css-mode ()
   "Configuration for `css-mode'."
   (my/lang-indent-set-local 'css)
@@ -861,6 +864,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'go-mode-hook #'my/hook--go-mode)
 
 ;;;; [JAVASCRIPT]
+(setq-default js-indent-level (my/lang-indent-size 'js))
 (defun my/hook--js-mode ()
   "Configuration for `js-mode' and `js-jsx-mode'."
   (my/lang-indent-set-local 'javascript)
@@ -900,10 +904,10 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)
 
 ;;;; [XML / HTML]
+(setq-default sgml-basic-offset (my/lang-indent-size 'html))
 (defun my/hook--xml-mode ()
   "Configuration for `html-mode'."
   (my/lang-indent-set-local 'html)
-  (setq-local word-wrap nil)
   (setq-local sgml-basic-offset (my/lang-indent-size 'html)))
 
 (add-hook 'xml-mode-hook #'my/hook--xml-mode)

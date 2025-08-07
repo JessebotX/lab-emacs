@@ -353,6 +353,16 @@ buffer/file contents."
 ;; 👋 Display emojis 🖥️⌨️🖱️
 (defun my/fonts-enable-emojis ()
   (set-fontset-font
+   t 'symbol
+   (cond
+    ((member "Adwaita Sans Text" (font-family-list)) "Adwaita Sans Text")
+    ((member "Adwaita Sans" (font-family-list)) "Adwaita Sans")
+    ((member "JuliaMono" (font-family-list)) "JuliaMono")
+    ((member "Cascadia Code" (font-family-list)) "Cascadia Code")
+    ((member "Cascadia Mono" (font-family-list)) "Cascadia Mono")
+    ((member "Consolas" (font-family-list)) "Consolas")))
+
+  (set-fontset-font
    t 'emoji
    (cond
     ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")

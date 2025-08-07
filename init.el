@@ -39,11 +39,11 @@ only when `my/terminal' is non-nil.")
 loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
-  '((cc         :size 3 :use-tabs nil)
-    (css        :size 1 :use-tabs nil)
+  '((cc         :size 3 :use-tabs   t)
+    (css        :size 3 :use-tabs   t)
     (go         :size 3 :use-tabs   t)
     (html       :size 1 :use-tabs nil)
-    (javascript :size 3 :use-tabs nil)
+    (javascript :size 3 :use-tabs   t)
     (json       :size 2 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs   t)
@@ -67,7 +67,7 @@ if non-nil, indentation will use tabs instead of spaces."
   :group 'indent
   :type '(natnum))
 
-(defcustom my/indent-use-tabs-default nil
+(defcustom my/indent-use-tabs-default t
   "If non-nil, indentation will use tabs instead of spaces. Wrapper around
 `indent-tabs-mode'."
   :group 'indent

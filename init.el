@@ -370,6 +370,7 @@ buffer/file contents."
     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
     ((member "Symbola" (font-family-list)) "Symbola"))))
+
 (add-hook 'emacs-startup-hook 'my/fonts-enable-emojis)
 ;;(my/fonts-enable-emojis)
 
@@ -802,9 +803,14 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
       (my/toggle-mode-line-mode -1)
       (olivetti-mode -1))))
 
-(keymap-global-set "C-c m t t" #'my/writeroom-)
+(keymap-global-set "C-c m t t" #'my/writeroom-mode)
 
 ;;; [LANGUAGES]
+(defun my/paragraph-default-movement-local ()
+  (interactive)
+  (setq-local paragraph-start (default-value 'paragraph-start))
+  (setq-local paragraph-separate (default-value 'paragraph-separate)))
+
 ;;;; [TEXT MODES]
 (defun my/hook--text-mode ()
   "Configuration for `text-mode' buffers."
@@ -907,6 +913,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (setq-default sgml-basic-offset (my/lang-indent-size 'html))
 (defun my/hook--xml-mode ()
   "Configuration for `html-mode'."
+  (my/paragraph-default-movement-local)
   (my/lang-indent-set-local 'html)
   (setq-local sgml-basic-offset (my/lang-indent-size 'html)))
 

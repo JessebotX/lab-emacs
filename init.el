@@ -493,6 +493,7 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
                     (float-time
                      (time-subtract after-init-time before-init-time)))))
 
+  (electric-indent-mode -1)
   (blink-cursor-mode -1)
   (delete-selection-mode 1))
 (add-hook 'after-init-hook #'my/hook--after-init)

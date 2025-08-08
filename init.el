@@ -247,12 +247,12 @@ Credit: xahlee.info"
   (interactive "nNew font size: ")
   (set-face-attribute 'default nil :height value))
 
-(defun my/font-family-set (family)
-  "Set emacs font family on the `default' face."
-  (interactive "sFont family: ")
-  (set-face-attribute 'default nil :family family))
+(defun my/font-family-set (font)
+  "Set emacs `default' face's font family."
+  (interactive (list (completing-read "Font: " (font-family-list))))
+  (set-face-attribute 'default nil :family font))
 
-(defun my/set-theme (theme)
+(defun my/theme-set (theme)
   "Set the current emacs theme to THEME. Disables all other themes."
   (interactive (list (intern (completing-read "Theme: " (custom-available-themes)))))
   (mapc #'disable-theme custom-enabled-themes)
@@ -267,8 +267,8 @@ Credit: xahlee.info"
       (let ((theme-1 (car my/theme-toggle-options))
             (theme-2 (car (cdr my/theme-toggle-options))))
         (if (member theme-1 custom-enabled-themes)
-            (my/set-theme theme-2)
-          (my/set-theme theme-1)))
+            (my/theme-set theme-2)
+          (my/theme-set theme-1)))
     (message "Variable `my/theme-toggle-options' must have exactly 2 options.")))
 
 (defun my/diff-changes-to-saved-file ()
@@ -384,11 +384,11 @@ buffer/file contents."
           (bg-line-number-active unspecified)))
 
 ;; set the theme after init
-(defun my/reset-my-theme ()
+(defun my/theme-read-my-theme ()
   "Set/reset theme based on the value of `my/theme'."
   (interactive)
-  (my/set-theme my/theme))
-(add-hook 'after-init-hook #'my/reset-my-theme)
+  (my/theme-set my/theme))
+(add-hook 'after-init-hook #'my/theme-read-my-theme)
 
 ;; adwaita-dark
 (add-hook 'enable-theme-functions

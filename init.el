@@ -227,7 +227,7 @@ Credit: xahlee.info"
          (mod-size  (mod new-size 10)))
     (message "New: %d, Mod: %d" new-size mod-size)
     (if (eq mod-size 0)
-          (set-face-attribute 'default nil :height new-size)
+        (set-face-attribute 'default nil :height new-size)
       (set-face-attribute 'default nil :height (- new-size mod-size))))
   (message "New font size %d" (face-attribute 'default :height)))
 
@@ -239,7 +239,7 @@ Credit: xahlee.info"
          (mod-size  (mod new-size 10)))
     (message "New: %d, Mod: %d" new-size mod-size)
     (if (eq mod-size 0)
-          (set-face-attribute 'default nil :height new-size)
+        (set-face-attribute 'default nil :height new-size)
       (set-face-attribute 'default nil :height (- new-size mod-size))))
   (message "New font size %d" (face-attribute 'default :height)))
 
@@ -263,7 +263,6 @@ Credit: xahlee.info"
 (defun my/theme-toggle ()
   "Toggle between the two themes stored in `my/theme-toggle-options'"
   (interactive)
-  ;; TODO
   (if (= (length my/theme-toggle-options) 2)
       (let ((theme-1 (car my/theme-toggle-options))
             (theme-2 (car (cdr my/theme-toggle-options))))
@@ -271,6 +270,9 @@ Credit: xahlee.info"
             (my/theme-set theme-2)
           (my/theme-set theme-1)))
     (message "Variable `my/theme-toggle-options' must have exactly 2 options.")))
+
+(keymap-global-set "<f5>" 'my/theme-set)
+(keymap-global-set "C-<f5>" 'my/theme-toggle)
 
 (defun my/diff-changes-to-saved-file ()
   "Show diff between the current unsaved buffer/file contents and the saved
@@ -334,7 +336,7 @@ buffer/file contents."
 (setopt uniquify-separator "/")
 (setopt use-short-answers t)
 (setopt visible-bell nil) ; disable visual indicator of invalid input
-;(setopt word-wrap nil)
+                                        ;(setopt word-wrap nil)
 
 ;; Non-customization variables
 (setq auto-window-vscroll nil)
@@ -410,10 +412,12 @@ buffer/file contents."
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
-(keymap-global-set "C-c C-l" 'display-line-numbers-mode)
+(keymap-global-set "C-c m l" 'display-line-numbers-mode)
 (keymap-global-set "C-c C-SPC" 'just-one-space)
-(keymap-global-set "C-c C-c" 'compile)
+(keymap-global-set "C-c j j" 'compile)
+(keymap-global-set "C-c -" 'kill-buffer-and-window)
 
+;; TODO: doesn't actually work as intended
 (defun my/kill-region (start end)
   "Improved `kill-region' to prevent accidentally deleting text when there
 is no region selected."
@@ -437,7 +441,7 @@ is no region selected."
     (fundamental-mode))
    (t
     (message "Command only works in `fundamental-mode' or `lisp-interaction-mode'"))))
-(keymap-global-set "C-c m l" #'my/toggle-fundamental-mode)
+(keymap-global-set "C-c m f" #'my/toggle-fundamental-mode)
 
 ;; Switch to new window on split
 (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
@@ -477,7 +481,7 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (defun my/hook--after-init ()
   "Basic configuration on `after-init-hook'."
   (with-current-buffer (get-buffer-create "*scratch*")
-   (insert (format ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (insert (format ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;          Hello          ;;
 ;;                         ;;
 ;; ██╗   ██╗██╗███╗   ███╗ ;;
@@ -755,7 +759,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (interactive)
   (cond
    ((or (member 'modus-operandi custom-enabled-themes)
-         (member 'modus-operandi-tinted custom-enabled-themes))
+        (member 'modus-operandi-tinted custom-enabled-themes))
     (setopt my/subtle-mode-line-colors-mode-color "#dddddd")
     (my/subtle-mode-line-colors-mode))
    ((or (member 'modus-vivendi custom-enabled-themes))
@@ -807,7 +811,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
       (my/toggle-mode-line-mode -1)
       (olivetti-mode -1))))
 
-(keymap-global-set "C-c m t t" #'my/writeroom-mode)
+(keymap-global-set "C-c m t w" #'my/writeroom-mode)
 
 ;;; [LANGUAGES]
 (defun my/paragraph-default-movement-local ()
@@ -840,6 +844,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [C / C++]
 (defun my/hook--cc-mode ()
   "Settings for `c-mode' and `c++-mode'"
+  (setopt compile-command "make ")
   (c-set-style "bsd")
   (my/lang-indent-set-local 'cc)
   (keymap-set c-mode-map "C-c C-c" 'compile)
@@ -868,7 +873,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (defun my/hook--go-mode ()
   "Configuration for `go-mode'."
-  (setq-local compile-command "go build ")
+  (setopt compile-command "go build ")
   (keymap-set go-mode-map "C-c g" #'gofmt)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)
@@ -905,7 +910,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 ;;;; [MARKDOWN]
 (add-to-list 'load-path (my/get-packages-file "markdown-mode"))
 (autoload #'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files." t)
+  "Major mode for editing Markdown files." t)
 (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|txt\\)\\'" . markdown-mode))
 
 (defun my/hook--markdown-mode ()

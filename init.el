@@ -74,7 +74,8 @@ if non-nil, indentation will use tabs instead of spaces."
   :type '(boolean))
 
 (defcustom my/font-size-default 120
-  "Default font size (height for the `default' face)"
+  "Default font height for the `default' face. Divide by 10 to get a
+traditional-looking font size value."
   :group 'face
   :type '(natnum))
 
@@ -796,10 +797,12 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   :global t
   (if my/writeroom-mode
       (progn
+        (my/font-size-set (+ my/font-size-default 100))
         (whitespace-mode -1)
         (my/toggle-mode-line-mode 1) ; TODO: make this buffer-local action
         (olivetti-mode 1))
     (progn
+      (my/font-size-set my/font-size-default)
       (whitespace-mode 1)
       (my/toggle-mode-line-mode -1)
       (olivetti-mode -1))))
@@ -892,6 +895,7 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (defun my/hook--lisp-mode ()
   "Configuration for lisp-like languages such as `lisp-mode' and
 `emacs-lisp-mode'."
+  (setq-default fill-column 70)
   (my/lang-indent-set-local 'lisp)
   (electric-pair-local-mode 1))
 

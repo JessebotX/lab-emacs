@@ -48,7 +48,8 @@ loading (`custom-available-themes').")
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
     (org        :size 8 :use-tabs nil)
-    (xml        :size 2 :use-tabs nil)
+    (tex        :size 3 :use-tabs t)
+    (xml        :size 3 :use-tabs t)
     (yaml       :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.
@@ -918,6 +919,14 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (my/lang-indent-set-local 'markdown)
   (visual-line-mode 1))
 (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)
+
+;;;; [TEX]
+(defun my/tex-mode-hook--setup ()
+  "Configuration for `tex-mode'"
+  (setq-local indent-line-function 'tab-to-tab-stop)
+  (my/lang-indent-set-local 'tex)
+  (visual-line-mode 1))
+(add-hook 'tex-mode-hook 'my/tex-mode-hook--setup)
 
 ;;;; [XML / HTML]
 (setq-default sgml-basic-offset (my/lang-indent-size 'html))

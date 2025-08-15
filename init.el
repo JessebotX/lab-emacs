@@ -254,6 +254,11 @@ Credit: xahlee.info"
   (interactive (list (completing-read "Font: " (font-family-list))))
   (set-face-attribute 'default nil :family font))
 
+(defun my/font-variable-pitch-family-set (font)
+  "Set emacs `variable-pitch' face's font family."
+  (interactive (list (completing-read "Font: " (font-family-list))))
+  (set-face-attribute 'variable-pitch nil :family font))
+
 (defun my/theme-set (theme)
   "Set the current emacs theme to THEME. Disables all other themes."
   (interactive (list (intern (completing-read "Theme: " (custom-available-themes)))))

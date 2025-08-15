@@ -46,7 +46,7 @@ loading (`custom-available-themes').")
     (javascript :size 3 :use-tabs t)
     (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
-    (markdown   :size 2 :use-tabs t)
+    (markdown   :size 2 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs t)
     (xml        :size 3 :use-tabs t)
@@ -925,7 +925,10 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 
 (defun my/hook--markdown-mode ()
   "Configuration for `markdown-mode'."
+  (define-key markdown-mode-map [remap backward-paragraph] 'backward-paragraph)
+  (define-key markdown-mode-map [remap forward-paragraph] 'forward-paragraph)
   (my/lang-indent-set-local 'markdown)
+  (my/paragraph-default-movement-local)
   (visual-line-mode 1))
 (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)
 

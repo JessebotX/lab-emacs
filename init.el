@@ -258,6 +258,8 @@ Credit: xahlee.info"
   "Set emacs `variable-pitch' face's font family."
   (interactive (list (completing-read "Font: " (font-family-list))))
   (set-face-attribute 'variable-pitch nil :family font))
+(keymap-global-set "<f8>" 'variable-pitch-mode)
+(keymap-global-set "<f9>" 'my/font-variable-pitch-family-set)
 
 (defun my/theme-set (theme)
   "Set the current emacs theme to THEME. Disables all other themes."

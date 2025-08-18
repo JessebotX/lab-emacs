@@ -43,6 +43,7 @@ loading (`custom-available-themes').")
     (css        :size 3 :use-tabs t)
     (go         :size 3 :use-tabs t)
     (html       :size 3 :use-tabs t)
+    (java       :size 3 :use-tabs t)
     (javascript :size 3 :use-tabs t)
     (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
@@ -889,6 +890,13 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (keymap-set go-mode-map "C-c g" #'gofmt)
   (my/lang-indent-set-local 'go))
 (add-hook 'go-mode-hook #'my/hook--go-mode)
+
+;;;; [JAVA]
+(defun my/java-mode-hook--setup ()
+  "Configuration for `java-mode'"
+  (my/lang-indent-set-local 'java)
+  (setq-local c-basic-offset (my/lang-indent-size 'java)))
+(add-hook 'java-mode-hook #'my/java-mode-hook--setup)
 
 ;;;; [JAVASCRIPT]
 (setq-default js-indent-level (my/lang-indent-size 'js))

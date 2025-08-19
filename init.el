@@ -385,7 +385,6 @@ buffer/file contents."
     ((member "Symbola" (font-family-list)) "Symbola"))))
 
 (add-hook 'emacs-startup-hook 'my/fonts-enable-emojis)
-;;(my/fonts-enable-emojis)
 
 ;;; [THEME]
 (setopt modus-themes-italic-constructs t)

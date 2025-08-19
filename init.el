@@ -50,6 +50,7 @@ loading (`custom-available-themes').")
     (markdown   :size 2 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs t)
+    (web        :size 3 :use-tabs t)
     (xml        :size 3 :use-tabs t)
     (yaml       :size 2 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
@@ -507,6 +508,8 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
                     (float-time
                      (time-subtract after-init-time before-init-time)))))
 
+  (recentf-mode 1)
+  (winner-mode 1)
   (electric-indent-mode -1)
   (blink-cursor-mode -1)
   (delete-selection-mode 1))
@@ -745,15 +748,16 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (with-eval-after-load 'project
   (setopt project-list-file (my/get-var-file "projects.el")))
 
+;;; [RECENTF]
+(setopt recentf-save-file "~/.config/emacs/var/recentf.el")
+
 ;;; [WHICH-KEY]
 (setopt which-key-idle-delay 0.1)
 (add-hook 'emacs-startup-hook #'which-key-mode)
 
-
 ;;; [WHITESPACE]
 (setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))
                                         ; 7C = |
-;; (setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9])))
 (setopt whitespace-style '(face tabs tab-mark trailing))
 (add-hook 'text-mode-hook #'whitespace-mode)
 (add-hook 'prog-mode-hook #'whitespace-mode)
@@ -949,6 +953,39 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (my/lang-indent-set-local 'tex)
   (visual-line-mode 1))
 (add-hook 'tex-mode-hook 'my/tex-mode-hook--setup)
+
+;;;; [WEB HTML/CSS/JS]
+(add-to-list 'load-path (my/get-packages-file "web-mode"))
+(autoload 'web-mode "web-mode"
+  "Major mode for editing web template files." t)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(defun my/web-mode-hook--setup ()
+  "Configuration for `web-mode'."
+  (my/lang-indent-set-local 'web)
+  (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil))
+
+  ;; (setq-local indent-line-function 'tab-to-tab-stop)
+  (setq-local web-mode-enable-auto-pairing nil)
+  (setq-local web-mode-enable-auto-closing nil)
+  (setq-local web-mode-enable-auto-opening nil)
+  (setq-local web-mode-enable-auto-indentation nil)
+  (setq-local web-mode-enable-auto-quoting nil)
+  (setq-local web-mode-enable-auto-expanding nil)
+
+  (setq-local web-mode-block-padding (my/lang-indent-size 'web))
+  (setq-local web-mode-style-padding (my/lang-indent-size 'web))
+  (setq-local web-mode-part-padding (my/lang-indent-size 'web))
+  (setq-local web-mode-script-padding (my/lang-indent-size 'web))
+
+  (setq-local web-mode-markup-indent-offset (my/lang-indent-size 'web)) ; html
+  (setq-local web-mode-css-indent-offset (my/lang-indent-size 'web)) ; css
+  (setq-local web-mode-code-indent-offset (my/lang-indent-size 'web)) ; js/code
+  (setq-local web-mode-indent-style (my/lang-indent-size 'web)))
+(add-hook 'web-mode-hook #'my/web-mode-hook--setup)
 
 ;;;; [XML / HTML]
 (setq-default sgml-basic-offset (my/lang-indent-size 'html))

@@ -338,6 +338,7 @@ buffer/file contents."
 (setopt ring-bell-function #'ignore) ; disable sound on invalid input
 (setopt scroll-conservatively 101) ; scroll normally
 (setopt scroll-perserve-screen-position t)
+(setopt transient-history-file (my/get-var-file "transient-history.el"))
 (setopt undo-limit (* 13 160000))
 (setopt undo-strong-limit (* 13 240000))
 (setopt undo-outer-limit (* 13 24000000))

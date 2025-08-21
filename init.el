@@ -48,6 +48,7 @@ loading (`custom-available-themes').")
     (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
+    (rst        :size 2 :use-tabs t)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs t)
     (web        :size 3 :use-tabs t)
@@ -900,6 +901,16 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (my/paragraph-default-movement-local)
   (visual-line-mode 1))
 (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)
+
+;;;; [RST: RESTRUCTURED TEXT]
+(setq-default rst-indent-width (my/lang-indent-size 'rst))
+(defun my/rst-mode-hook--setup ()
+  "Configuration for `rst-mode'."
+  (my/paragraph-default-movement-local)
+  (setq-local rst-indent-width (my/lang-indent-size 'rst))
+  (my/lang-indent-set-local 'rst)
+  (visual-line-mode 1))
+(add-hook 'rst-mode-hook #'my/rst-mode-hook--setup)
 
 ;;;; [TEX]
 (defun my/tex-mode-hook--setup ()

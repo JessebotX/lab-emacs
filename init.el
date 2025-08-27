@@ -710,8 +710,10 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (add-hook 'emacs-startup-hook #'which-key-mode)
 
 ;;; [WHITESPACE]
-(setopt whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))
-                                        ; 7C = |
+
+;; #x7C   = |
+;; #x2502 = │
+(setopt whitespace-display-mappings '((tab-mark 9 [#x2502 9] [92 9])))
 (setopt whitespace-style '(face tabs tab-mark trailing))
 (add-hook 'text-mode-hook #'whitespace-mode)
 (add-hook 'prog-mode-hook #'whitespace-mode)
@@ -727,6 +729,8 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
   (cond
    ((or (member 'modus-operandi        custom-enabled-themes)
         (member 'modus-operandi-tinted custom-enabled-themes)
+        (member 'lambda-light          custom-enabled-themes)
+        (member 'lambda-light-faded    custom-enabled-themes)
         (member 'standard-light        custom-enabled-themes)
         (member 'standard-light-tinted custom-enabled-themes))
     (setopt my/subtle-mode-line-colors-mode-color "#dddddd")

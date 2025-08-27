@@ -509,7 +509,6 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
                     (float-time
                      (time-subtract after-init-time before-init-time)))))
 
-  (recentf-mode 1)
   (winner-mode 1)
   (electric-indent-mode -1)
   (blink-cursor-mode -1)
@@ -721,6 +720,82 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
 (keymap-global-set "C-c m w" 'whitespace-mode)
 
 ;;; [OTHER LISP]
+(defun my/headings-normal-height ()
+  (interactive)
+  (custom-set-faces
+   '(outline-1 ((t :height 1.0)))
+   '(outline-2 ((t :height 1.0)))
+   '(outline-3 ((t :height 1.0)))
+   '(outline-4 ((t :height 1.0)))
+   '(outline-5 ((t :height 1.0)))
+   '(outline-6 ((t :height 1.0)))
+   '(outline-7 ((t :height 1.0)))
+   '(outline-8 ((t :height 1.0))))
+
+  (custom-set-faces
+   '(adoc-title-0-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-1-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-2-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-3-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-4-face ((t :height 1.0 :inherit adoc-title-face)))
+   '(adoc-title-5-face ((t :height 1.0 :inherit adoc-title-face))))
+
+  (custom-set-faces
+   '(markdown-header-face-1 ((t :height 1.0)))
+   '(markdown-header-face-2 ((t :height 1.0)))
+   '(markdown-header-face-3 ((t :height 1.0)))
+   '(markdown-header-face-4 ((t :height 1.0)))
+   '(markdown-header-face-5 ((t :height 1.0)))
+   '(markdown-header-face-6 ((t :height 1.0))))
+
+  (custom-set-faces
+   '(org-level-1 ((t :height 1.0)))
+   '(org-level-2 ((t :height 1.0)))
+   '(org-level-3 ((t :height 1.0)))
+   '(org-level-4 ((t :height 1.0)))
+   '(org-level-5 ((t :height 1.0)))
+   '(org-level-6 ((t :height 1.0)))
+   '(org-level-7 ((t :height 1.0)))
+   '(org-level-8 ((t :height 1.0)))))
+
+(defun my/headings-unset-custom-style ()
+  (interactive)
+  (custom-set-faces
+   '(outline-1 (()))
+   '(outline-2 (()))
+   '(outline-3 (()))
+   '(outline-4 (()))
+   '(outline-5 (()))
+   '(outline-6 (()))
+   '(outline-7 (()))
+   '(outline-8 (())))
+
+  (custom-set-faces
+   '(adoc-title-0-face (()))
+   '(adoc-title-1-face (()))
+   '(adoc-title-2-face (()))
+   '(adoc-title-3-face (()))
+   '(adoc-title-4-face (()))
+   '(adoc-title-5-face (())))
+
+  (custom-set-faces
+   '(markdown-header-face-1 (()))
+   '(markdown-header-face-2 (()))
+   '(markdown-header-face-3 (()))
+   '(markdown-header-face-4 (()))
+   '(markdown-header-face-5 (()))
+   '(markdown-header-face-6 (())))
+
+  (custom-set-faces
+   '(org-level-1 (()))
+   '(org-level-2 (()))
+   '(org-level-3 (()))
+   '(org-level-4 (()))
+   '(org-level-5 (()))
+   '(org-level-6 (()))
+   '(org-level-7 (()))
+   '(org-level-8 (()))))
+
 ;;;; [SUBTLE MODE LINE COLORS]
 (autoload #'my/subtle-mode-line-colors-mode "my-subtle-mode-line-colors-mode"
   "Minor mode for making mode line colors more subtle." t)
@@ -730,22 +805,17 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
    ((or (member 'modus-operandi        custom-enabled-themes)
         (member 'modus-operandi-tinted custom-enabled-themes)
         (member 'lambda-light          custom-enabled-themes)
-        (member 'lambda-light-faded    custom-enabled-themes)
-        (member 'standard-light        custom-enabled-themes)
-        (member 'standard-light-tinted custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#dddddd")
-    (my/subtle-mode-line-colors-mode))
-   ((or (member 'modus-vivendi        custom-enabled-themes)
-        (member 'standard-dark        custom-enabled-themes)
-        (member 'standard-dark-tinted custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#444444")
-    (my/subtle-mode-line-colors-mode))
-   ((or (member 'adwaita-dark custom-enabled-themes))
-    (setopt my/subtle-mode-line-colors-mode-color "#343434")
-    (my/subtle-mode-line-colors-mode))
+        (member 'lambda-light-faded    custom-enabled-themes))
+    (setopt my/subtle-mode-line-colors-mode-color "#dddddd"))
+   ((or (member 'modus-vivendi         custom-enabled-themes)
+        (member 'modus-vivendi-tinted  custom-enabled-themes)
+        (member 'lambda-dark-faded     custom-enabled-themes)
+        (member 'lambda-dark           custom-enabled-themes))
+    (setopt my/subtle-mode-line-colors-mode-color "#444444"))
    (t
-    (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow))
-    (my/subtle-mode-line-colors-mode 1))))
+    (setopt my/subtle-mode-line-colors-mode-color (face-foreground 'shadow)))))
+
+(my/subtle-mode-line-colors-mode)
 (add-hook 'emacs-startup-hook #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 (add-hook 'enable-theme-functions #'my/subtle-mode-line-colors-mode-enable-and-refresh)
 

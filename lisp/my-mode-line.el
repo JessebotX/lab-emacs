@@ -21,9 +21,8 @@
     " "
     my/mode-line-buffer-name
     my/mode-line-buffer-narrowed
-    my/mode-line-buffer-prog-mode-indicator
-    (:eval (when (derived-mode-p 'prog-mode)
-              mode-line-position))
+    mode-line-position
+    " "
     mode-line-format-right-align
     mode-line-misc-info
     ;; my/mode-line-encoding

@@ -535,8 +535,8 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 (add-hook 'emacs-startup-hook (lambda () (line-number-mode -1)))
 
 ;; Only show line and column numbers in `prog-mode'-derived modes
-(add-hook 'prog-mode-hook #'line-number-mode)
-(add-hook 'prog-mode-hook #'column-number-mode)
+;; (add-hook 'prog-mode-hook #'line-number-mode)
+;; (add-hook 'prog-mode-hook #'column-number-mode)
 
 ;; My custom mode line
 (autoload #'my/mode-line-mode "my-mode-line"

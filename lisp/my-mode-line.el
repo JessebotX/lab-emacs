@@ -21,6 +21,7 @@
     " "
     my/mode-line-buffer-name
     my/mode-line-buffer-narrowed
+    " "
     mode-line-position
     " "
     mode-line-format-right-align

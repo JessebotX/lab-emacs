@@ -534,10 +534,6 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 
 (add-hook 'emacs-startup-hook (lambda () (line-number-mode -1)))
 
-;; Only show line and column numbers in `prog-mode'-derived modes
-;; (add-hook 'prog-mode-hook #'line-number-mode)
-;; (add-hook 'prog-mode-hook #'column-number-mode)
-
 ;; My custom mode line
 (autoload #'my/mode-line-mode "my-mode-line"
   "Minor mode for enabling my custom mode-line." t)
@@ -857,6 +853,16 @@ Credit: https://blog.meain.io/2020/emacs-highlight-yanked/"
       (olivetti-mode -1))))
 
 (keymap-global-set "C-c m t w" #'my/writeroom-mode)
+
+;;;; [ORDERLESS]
+(add-to-list 'load-path (my/get-packages-file "orderless"))
+(defun my/orderless-completion--init ()
+  (require 'orderless)
+  (setq completion-styles '(orderless basic)
+        completion-category-overrides '((file (styles orderless partial-completion)))
+        completion-pcm-leading-wildcard t) ;; Emacs 31: partial-completion behaves like substring
+)
+(add-hook 'after-init-hook #'my/orderless-completion--init)
 
 ;;; [LANGUAGES]
 (defun my/paragraph-default-movement-local ()

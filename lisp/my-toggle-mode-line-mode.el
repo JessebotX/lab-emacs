@@ -1,8 +1,3 @@
-;;; -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Toggle visibility of the mode-line.
 
 ;;; Code:
 

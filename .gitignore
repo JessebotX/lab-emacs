@@ -16,3 +16,4 @@
 /places
 /url
 *.elc
+/eln-cache

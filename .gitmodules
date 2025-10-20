@@ -1,0 +1,15 @@
+[submodule "lisp/markdown-mode"]
+	path = lisp/markdown-mode
+	url = https://github.com/jrblevin/markdown-mode
+[submodule "lisp/go-mode.el"]
+	path = lisp/go-mode.el
+	url = https://github.com/dominikh/go-mode.el
+[submodule "lisp/olivetti"]
+	path = lisp/olivetti
+	url = https://github.com/rnkn/olivetti.git
+[submodule "lisp/orderless"]
+	path = lisp/orderless
+	url = https://github.com/oantolin/orderless.git
+[submodule "lisp/adaptive-wrap"]
+	path = lisp/adaptive-wrap
+	url = https://github.com/emacs-straight/adaptive-wrap.git

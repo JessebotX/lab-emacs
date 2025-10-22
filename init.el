@@ -380,6 +380,15 @@ folder, otherwise delete a word."
           (my/toggle-mode-line-mode -1)
           (olivetti-mode -1))))))
 
+(let* ((name "rainbow-delimiters")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'rainbow-delimiters-mode name
+      "Minor mode that highlights delimiters based on their depth." t)
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
+
 ;;; TEXT EDITING
 
 (defun my/paragraph-default-movement-local ()
@@ -502,6 +511,15 @@ may still need to modify the major-mode specific indent settings."
       (visual-line-mode 1))
 
     (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)))
+
+;;; Python
+
+(setq python-indent-guess-indent-offset-verbose nil)
+(defun my/hook--python-mode ()
+  "Configuration for `python-mode' buffers."
+  (setq-local python-indent-offset (my/lang-indent-size 'python))
+  (my/lang-indent-set-local 'python))
+(add-hook 'python-mode-hook #'my/hook--python-mode)
 
 ;;; UTILS
 

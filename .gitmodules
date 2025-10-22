@@ -13,3 +13,6 @@
 [submodule "lisp/adaptive-wrap"]
 	path = lisp/adaptive-wrap
 	url = https://github.com/emacs-straight/adaptive-wrap.git
+[submodule "lisp/rainbow-delimiters"]
+	path = lisp/rainbow-delimiters
+	url = https://github.com/Fanael/rainbow-delimiters

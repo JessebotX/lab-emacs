@@ -53,6 +53,7 @@ loading (`custom-available-themes').")
 
 (defcustom my/lang-indent-settings
   '((cc         :size 3 :use-tabs t)
+    (cmake      :size 3 :use-tabs t)
     (css        :size 3 :use-tabs t)
     (go         :size 3 :use-tabs t)
     (html       :size 3 :use-tabs t)
@@ -352,7 +353,6 @@ folder, otherwise delete a word."
       "Minor mode that visually indents wrapped lines." t)
     (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)))
 
-
 (let* ((name "olivetti")
        (path (my/get-packages-file "olivetti"))
        (exists (file-directory-p path)))
@@ -451,6 +451,19 @@ may still need to modify the major-mode specific indent settings."
 (add-hook 'c-mode-hook #'my/hook--cc-mode)
 (add-hook 'c++-mode-hook #'my/hook--cc-mode)
 
+;;;; Language: CMake
+
+(autoload #'cmake-mode "cmake-mode"
+  "Major mode for editing CMake files." t)
+(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
+
+(setq-default cmake-tab-width (my/lang-indent-size 'cmake))
+(defun my/hook--cmake-mode ()
+  "Settings for `cmake-mode'"
+  (setq-local cmake-tab-width (my/lang-indent-size 'cmake))
+  (my/lang-indent-set-local 'cmake))
+
 ;;;; Language: Go
 
 (let* ((name "go-mode.el")
@@ -497,7 +510,7 @@ may still need to modify the major-mode specific indent settings."
     (add-to-list 'load-path path)
     (autoload #'markdown-mode name
       "Major mode for editing Markdown files." t)
-    (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|txt\\)\\'" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-mode))
 
     (defun my/hook--markdown-mode ()
       "Configuration for `markdown-mode'."

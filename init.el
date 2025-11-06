@@ -37,6 +37,9 @@
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 
+(defcustom my/font-family-default "Maple Mono"
+  "Default font family.")
+
 (defcustom my/font-size-default 120
   "Default font size.")
 
@@ -612,6 +615,8 @@ Credit: xahlee.info"
   "Basic configuration on `after-init-hook'."
   (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
   (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
+
+  (set-face-attribute 'default nil :family my/font-family-default :height my/font-size-default)
 
   (my/fonts-enable-emojis)
   (my/theme-load-my-theme)

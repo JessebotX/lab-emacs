@@ -16,3 +16,6 @@
 [submodule "lisp/rainbow-delimiters"]
 	path = lisp/rainbow-delimiters
 	url = https://github.com/Fanael/rainbow-delimiters
+[submodule "lisp/web-mode"]
+	path = lisp/web-mode
+	url = https://github.com/fxbois/web-mode

@@ -490,6 +490,44 @@ may still need to modify the major-mode specific indent settings."
 
     (add-hook 'go-mode-hook #'my/hook--go-mode)))
 
+;;;; Language: HTML & html templates
+
+(let* ((name "web-mode")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'web-mode name
+      "Major mode for editing web template files." t)
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+    (defun my/web-mode-hook--setup ()
+      "Configuration for `web-mode'."
+      (my/lang-indent-set-local 'web)
+      (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+      (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
+      (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+      (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil))
+
+      ;; (setq-local indent-line-function 'tab-to-tab-stop)
+      (setq-local web-mode-enable-auto-pairing nil)
+      (setq-local web-mode-enable-auto-closing nil)
+      (setq-local web-mode-enable-auto-opening nil)
+      (setq-local web-mode-enable-auto-indentation nil)
+      (setq-local web-mode-enable-auto-quoting nil)
+      (setq-local web-mode-enable-auto-expanding nil)
+
+      (setq-local web-mode-block-padding (my/lang-indent-size 'web))
+      (setq-local web-mode-style-padding (my/lang-indent-size 'web))
+      (setq-local web-mode-part-padding (my/lang-indent-size 'web))
+      (setq-local web-mode-script-padding (my/lang-indent-size 'web))
+
+      (setq-local web-mode-markup-indent-offset (my/lang-indent-size 'web)) ; html
+      (setq-local web-mode-css-indent-offset (my/lang-indent-size 'web)) ; css
+      (setq-local web-mode-code-indent-offset (my/lang-indent-size 'web)) ; js/code
+      (setq-local web-mode-indent-style (my/lang-indent-size 'web)))
+    (add-hook 'web-mode-hook #'my/web-mode-hook--setup)))
+
 ;;;; Language: Lisp
 
 (defun my/hook--lisp-mode ()
@@ -528,7 +566,7 @@ may still need to modify the major-mode specific indent settings."
 
     (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)))
 
-;;; Python
+;;;; Language: Python
 
 (setq python-indent-guess-indent-offset-verbose nil)
 (defun my/hook--python-mode ()

@@ -65,6 +65,7 @@ loading (`custom-available-themes').")
     (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
+    (rust       :size 3 :use-tabs t)
     (rst        :size 2 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs t)
@@ -574,6 +575,22 @@ may still need to modify the major-mode specific indent settings."
   (setq-local python-indent-offset (my/lang-indent-size 'python))
   (my/lang-indent-set-local 'python))
 (add-hook 'python-mode-hook #'my/hook--python-mode)
+
+;;;; Language: Rust
+
+(let* ((name "rust-mode")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'rust-mode name nil t)
+    (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+    (defun my/rust-mode--hook-setup ()
+      "Configuration for `rust-mode'."
+      (my/lang-indent-set-local 'rust))
+
+    (add-hook 'rust-mode-hook #'my/rust-mode--hook-setup)))
 
 ;;; UTILS
 

@@ -19,3 +19,9 @@
 [submodule "lisp/doom-themes"]
 	path = lisp/doom-themes
 	url = https://github.com/doomemacs/themes
+[submodule "lisp/web-mode"]
+	path = lisp/web-mode
+	url = https://github.com/fxbois/web-mode
+[submodule "lisp/rust-mode"]
+	path = lisp/rust-mode
+	url = https://github.com/rust-lang/rust-mode

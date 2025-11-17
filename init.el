@@ -529,6 +529,15 @@ may still need to modify the major-mode specific indent settings."
       (setq-local web-mode-indent-style (my/lang-indent-size 'web)))
     (add-hook 'web-mode-hook #'my/web-mode-hook--setup)))
 
+;;;; Language: JSON
+
+(defun my/json-mode-hook--setup ()
+  "Configuration for `js-json-mode'"
+  (my/lang-indent-set-local 'json)
+  (setq-local js-indent-level (my/lang-indent-size 'json)))
+
+(add-hook 'js-json-mode-hook #'my/json-mode-hook--setup)
+
 ;;;; Language: Lisp
 
 (defun my/hook--lisp-mode ()

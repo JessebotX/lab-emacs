@@ -588,7 +588,9 @@ may still need to modify the major-mode specific indent settings."
 
     (defun my/rust-mode--hook-setup ()
       "Configuration for `rust-mode'."
-      (my/lang-indent-set-local 'rust))
+      (my/lang-indent-set-local 'rust)
+      (setq-local compile-command "cargo run")
+      (setq-local rust-indent-offset (my/lang-indent-size 'rust)))
 
     (add-hook 'rust-mode-hook #'my/rust-mode--hook-setup)))
 

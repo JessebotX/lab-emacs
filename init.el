@@ -554,6 +554,12 @@ may still need to modify the major-mode specific indent settings."
 
 ;;;; Language: Markdown
 
+(let* ((name "edit-indirect")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)))
+
 (let* ((name "markdown-mode")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))

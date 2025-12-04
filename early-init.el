@@ -53,11 +53,12 @@
 
 (defun my/emacs--restore-early-init-settings ()
   "Restore settings that were changed to speedup Emacs startup times"
-  (setq load-prefer-newer non-interactive)
-  (setq gc-cons-threshold most-positive-fixnum)
-  (setq gc-cons-percentage 1.0)
-  (setq file-name-handler-alist nil)
-  (setq vc-handled-backends nil))
+  (setq load-prefer-newer nil)
+  (setq gc-cons-threshold my/emacs--gc-cons-threshold)
+  (setq gc-cons-percentage my/emacs--gc-cons-percentage)
+  (setq file-name-handler-alist my/emacs--file-name-handler-alist)
+  (setq vc-handled-backends my/emacs--vc-handled-backends))
+(add-hook 'emacs-startup-hook #'my/emacs--restore-early-init-settings)
 
 ;;; MISCELLANEOUS
 

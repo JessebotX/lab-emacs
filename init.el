@@ -65,8 +65,9 @@ loading (`custom-available-themes').")
     (json       :size 3 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
-    (rust       :size 3 :use-tabs nil)
+    (python     :size 4 :use-tabs nil)
     (rst        :size 2 :use-tabs nil)
+    (rust       :size 3 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs nil)
     (web        :size 3 :use-tabs nil)
@@ -595,6 +596,10 @@ may still need to modify the major-mode specific indent settings."
       (visual-line-mode 1))
 
     (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)))
+
+;;;; Language: Meson
+
+(add-to-list 'auto-mode-alist '("meson\\.build\\'" . python-mode))
 
 ;;;; Language: Python
 

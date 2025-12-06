@@ -71,7 +71,8 @@ loading (`custom-available-themes').")
     (tex        :size 3 :use-tabs nil)
     (web        :size 3 :use-tabs nil)
     (xml        :size 3 :use-tabs nil)
-    (yaml       :size 2 :use-tabs nil))
+    (yaml       :size 2 :use-tabs nil)
+    (zig        :size 4 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/lang-indent-size' and `my/lang-indent-use-tabs'.
 
@@ -609,6 +610,29 @@ may still need to modify the major-mode specific indent settings."
 
     (add-hook 'rust-mode-hook #'my/rust-mode--hook-setup)))
 
+;;;; Language: Zig
+
+(let* ((name "reformatter")
+       (path (my/get-packages-file "reformatter"))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)))
+
+(let* ((name "zig-mode")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'zig-mode name nil t)
+    (add-to-list 'auto-mode-alist '("\\.\\(zig\\|zon\\)\\'" . zig-mode))
+
+    (defun my/zig-mode--hook-setup ()
+      "Configuration for `zig-mode'."
+      (my/lang-indent-set-local 'zig)
+      (setq-local compile-command "zig build"))
+
+    (add-hook 'zig-mode-hook #'my/zig-mode--hook-setup)))
+
 ;;; UTILS
 
 (defun my/keyboard-quit-dwim ()
@@ -747,6 +771,7 @@ Credit: xahlee.info"
 
 (keymap-global-set "C-x C-p" 'project-find-file)
 
+(keymap-global-set "C-x C-b" 'ibuffer)
 (keymap-global-set "C-c -" 'kill-buffer-and-window)
 (keymap-global-set "C-c C-SPC" 'just-one-space)
 (keymap-global-set "C-c j j" 'compile)

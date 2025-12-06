@@ -28,3 +28,9 @@
 [submodule "lisp/edit-indirect"]
 	path = lisp/edit-indirect
 	url = https://github.com/Fanael/edit-indirect.git
+[submodule "lisp/zig-mode"]
+	path = lisp/zig-mode
+	url = https://codeberg.org/ziglang/zig-mode.git
+[submodule "lisp/reformatter"]
+	path = lisp/reformatter
+	url = https://github.com/purcell/emacs-reformatter

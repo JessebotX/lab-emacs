@@ -34,3 +34,6 @@
 [submodule "lisp/reformatter"]
 	path = lisp/reformatter
 	url = https://github.com/purcell/emacs-reformatter
+[submodule "lisp/highlight-indent-guides"]
+	path = lisp/highlight-indent-guides
+	url = https://github.com/DarthFennec/highlight-indent-guides.git

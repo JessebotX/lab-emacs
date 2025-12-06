@@ -354,17 +354,25 @@ folder, otherwise delete a word."
        (exists (file-directory-p path)))
   (when exists
     (add-to-list 'load-path path)
-    (autoload #'adaptive-wrap-prefix-mode name
-      "Minor mode that visually indents wrapped lines." t)
+    (autoload #'adaptive-wrap-prefix-mode name nil t)
     (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)))
 
-(let* ((name "olivetti")
-       (path (my/get-packages-file "olivetti"))
+(let* ((name "highlight-indent-guides")
+       (path (my/get-packages-file name))
        (exists (file-directory-p path)))
   (when exists
-    (add-to-list 'load-path (my/get-packages-file "olivetti"))
-    (autoload #'olivetti-mode "olivetti"
-      "Minor mode for providing a nice writing environment." t)
+    (add-to-list 'load-path path)
+    (autoload #'highlight-indent-guides-mode name nil t)
+    (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
+    (setq highlight-indent-guides-method 'character)
+    ))
+
+(let* ((name "olivetti")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path (my/get-packages-file name))
+    (autoload #'olivetti-mode name nil t)
 
     (defun my/olivetti--no-newline-in-fringe ()
       "Hack to prevent cursor from going into the fringe."
@@ -390,9 +398,14 @@ folder, otherwise delete a word."
        (exists (file-directory-p path)))
   (when exists
     (add-to-list 'load-path path)
-    (autoload #'rainbow-delimiters-mode name
-      "Minor mode that highlights delimiters based on their depth." t)
+    (autoload #'rainbow-delimiters-mode name nil t)
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
+
+(let* ((name "reformatter")
+       (path (my/get-packages-file "reformatter"))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)))
 
 ;;; TEXT EDITING
 
@@ -611,12 +624,6 @@ may still need to modify the major-mode specific indent settings."
     (add-hook 'rust-mode-hook #'my/rust-mode--hook-setup)))
 
 ;;;; Language: Zig
-
-(let* ((name "reformatter")
-       (path (my/get-packages-file "reformatter"))
-       (exists (file-directory-p path)))
-  (when exists
-    (add-to-list 'load-path path)))
 
 (let* ((name "zig-mode")
        (path (my/get-packages-file name))

@@ -37,3 +37,6 @@
 [submodule "lisp/highlight-indent-guides"]
 	path = lisp/highlight-indent-guides
 	url = https://github.com/DarthFennec/highlight-indent-guides.git
+[submodule "lisp/odin-mode"]
+	path = lisp/odin-mode
+	url = https://github.com/mattt-b/odin-mode.git

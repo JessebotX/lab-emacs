@@ -65,6 +65,7 @@ loading (`custom-available-themes').")
     (json       :size 3 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
+    (odin       :size 3 :use-tabs nil)
     (python     :size 4 :use-tabs nil)
     (rst        :size 2 :use-tabs nil)
     (rust       :size 3 :use-tabs nil)
@@ -600,6 +601,26 @@ may still need to modify the major-mode specific indent settings."
 ;;;; Language: Meson
 
 (add-to-list 'auto-mode-alist '("meson\\.build\\'" . python-mode))
+
+;;;; Language: Odin
+
+(let* ((name "odin-mode")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'odin-mode name nil t)
+    (add-to-list 'auto-mode-alist '("\\.odin\\'" . odin-mode))
+
+    (defun my/odin-mode--hook-setup ()
+      "Configuration for `odin-mode'."
+      (my/lang-indent-set-local 'odin)
+      (setq-local compile-command "odin run .")
+
+      ;; odin-mode package seems to use js-indent-line
+      (setq-local js-indent-level (my/lang-indent-size 'odin)))
+
+    (add-hook 'odin-mode-hook #'my/odin-mode--hook-setup)))
 
 ;;;; Language: Python
 

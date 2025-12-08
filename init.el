@@ -338,6 +338,10 @@ folder, otherwise delete a word."
   (keymap-set icomplete-minibuffer-map "C-M-i" #'minibuffer-complete))
 (add-hook 'icomplete-mode-hook #'my/icomplete--init)
 
+;;; FILE MANAGEMENT
+
+(setq dired-kill-when-opening-new-dired-buffer t)
+
 ;;; LSP
 
 ;;;; Eglot

@@ -40,3 +40,6 @@
 [submodule "lisp/odin-mode"]
 	path = lisp/odin-mode
 	url = https://github.com/mattt-b/odin-mode.git
+[submodule "lisp/typst-ts-mode"]
+	path = lisp/typst-ts-mode
+	url = https://codeberg.org/meow_king/typst-ts-mode.git

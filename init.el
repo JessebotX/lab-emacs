@@ -72,6 +72,7 @@ loading (`custom-available-themes').")
     (rust       :size 3 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
     (tex        :size 3 :use-tabs nil)
+    (typ        :size 3 :use-tabs nil)
     (web        :size 3 :use-tabs nil)
     (xml        :size 3 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil)
@@ -661,6 +662,24 @@ may still need to modify the major-mode specific indent settings."
       (setq-local rust-indent-offset (my/lang-indent-size 'rust)))
 
     (add-hook 'rust-mode-hook #'my/rust-mode--hook-setup)))
+
+;;;; Language: Typst
+
+(let* ((name "typst-ts-mode")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'typst-ts-mode name nil t)
+    (add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
+
+    (defun my/typst-ts-mode--hook-setup ()
+      "Configuration for `typst-ts-mode'."
+      (my/lang-indent-set-local 'typ)
+      (setq-local compile-command "typst compile ")
+      (setq-local rust-indent-offset (my/lang-indent-size 'typ)))
+
+    (add-hook 'typst-ts-mode-hook #'my/typst-ts-mode--hook-setup)))
 
 ;;;; Language: Zig
 

@@ -46,3 +46,6 @@
 [submodule "lisp/multiple-cursors"]
 	path = lisp/multiple-cursors
 	url = https://github.com/magnars/multiple-cursors.el.git
+[submodule "lisp/consult"]
+	path = lisp/consult
+	url = https://github.com/minad/consult

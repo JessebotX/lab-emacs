@@ -182,6 +182,11 @@ if non-nil, indentation will use tabs instead of spaces."
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-line-column nil)
 
+;;;; Save place
+
+(with-eval-after-load 'saveplace
+  (setq save-place-file (my/get-var-file "places")))
+
 ;;;; Project
 
 (with-eval-after-load 'project
@@ -300,6 +305,14 @@ if non-nil, indentation will use tabs instead of spaces."
 (setq mode-line-compact t)
 
 ;;; MINIBUFFER
+
+(let* ((name "consult")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (defun my/consult--init()
+      (require 'consult))
+    (add-to-list 'load-path path)))
 
 (let* ((name "orderless")
        (path (my/get-packages-file name))
@@ -799,20 +812,23 @@ Credit: xahlee.info"
 
   (set-face-attribute 'default nil :family my/font-family-default :height my/font-size-default)
 
-  (my/fonts-enable-emojis)
-  (my/theme-load-my-theme)
-
-  (icomplete-vertical-mode 1)
-
-  (my/orderless-completion--init)
-
   (blink-cursor-mode -1)
   (column-number-mode 1)
   (delete-selection-mode 1)
   (electric-indent-mode -1)
   (global-auto-revert-mode 1)
+  (save-place-mode 1)
   (which-key-mode 1)
   (winner-mode 1)
+
+  (my/fonts-enable-emojis)
+  (my/theme-load-my-theme)
+
+  ;; (icomplete-vertical-mode 1)
+  (vertico-mode 1)
+
+  (my/consult--init)
+  (my/orderless-completion--init)
 
   (require 'multiple-cursors)
 
@@ -858,10 +874,17 @@ Credit: xahlee.info"
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
 (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
 
+;; Multiple cursors
 (keymap-global-set "C-S-c C-S-c" 'mc/edit-lines)
 (keymap-global-set "C->" 'mc/mark-next-like-this)
 (keymap-global-set "C-<" 'mc/mark-previous-like-this)
 (keymap-global-set "C-c C-<" 'mc/mark-all-like-this)
+
+;; Consult
+(global-set-key [remap switch-to-buffer] 'consult-buffer)
+(global-set-key [remap project-switch-to-buffer] 'consult-project-buffer)
+(keymap-global-set "C-c c i" 'consult-imenu)
+(keymap-global-set "C-c c o" 'consult-outline)
 
 ;;; END: load machine-init.el
 

@@ -375,6 +375,13 @@ folder, otherwise delete a word."
     (setq highlight-indent-guides-method 'character)
     ))
 
+(let* ((name "multiple-cursors")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (setq mc/list-file (my/get-var-file "mc-lists.el"))
+    (add-to-list 'load-path path)))
+
 (let* ((name "olivetti")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))
@@ -805,7 +812,11 @@ Credit: xahlee.info"
   (electric-indent-mode -1)
   (global-auto-revert-mode 1)
   (which-key-mode 1)
-  (winner-mode 1))
+  (winner-mode 1)
+
+  (require 'multiple-cursors)
+
+  )
 (add-hook 'after-init-hook #'my/hook--after-init)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
@@ -846,6 +857,11 @@ Credit: xahlee.info"
 
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
 (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
+
+(keymap-global-set "C-S-c C-S-c" 'mc/edit-lines)
+(keymap-global-set "C->" 'mc/mark-next-like-this)
+(keymap-global-set "C-<" 'mc/mark-previous-like-this)
+(keymap-global-set "C-c C-<" 'mc/mark-all-like-this)
 
 ;;; END: load machine-init.el
 

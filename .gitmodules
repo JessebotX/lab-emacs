@@ -43,3 +43,6 @@
 [submodule "lisp/typst-ts-mode"]
 	path = lisp/typst-ts-mode
 	url = https://codeberg.org/meow_king/typst-ts-mode.git
+[submodule "lisp/multiple-cursors"]
+	path = lisp/multiple-cursors
+	url = https://github.com/magnars/multiple-cursors.el.git

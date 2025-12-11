@@ -55,7 +55,8 @@ loading (`custom-available-themes').")
   :type '(boolean))
 
 (defcustom my/lang-indent-settings
-  '((cc         :size 3 :use-tabs nil)
+  '((bat        :size 3 :use-tabs nil)
+    (cc         :size 3 :use-tabs nil)
     (cmake      :size 3 :use-tabs nil)
     (css        :size 3 :use-tabs nil)
     (go         :size 3 :use-tabs t)
@@ -458,6 +459,14 @@ then return the default use-tabs value defined in
 may still need to modify the major-mode specific indent settings."
   (setq-local tab-width (my/lang-indent-size lang))
   (setq-local indent-tabs-mode (my/lang-indent-use-tabs lang)))
+
+;;;; Language: DOS/Windows batch files
+
+(defun my/bat-mode--hook-setup ()
+  "Settings for `bat-mode'"
+  (my/lang-indent-set-local 'bat)
+  (setq-local indent-line-function 'tab-to-tab-stop))
+(add-hook 'bat-mode-hook #'my/bat-mode--hook-setup)
 
 ;;;; Language: C & C++
 

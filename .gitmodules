@@ -49,3 +49,6 @@
 [submodule "lisp/consult"]
 	path = lisp/consult
 	url = https://github.com/minad/consult
+[submodule "lisp/vertico"]
+	path = lisp/vertico
+	url = https://github.com/minad/vertico

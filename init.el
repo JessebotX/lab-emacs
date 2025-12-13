@@ -306,6 +306,13 @@ if non-nil, indentation will use tabs instead of spaces."
 
 ;;; MINIBUFFER
 
+(let* ((name "vertico")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'vertico-mode "vertico" nil t)))
+
 (let* ((name "consult")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))

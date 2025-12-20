@@ -52,3 +52,6 @@
 [submodule "lisp/vertico"]
 	path = lisp/vertico
 	url = https://github.com/minad/vertico
+[submodule "lisp/expand-region"]
+	path = lisp/expand-region
+	url = https://github.com/magnars/expand-region.el

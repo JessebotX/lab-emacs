@@ -385,6 +385,12 @@ folder, otherwise delete a word."
     (autoload #'adaptive-wrap-prefix-mode name nil t)
     (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)))
 
+(let* ((name "expand-region")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)))
+
 (let* ((name "highlight-indent-guides")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))
@@ -838,6 +844,7 @@ Credit: xahlee.info"
   (my/orderless-completion--init)
 
   (require 'multiple-cursors)
+  (require 'expand-region)
 
   )
 (add-hook 'after-init-hook #'my/hook--after-init)
@@ -856,8 +863,6 @@ Credit: xahlee.info"
 (keymap-global-set "<f5>" #'my/theme-toggle)
 (keymap-global-set "C-<f5>" #'my/theme-set)
 
-(keymap-global-set "C-=" #'my/font-size-increment)
-(keymap-global-set "C-+" #'my/font-size-decrement)
 (keymap-global-set "C-c C-0" #'my/font-size-set)
 
 (keymap-global-set "M-[" 'backward-paragraph)
@@ -880,6 +885,9 @@ Credit: xahlee.info"
 
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
 (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
+
+;; Expand regions
+(keymap-global-set "C-=" 'er/expand-region)
 
 ;; Multiple cursors
 (keymap-global-set "C-S-c C-S-c" 'mc/edit-lines)

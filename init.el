@@ -634,6 +634,7 @@ may still need to modify the major-mode specific indent settings."
 
     (defun my/hook--markdown-mode ()
       "Configuration for `markdown-mode'."
+      (editorconfig-mode 1)
       (let ((map markdown-mode-map))
         (define-key map [remap backward-paragraph] 'backward-paragraph)
         (define-key map [remap forward-paragraph] 'forward-paragraph))

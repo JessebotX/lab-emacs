@@ -98,6 +98,7 @@ if non-nil, indentation will use tabs instead of spaces."
 ;; NOTE: using setq because it seems to be faster than setopt
 
 (setq-default fill-column 72)
+(setq sentence-end-double-space nil)
 
 (setq backward-delete-char-untabify-method 'hungry)
 (setq bookmark-default-file (my/get-etc-file "bookmarks"))
@@ -420,19 +421,20 @@ folder, otherwise delete a word."
       (setq-local overflow-newline-into-fringe nil))
     (add-hook 'olivetti-mode-hook #'my/olivetti--no-newline-in-fringe)
 
-    (defvar my/writeroom-mode)
+    ;;;###autoload
     (define-minor-mode my/writeroom-mode
       "Minor mode that toggles a nice writing environment"
-      :global t
+		:init-value nil
       (if my/writeroom-mode
           (progn
             (whitespace-mode -1)
-            (my/toggle-mode-line-mode 1) ; TODO: make this buffer-local action
+            (my/toggle-mode-line-mode 1)
             (olivetti-mode 1))
         (progn
           (whitespace-mode 1)
           (my/toggle-mode-line-mode -1)
-          (olivetti-mode -1))))))
+          (olivetti-mode -1))))
+    (make-variable-buffer-local 'my/writeroom-mode)))
 
 (let* ((name "rainbow-delimiters")
        (path (my/get-packages-file name))
@@ -635,6 +637,7 @@ may still need to modify the major-mode specific indent settings."
     (defun my/hook--markdown-mode ()
       "Configuration for `markdown-mode'."
       (editorconfig-mode 1)
+      (setq-local fill-column 72)
       (let ((map markdown-mode-map))
         (define-key map [remap backward-paragraph] 'backward-paragraph)
         (define-key map [remap forward-paragraph] 'forward-paragraph))

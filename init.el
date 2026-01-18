@@ -401,7 +401,7 @@ folder, otherwise delete a word."
     (autoload #'highlight-indent-guides-mode name nil t)
     (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
     (setq highlight-indent-guides-method 'character)
-    ))
+    (setq highlight-indent-guides-character ?\x254e)))
 
 (let* ((name "multiple-cursors")
        (path (my/get-packages-file name))

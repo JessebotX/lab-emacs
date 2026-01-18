@@ -109,6 +109,7 @@ if non-nil, indentation will use tabs instead of spaces."
 (setq find-file-visit-truename t)
 (setq jit-lock-defer-time 0)
 (setq kill-do-not-save-duplicates t)
+(setq multisession-directory (my/get-var-file "multisession"))
 
 ;;;; Autosaves, Backups and Lockfiles
 (setq auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory))

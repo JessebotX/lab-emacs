@@ -48,33 +48,33 @@ loading (`custom-available-themes').")
   :group 'indent
   :type '(natnum))
 
-(defcustom my/indent-use-tabs-default t
+(defcustom my/indent-use-tabs-default nil
   "If non-nil, indentation will use tabs instead of spaces. Wrapper around
 `indent-tabs-mode'."
   :group 'indent
   :type '(boolean))
 
 (defcustom my/lang-indent-settings
-  '((bat        :size 3 :use-tabs t)
-    (cc         :size 3 :use-tabs t)
-    (cmake      :size 3 :use-tabs t)
-    (css        :size 3 :use-tabs t)
+  '((bat        :size 3 :use-tabs nil)
+    (cc         :size 3 :use-tabs nil)
+    (cmake      :size 3 :use-tabs nil)
+    (css        :size 3 :use-tabs nil)
     (go         :size 3 :use-tabs t)
-    (html       :size 3 :use-tabs t)
-    (java       :size 3 :use-tabs t)
-    (javascript :size 3 :use-tabs t)
-    (json       :size 3 :use-tabs t)
+    (html       :size 3 :use-tabs nil)
+    (java       :size 3 :use-tabs nil)
+    (javascript :size 3 :use-tabs nil)
+    (json       :size 3 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
-    (odin       :size 3 :use-tabs t)
-    (python     :size 4 :use-tabs t)
+    (odin       :size 3 :use-tabs nil)
+    (python     :size 4 :use-tabs nil)
     (rst        :size 2 :use-tabs nil)
-    (rust       :size 3 :use-tabs t)
+    (rust       :size 3 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
-    (tex        :size 3 :use-tabs t)
-    (typ        :size 3 :use-tabs t)
-    (web        :size 3 :use-tabs t)
-    (xml        :size 3 :use-tabs t)
+    (tex        :size 3 :use-tabs nil)
+    (typ        :size 3 :use-tabs nil)
+    (web        :size 3 :use-tabs nil)
+    (xml        :size 3 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil)
     (zig        :size 4 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the

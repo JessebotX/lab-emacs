@@ -642,8 +642,6 @@ may still need to modify the major-mode specific indent settings."
       (let ((map markdown-mode-map))
         (define-key map [remap backward-paragraph] 'backward-paragraph)
         (define-key map [remap forward-paragraph] 'forward-paragraph))
-      (setq-local indent-line-function 'tab-to-tab-stop)
-      (keymap-set markdown-mode-map "TAB" 'indent-for-tab-command)
       (my/lang-indent-set-local 'markdown)
       (my/paragraph-default-movement-local)
       (visual-line-mode 1))

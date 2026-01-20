@@ -237,8 +237,8 @@ if non-nil, indentation will use tabs instead of spaces."
   (set-fontset-font
    t 'symbol
    (cond
-    ((member "Adwaita Sans Text" (font-family-list)) "Adwaita Sans Text")
-    ((member "Adwaita Sans" (font-family-list)) "Adwaita Sans")
+    ;; ((member "Adwaita Sans Text" (font-family-list)) "Adwaita Sans Text")
+    ;; ((member "Adwaita Sans" (font-family-list)) "Adwaita Sans")
     ((member "JuliaMono" (font-family-list)) "JuliaMono")
     ((member "Cascadia Code" (font-family-list)) "Cascadia Code")
     ((member "Cascadia Mono" (font-family-list)) "Cascadia Mono")
@@ -297,6 +297,8 @@ if non-nil, indentation will use tabs instead of spaces."
 
 ;;; MODE-LINE
 
+(autoload #'my/mode-line-mode "my-mode-line" nil t)
+
 (autoload #'my/toggle-mode-line-mode "my-toggle-mode-line-mode"
   "Minor mode for toggling the visibility of the mode-line." t)
 (autoload #'my/hide-mode-line "my-toggle-mode-line-mode"
@@ -304,7 +306,7 @@ if non-nil, indentation will use tabs instead of spaces."
 (autoload #'my/show-mode-line "my-toggle-mode-line-mode"
   "Minor mode for showing the mode-line." t)
 
-(setq mode-line-compact t)
+;; (setq mode-line-compact t)
 
 ;;; MINIBUFFER
 
@@ -425,7 +427,7 @@ folder, otherwise delete a word."
     ;;;###autoload
     (define-minor-mode my/writeroom-mode
       "Minor mode that toggles a nice writing environment"
-		:init-value nil
+      :init-value nil
       (if my/writeroom-mode
           (progn
             (whitespace-mode -1)
@@ -841,7 +843,6 @@ Credit: xahlee.info"
 
   (my/fonts-enable-emojis)
   (my/theme-load-my-theme)
-
   (when (eq my/theme 'lambda-light)
     (let ((bg (face-attribute 'mode-line :background))
           (bg-inactive (face-attribute 'mode-line-inactive :background)))
@@ -853,6 +854,8 @@ Credit: xahlee.info"
 
   (my/consult--init)
   (my/orderless-completion--init)
+
+  (my/mode-line-mode)
 
   (require 'multiple-cursors)
   (require 'expand-region))

@@ -393,15 +393,15 @@ folder, otherwise delete a word."
   (when exists
     (add-to-list 'load-path path)))
 
-(let* ((name "highlight-indent-guides")
-       (path (my/get-packages-file name))
-       (exists (file-directory-p path)))
-  (when exists
-    (add-to-list 'load-path path)
-    (autoload #'highlight-indent-guides-mode name nil t)
-    (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
-    (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-character ?\x254e)))
+;; (let* ((name "highlight-indent-guides")
+;;        (path (my/get-packages-file name))
+;;        (exists (file-directory-p path)))
+;;   (when exists
+;;     (add-to-list 'load-path path)
+;;     (autoload #'highlight-indent-guides-mode name nil t)
+;;     (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
+;;     (setq highlight-indent-guides-method 'character)
+;;     (setq highlight-indent-guides-character ?\x254e)))
 
 (let* ((name "multiple-cursors")
        (path (my/get-packages-file name))
@@ -506,6 +506,8 @@ may still need to modify the major-mode specific indent settings."
 (add-hook 'bat-mode-hook #'my/bat-mode--hook-setup)
 
 ;;;; Language: C & C++
+
+(autoload 'simpc-mode "simpc-mode" nil t)
 
 (setq-default c-basic-offset (my/lang-indent-size 'cc))
 (defun my/hook--cc-mode ()
@@ -840,6 +842,12 @@ Credit: xahlee.info"
   (my/fonts-enable-emojis)
   (my/theme-load-my-theme)
 
+  (when (eq my/theme 'lambda-light)
+    (let ((bg (face-attribute 'mode-line :background))
+          (bg-inactive (face-attribute 'mode-line-inactive :background)))
+      (set-face-attribute 'mode-line nil :box `(:line-width 10 :color ,bg))
+      (set-face-attribute 'mode-line-inactive nil :box `(:line-width 10 :color ,bg-inactive))))
+
   ;; (icomplete-vertical-mode 1)
   (vertico-mode 1)
 
@@ -847,9 +855,7 @@ Credit: xahlee.info"
   (my/orderless-completion--init)
 
   (require 'multiple-cursors)
-  (require 'expand-region)
-
-  )
+  (require 'expand-region))
 (add-hook 'after-init-hook #'my/hook--after-init)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)

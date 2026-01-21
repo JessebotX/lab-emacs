@@ -667,6 +667,8 @@ may still need to modify the major-mode specific indent settings."
 (if (and (treesit-language-available-p 'markdown)
          (treesit-language-available-p 'markdown-inline))
     (progn
+      (when (version< emacs-version "31.0")
+        (autoload #'markdown-ts-mode "markdown-ts-mode" nil t))
       (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-ts-mode)))
   (let* ((name "markdown-mode")
          (path (my/get-packages-file name))

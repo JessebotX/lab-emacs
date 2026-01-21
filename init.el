@@ -325,6 +325,13 @@ if non-nil, indentation will use tabs instead of spaces."
       (require 'consult))
     (add-to-list 'load-path path)))
 
+(let* ((name "marginalia")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'marginalia-mode "marginalia" nil t)))
+
 (let* ((name "orderless")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))
@@ -851,6 +858,7 @@ Credit: xahlee.info"
 
   ;; (icomplete-vertical-mode 1)
   (vertico-mode 1)
+  (marginalia-mode 1)
 
   (my/consult--init)
   (my/orderless-completion--init)

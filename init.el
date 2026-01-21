@@ -180,7 +180,7 @@ if non-nil, indentation will use tabs instead of spaces."
 ;;;; Whitespace
 
 ;; #x7C   = | , #x2502 = │
-(setq whitespace-display-mappings '((tab-mark 9 [#x2502 9] [92 9])))
+(setq whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-line-column nil)
 
@@ -463,6 +463,22 @@ folder, otherwise delete a word."
 
 ;;; TEXT EDITING
 
+(defun my/heading-faces-use-theme-styles ()
+  (interactive)
+  (custom-set-faces
+   `(outline-1 (()))
+   `(outline-2 (()))
+   `(outline-3 (()))
+   `(outline-4 (()))))
+
+(defun my/heading-faces-remove-styles ()
+  (interactive)
+  (custom-set-faces
+   `(outline-1 ((t :inherit unspecified :weight bold :family unspecified :height unspecified)))
+   `(outline-2 ((t :inherit unspecified :weight bold :family unspecified :height unspecified)))
+   `(outline-3 ((t :inherit unspecified :weight bold :family unspecified :height unspecified)))
+   `(outline-4 ((t :inherit unspecified :weight bold :family unspecified :height unspecified)))))
+
 (defun my/paragraph-default-movement-local ()
   (interactive)
   (setq-local paragraph-start (default-value 'paragraph-start))
@@ -632,33 +648,44 @@ may still need to modify the major-mode specific indent settings."
 
 ;;;; Language: Markdown
 
+(defun my/markdown-mode--hook ()
+  "Configuration for `markdown-mode' or `markdown-ts-mode'."
+  (interactive)
+
+  (editorconfig-mode 1)
+  (setq-local fill-column 72)
+  (my/lang-indent-set-local 'markdown)
+  (my/paragraph-default-movement-local)
+  (visual-line-mode 1))
+
 (let* ((name "edit-indirect")
        (path (my/get-packages-file name))
        (exists (file-directory-p path)))
   (when exists
     (add-to-list 'load-path path)))
 
-(let* ((name "markdown-mode")
-       (path (my/get-packages-file name))
-       (exists (file-directory-p path)))
-  (when exists
-    (add-to-list 'load-path path)
-    (autoload #'markdown-mode name
-      "Major mode for editing Markdown files." t)
-    (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-mode))
+(if (and (treesit-language-available-p 'markdown)
+         (treesit-language-available-p 'markdown-inline))
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-ts-mode)))
+  (let* ((name "markdown-mode")
+         (path (my/get-packages-file name))
+         (exists (file-directory-p path)))
+    (when exists
+      (add-to-list 'load-path path)
+      (autoload #'markdown-mode name
+        "Major mode for editing Markdown files." t)
+      (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-mode))
 
-    (defun my/hook--markdown-mode ()
-      "Configuration for `markdown-mode'."
-      (editorconfig-mode 1)
-      (setq-local fill-column 72)
-      (let ((map markdown-mode-map))
-        (define-key map [remap backward-paragraph] 'backward-paragraph)
-        (define-key map [remap forward-paragraph] 'forward-paragraph))
-      (my/lang-indent-set-local 'markdown)
-      (my/paragraph-default-movement-local)
-      (visual-line-mode 1))
+      (defun my/markdown-mode-no-tree-sitter--hook ()
+        "Configuration for `markdown-mode'."
+        (let ((map markdown-mode-map))
+          (define-key map [remap backward-paragraph] 'backward-paragraph)
+          (define-key map [remap forward-paragraph] 'forward-paragraph)))
 
-    (add-hook 'markdown-mode-hook #'my/hook--markdown-mode)))
+      (add-hook 'markdown-mode-hook #'my/markdown-mode-no-tree-sitter--hook))))
+
+(add-hook 'markdown-mode-hook #'my/markdown-mode--hook)
 
 ;;;; Language: Meson
 
@@ -882,10 +909,11 @@ Credit: xahlee.info"
 (add-hook 'after-init-hook #'my/hook--after-init)
 
 (defun my/enable-theme-functions--hook (_theme)
+  ;; mode-line padding
   (let ((bg (face-attribute 'mode-line :background))
         (bg-inactive (face-attribute 'mode-line-inactive :background)))
-    (set-face-attribute 'mode-line nil :box `(:line-width 8 :color ,bg))
-    (set-face-attribute 'mode-line-inactive nil :box `(:line-width 8 :color ,bg-inactive))))
+    (set-face-attribute 'mode-line nil :box `(:line-width 10 :color ,bg))
+    (set-face-attribute 'mode-line-inactive nil :box `(:line-width 10 :color ,bg-inactive))))
 (add-hook 'enable-theme-functions #'my/enable-theme-functions--hook)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)

@@ -55,3 +55,6 @@
 [submodule "lisp/expand-region"]
 	path = lisp/expand-region
 	url = https://github.com/magnars/expand-region.el
+[submodule "lisp/marginalia"]
+	path = lisp/marginalia
+	url = https://github.com/minad/marginalia.git

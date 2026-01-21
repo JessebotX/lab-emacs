@@ -289,7 +289,8 @@ if non-nil, indentation will use tabs instead of spaces."
         (bg-line-number-inactive unspecified)
         (bg-line-number-active unspecified)
 
-        (bg-mode-line-active bg-main)
+        ;; (bg-mode-line-active bg-main)
+        (bg-mode-line-active bg-dim)
         (fg-mode-line-active fg-main)
 
         (border-mode-line-active bg-dim)
@@ -324,6 +325,13 @@ if non-nil, indentation will use tabs instead of spaces."
     (defun my/consult--init()
       (require 'consult))
     (add-to-list 'load-path path)))
+
+(let* ((name "marginalia")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'marginalia-mode "marginalia" nil t)))
 
 (let* ((name "orderless")
        (path (my/get-packages-file name))
@@ -859,14 +867,10 @@ Credit: xahlee.info"
 
   (my/fonts-enable-emojis)
   (my/theme-load-my-theme)
-  (when (eq my/theme 'lambda-light)
-    (let ((bg (face-attribute 'mode-line :background))
-          (bg-inactive (face-attribute 'mode-line-inactive :background)))
-      (set-face-attribute 'mode-line nil :box `(:line-width 10 :color ,bg))
-      (set-face-attribute 'mode-line-inactive nil :box `(:line-width 10 :color ,bg-inactive))))
 
   ;; (icomplete-vertical-mode 1)
   (vertico-mode 1)
+  (marginalia-mode 1)
 
   (my/consult--init)
   (my/orderless-completion--init)
@@ -876,6 +880,13 @@ Credit: xahlee.info"
   (require 'multiple-cursors)
   (require 'expand-region))
 (add-hook 'after-init-hook #'my/hook--after-init)
+
+(defun my/enable-theme-functions--hook (_theme)
+  (let ((bg (face-attribute 'mode-line :background))
+        (bg-inactive (face-attribute 'mode-line-inactive :background)))
+    (set-face-attribute 'mode-line nil :box `(:line-width 8 :color ,bg))
+    (set-face-attribute 'mode-line-inactive nil :box `(:line-width 8 :color ,bg-inactive))))
+(add-hook 'enable-theme-functions #'my/enable-theme-functions--hook)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 

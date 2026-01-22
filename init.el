@@ -37,7 +37,10 @@
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 
-(defcustom my/font-family-default "Maple Mono"
+(defcustom my/mode-line-padding 10
+  "Default mode-line padding.")
+
+(defcustom my/font-family-default "Fira Code"
   "Default font family.")
 
 (defcustom my/font-size-default 120
@@ -97,7 +100,7 @@ if non-nil, indentation will use tabs instead of spaces."
 
 ;; NOTE: using setq because it seems to be faster than setopt
 
-(setq-default fill-column 72)
+(setq-default fill-column 70)
 (setq sentence-end-double-space nil)
 
 (setq backward-delete-char-untabify-method 'hungry)
@@ -653,7 +656,7 @@ may still need to modify the major-mode specific indent settings."
   (interactive)
 
   (editorconfig-mode 1)
-  (setq-local fill-column 72)
+  (setq-local fill-column 70)
   (my/lang-indent-set-local 'markdown)
   (my/paragraph-default-movement-local)
   (visual-line-mode 1))
@@ -914,9 +917,10 @@ Credit: xahlee.info"
   ;; mode-line padding
   (let ((bg (face-attribute 'mode-line :background))
         (bg-inactive (face-attribute 'mode-line-inactive :background)))
-    (set-face-attribute 'mode-line nil :box `(:line-width 10 :color ,bg))
-    (set-face-attribute 'mode-line-inactive nil :box `(:line-width 10 :color ,bg-inactive))))
-(add-hook 'enable-theme-functions #'my/enable-theme-functions--hook)
+    (set-face-attribute 'mode-line nil :box `(:line-width ,my/mode-line-padding :color ,bg))
+    (set-face-attribute 'mode-line-active nil :box `(:line-width ,my/mode-line-padding :color ,bg))
+    (set-face-attribute 'mode-line-inactive nil :box `(:line-width ,my/mode-line-padding :color ,bg-inactive))))
+(add-hook 'enable-theme-functions #'my/enable-theme-functions--hook -100)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 

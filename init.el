@@ -831,15 +831,16 @@ buffer/file contents."
 URL `http://xahlee.info/emacs/emacs/emacs_open_in_terminal.html'
 Version: 2020-11-21 2022-08-04 2023-03-01 2023-06-26"
   (interactive)
-  (cond
-   ((eq system-type 'windows-nt)
-    (shell-command (format "wt -d \"%s\"" default-directory)))
-   ((eq system-type 'darwin)
-    (shell-command (concat "open -a terminal " (shell-quote-argument (expand-file-name default-directory)))))
-   ((eq system-type 'gnu/linux)
-    (let ((process-connection-type nil)) (start-process "" nil "x-terminal-emulator" (concat "--working-directory=" default-directory))))
-   ((eq system-type 'berkeley-unix)
-    (let ((process-connection-type nil)) (start-process "" nil "x-terminal-emulator" (concat "--working-directory=" default-directory))))))
+  (let ((shell-dir (shell-quote-argument (expand-file-name default-directory))))
+    (cond
+     ((eq system-type 'windows-nt)
+      (shell-command (format "wt -d \"%s\"" shell-dir)))
+     ((eq system-type 'darwin)
+      (shell-command (concat "open -a terminal " shell-dir)))
+     ((eq system-type 'gnu/linux)
+      (call-process "setsid" nil 0 nil "x-terminal-emulator" (concat "--working-directory=" shell-dir)))
+     ((eq system-type 'berkeley-unix)
+      (call-process "setsid" nil 0 nil "x-terminal-emulator" (concat "--working-directory=" shell-dir))))))
 
 (defun my/open-file ()
   "Open current buffer/file in external app.

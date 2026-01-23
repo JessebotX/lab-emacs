@@ -829,7 +829,7 @@ Version: 2020-11-21 2022-08-04 2023-03-01 2023-06-26"
   (let ((shell-dir (shell-quote-argument (expand-file-name default-directory))))
     (cond
      ((eq system-type 'windows-nt)
-      (shell-command (format "wt -d \"%s\"" shell-dir)))
+      (shell-command (format "wt -d \"%s\"" default-directory)))
      ((eq system-type 'darwin)
       (shell-command (concat "open -a terminal " shell-dir)))
      ((eq system-type 'gnu/linux)

@@ -16,18 +16,12 @@
 [submodule "lisp/rainbow-delimiters"]
 	path = lisp/rainbow-delimiters
 	url = https://github.com/Fanael/rainbow-delimiters
-[submodule "lisp/doom-themes"]
-	path = lisp/doom-themes
-	url = https://github.com/doomemacs/themes
 [submodule "lisp/web-mode"]
 	path = lisp/web-mode
 	url = https://github.com/fxbois/web-mode
 [submodule "lisp/rust-mode"]
 	path = lisp/rust-mode
 	url = https://github.com/rust-lang/rust-mode
-[submodule "lisp/edit-indirect"]
-	path = lisp/edit-indirect
-	url = https://github.com/Fanael/edit-indirect.git
 [submodule "lisp/zig-mode"]
 	path = lisp/zig-mode
 	url = https://codeberg.org/ziglang/zig-mode.git

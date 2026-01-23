@@ -661,12 +661,6 @@ may still need to modify the major-mode specific indent settings."
   (my/paragraph-default-movement-local)
   (visual-line-mode 1))
 
-(let* ((name "edit-indirect")
-       (path (my/get-packages-file name))
-       (exists (file-directory-p path)))
-  (when exists
-    (add-to-list 'load-path path)))
-
 (if (and (treesit-language-available-p 'markdown)
          (treesit-language-available-p 'markdown-inline))
     (progn

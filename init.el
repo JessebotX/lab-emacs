@@ -672,6 +672,7 @@ may still need to modify the major-mode specific indent settings."
     (progn
       (when (version< emacs-version "31.0")
         (autoload #'markdown-ts-mode "markdown-ts-mode" nil t))
+      (add-hook 'markdown-ts-mode-hook #'my/markdown-mode--hook)
       (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-ts-mode)))
   (let* ((name "markdown-mode")
          (path (my/get-packages-file name))

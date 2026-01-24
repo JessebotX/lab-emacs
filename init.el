@@ -538,30 +538,40 @@ may still need to modify the major-mode specific indent settings."
 
 (autoload 'simpc-mode "simpc-mode" nil t)
 
+(defun my/cc-mode--setup ()
+  "Settings for the legacy `c-mode' and `c++-mode'"
+  (setq compile-command "make ")
+  (setq-local indent-line-function 'tab-to-tab-stop)
+  (c-set-style "bsd")
+  (my/lang-indent-set-local 'cc)
+  (keymap-set c-mode-map "C-c C-c" 'compile)
+  (keymap-set c++-mode-map "C-c C-c" 'compile)
+  (setq-local c-basic-offset (my/lang-indent-size 'cc)))
+
+(defun my/c-or-c++-ts-mode--hook ()
+  "Settings for `c-ts-mode', `c++-ts-mode' or `c-or-c++-ts-mode'"
+  (setq-local compile-command "make ")
+  (my/lang-indent-set-local 'cc)
+  (setq-local c-ts-mode-indent-style 'bsd)
+  (setq-local c-ts-mode-indent-offset (my/lang-indent-size 'cc)))
+
 (if (treesit-language-available-p 'c)
     (progn
-      (defun my/c-ts-mode--hook ()
-        "Settings for `c-ts-mode'"
-        (setq-local compile-command "make ")
-        (my/lang-indent-set-local 'cc)
-        (setq-local c-ts-mode-indent-style 'bsd)
-        (setq-local c-ts-mode-indent-offset (my/lang-indent-size 'cc)))
       (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-      (add-hook 'c-ts-mode-hook #'my/c-ts-mode--hook))
+      (add-hook 'c-ts-mode-hook #'my/c-or-c++-ts-mode--hook))
   (progn
     (setq-default c-basic-offset (my/lang-indent-size 'cc))
-    (defun my/hook--cc-mode ()
-      "Settings for `c-mode' and `c++-mode'"
-      (setq compile-command "make ")
-      (setq-local indent-line-function 'tab-to-tab-stop)
-      (c-set-style "bsd")
-      (my/lang-indent-set-local 'cc)
-      (keymap-set c-mode-map "C-c C-c" 'compile)
-      (keymap-set c++-mode-map "C-c C-c" 'compile)
-      (setq-local c-basic-offset (my/lang-indent-size 'cc)))
+    (add-hook 'c-mode-hook #'my/cc-mode--setup)))
 
-    (add-hook 'c-mode-hook #'my/hook--cc-mode)
-    (add-hook 'c++-mode-hook #'my/hook--cc-mode)))
+(add-to-list 'treesit-load-name-override-list '(c++ "libtree-sitter-cpp" "tree_sitter_cpp"))
+(if (treesit-language-available-p 'c++)
+    (progn
+      (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
+      (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+      (add-hook 'c++-ts-mode-hook #'my/c-or-c++-ts-mode--hook))
+  (progn
+    (setq-default c-basic-offset (my/lang-indent-size 'cc))
+    (add-hook 'c++-mode-hook #'my/cc-mode--setup)))
 
 ;;;; Language: CMake
 

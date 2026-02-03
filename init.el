@@ -51,33 +51,33 @@ loading (`custom-available-themes').")
   :group 'indent
   :type '(natnum))
 
-(defcustom my/indent-use-tabs-default nil
+(defcustom my/indent-use-tabs-default t
   "If non-nil, indentation will use tabs instead of spaces. Wrapper around
 `indent-tabs-mode'."
   :group 'indent
   :type '(boolean))
 
 (defcustom my/lang-indent-settings
-  '((bat        :size 3 :use-tabs nil)
-    (cc         :size 3 :use-tabs nil)
-    (cmake      :size 3 :use-tabs nil)
-    (css        :size 3 :use-tabs nil)
+  '((bat        :size 3 :use-tabs t)
+    (cc         :size 3 :use-tabs t)
+    (cmake      :size 3 :use-tabs t)
+    (css        :size 3 :use-tabs t)
     (go         :size 3 :use-tabs t)
-    (html       :size 3 :use-tabs nil)
-    (java       :size 3 :use-tabs nil)
-    (javascript :size 3 :use-tabs nil)
-    (json       :size 3 :use-tabs nil)
+    (html       :size 3 :use-tabs t)
+    (java       :size 3 :use-tabs t)
+    (javascript :size 3 :use-tabs t)
+    (json       :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
-    (markdown   :size 2 :use-tabs nil)
-    (odin       :size 3 :use-tabs nil)
-    (python     :size 4 :use-tabs nil)
-    (rst        :size 2 :use-tabs nil)
-    (rust       :size 3 :use-tabs nil)
+    (markdown   :size 2 :use-tabs t)
+    (odin       :size 3 :use-tabs t)
+    (python     :size 4 :use-tabs t)
+    (rst        :size 2 :use-tabs t)
+    (rust       :size 3 :use-tabs t)
     (org        :size 8 :use-tabs nil)
-    (tex        :size 3 :use-tabs nil)
-    (typ        :size 3 :use-tabs nil)
-    (web        :size 3 :use-tabs nil)
-    (xml        :size 3 :use-tabs nil)
+    (tex        :size 3 :use-tabs t)
+    (typ        :size 3 :use-tabs t)
+    (web        :size 3 :use-tabs t)
+    (xml        :size 3 :use-tabs t)
     (yaml       :size 2 :use-tabs nil)
     (zig        :size 4 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
@@ -588,26 +588,41 @@ may still need to modify the major-mode specific indent settings."
 
 ;;;; Language: Go
 
-(let* ((name "go-mode.el")
-       (path (my/get-packages-file name))
-       (exists (file-directory-p path)))
-  (when exists
-    (add-to-list 'load-path path)
-    (autoload #'go-mode name
-      "Major mode for editing Go files." t)
-    (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+(defun my/lang-go--setup ()
+  "Settings for writing Go."
+  (setq-local compile-command "go build ")
+  (my/lang-indent-set-local 'go))
 
-    (with-eval-after-load 'go-mode
-      (setq gofmt-args '("-s")))
+(if (treesit-language-available-p 'go)
+    (progn
+      (defun my/go-ts-mode--hook ()
+        (setq-local go-ts-mode-indent-offset (my/lang-indent-size 'go)))
 
-    (defun my/hook--go-mode ()
-      "Configuration for `go-mode'."
-      (setq compile-command "go build ")
+      (add-to-list 'auto-mode-alist '("go\\.mod\\'" . go-mod-ts-mode))
+      (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+      (add-hook 'go-ts-mode-hook #'my/lang-go--setup)
+      (add-hook 'go-ts-mode-hook #'my/go-ts-mode--hook))
+  (progn
+    (let* ((name "go-mode.el")
+           (path (my/get-packages-file name))
+           (exists (file-directory-p path)))
+      (when exists
+        (add-to-list 'load-path path)
+        (autoload #'go-mode name
+          "Major mode for editing Go files." t)
+        (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 
-      (keymap-set go-mode-map "C-c g" #'gofmt)
-      (my/lang-indent-set-local 'go))
+        (with-eval-after-load 'go-mode
+          (setq gofmt-args '("-s")))
 
-    (add-hook 'go-mode-hook #'my/hook--go-mode)))
+        (defun my/hook--go-mode ()
+          "Configuration for `go-mode'."
+          (setq compile-command "go build ")
+
+          (keymap-set go-mode-map "C-c g" #'gofmt)
+          (my/lang-indent-set-local 'go))
+
+        (add-hook 'go-mode-hook #'my/hook--go-mode)))))
 
 ;;;; Language: HTML & html templates
 

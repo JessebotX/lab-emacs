@@ -70,7 +70,8 @@ loading (`custom-available-themes').")
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs t)
     (odin       :size 3 :use-tabs t)
-    (python     :size 4 :use-tabs t)
+    (powershell :size 3 :use-tabs t)
+    (python     :size 3 :use-tabs t)
     (rst        :size 2 :use-tabs t)
     (rust       :size 3 :use-tabs t)
     (org        :size 8 :use-tabs nil)
@@ -746,6 +747,24 @@ may still need to modify the major-mode specific indent settings."
       (setq-local js-indent-level (my/lang-indent-size 'odin)))
 
     (add-hook 'odin-mode-hook #'my/odin-mode--hook-setup)))
+
+;;;; Language: Powershell
+
+(let* ((name "powershell.el")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'powershell-mode name nil t)
+    (add-to-list 'auto-mode-alist '("\\.ps[dm]?1\\'" . powershell-mode))
+
+    (defun my/lang-powershell--setup ()
+      "Configuration for `powershell-mode'."
+      (my/lang-indent-set-local 'powershell)
+      (setq-local powershell-indent-level (my/lang-indent-size 'powershell))
+      (setq-local compile-command "powershell "))
+
+    (add-hook 'powershell-mode-hook #'my/lang-powershell--setup)))
 
 ;;;; Language: Python
 

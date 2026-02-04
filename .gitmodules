@@ -52,3 +52,6 @@
 [submodule "lisp/marginalia"]
 	path = lisp/marginalia
 	url = https://github.com/minad/marginalia.git
+[submodule "lisp/powershell.el"]
+	path = lisp/powershell.el
+	url = https://github.com/jschaf/powershell.el

@@ -203,6 +203,10 @@ if non-nil, indentation will use tabs instead of spaces."
 (with-eval-after-load 'which-key
   (setq which-key-idle-delay 0.1))
 
+;;;; Disabled commands
+
+(put 'narrow-to-region 'disabled nil)
+
 ;;; FONTS
 
 (defun my/font-size-set (value)

@@ -46,39 +46,39 @@ loading (`custom-available-themes').")
 (defcustom my/font-size-default 120
   "Default font size.")
 
-(defcustom my/indent-size-default 3
+(defcustom my/indent-size-default 4
   "Size of indentation, in columns. Wrapper around `tab-width'."
   :group 'indent
   :type '(natnum))
 
-(defcustom my/indent-use-tabs-default t
+(defcustom my/indent-use-tabs-default nil
   "If non-nil, indentation will use tabs instead of spaces. Wrapper around
 `indent-tabs-mode'."
   :group 'indent
   :type '(boolean))
 
 (defcustom my/lang-indent-settings
-  '((bat        :size 3 :use-tabs t)
-    (cc         :size 3 :use-tabs t)
-    (cmake      :size 3 :use-tabs t)
-    (css        :size 3 :use-tabs t)
-    (go         :size 3 :use-tabs t)
-    (html       :size 3 :use-tabs t)
-    (java       :size 3 :use-tabs t)
-    (javascript :size 3 :use-tabs t)
-    (json       :size 3 :use-tabs t)
+  '((bat        :size 4 :use-tabs nil)
+    (cc         :size 4 :use-tabs nil)
+    (cmake      :size 4 :use-tabs nil)
+    (css        :size 4 :use-tabs nil)
+    (go         :size 4 :use-tabs t)
+    (html       :size 4 :use-tabs nil)
+    (java       :size 4 :use-tabs nil)
+    (javascript :size 4 :use-tabs nil)
+    (json       :size 4 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
-    (markdown   :size 2 :use-tabs t)
-    (odin       :size 3 :use-tabs t)
-    (powershell :size 3 :use-tabs t)
-    (python     :size 3 :use-tabs t)
-    (rst        :size 2 :use-tabs t)
-    (rust       :size 3 :use-tabs t)
+    (markdown   :size 2 :use-tabs nil)
+    (odin       :size 4 :use-tabs nil)
+    (powershell :size 4 :use-tabs nil)
+    (python     :size 4 :use-tabs nil)
+    (rst        :size 2 :use-tabs nil)
+    (rust       :size 4 :use-tabs nil)
     (org        :size 8 :use-tabs nil)
-    (tex        :size 3 :use-tabs t)
-    (typ        :size 3 :use-tabs t)
-    (web        :size 3 :use-tabs t)
-    (xml        :size 3 :use-tabs t)
+    (tex        :size 4 :use-tabs nil)
+    (typ        :size 2 :use-tabs nil)
+    (web        :size 4 :use-tabs nil)
+    (xml        :size 4 :use-tabs nil)
     (yaml       :size 2 :use-tabs nil)
     (zig        :size 4 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the

@@ -469,6 +469,9 @@ folder, otherwise delete a word."
   (when exists
     (add-to-list 'load-path path)))
 
+(setq hungry-delete-chars-to-skip " ")
+(autoload #'global-hungry-delete-mode "hungry-delete" nil t)
+
 ;;; TEXT EDITING
 
 (defun my/heading-faces-use-theme-styles ()

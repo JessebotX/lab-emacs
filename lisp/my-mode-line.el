@@ -107,7 +107,8 @@ Credit: doom-modeline
                   my/mode-line--segment-buffer-narrowed-status
                   " "
                   my/mode-line--segment-buffer-name
-                  " "
+                  mode-line-position
+                  ;; " "
                   my/mode-line--segment-major-mode-indicator
                   " "
                   my/mode-line--segment-major-mode

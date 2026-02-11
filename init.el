@@ -315,7 +315,8 @@ if non-nil, indentation will use tabs instead of spaces."
 (autoload #'my/show-mode-line "my-toggle-mode-line-mode"
   "Minor mode for showing the mode-line." t)
 
-;; (setq mode-line-compact t)
+(setq mode-line-compact t)
+(setq mode-line-percent-position nil)
 
 ;;; MINIBUFFER
 

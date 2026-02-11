@@ -411,15 +411,14 @@ folder, otherwise delete a word."
   (when exists
     (add-to-list 'load-path path)))
 
-;; (let* ((name "highlight-indent-guides")
-;;        (path (my/get-packages-file name))
-;;        (exists (file-directory-p path)))
-;;   (when exists
-;;     (add-to-list 'load-path path)
-;;     (autoload #'highlight-indent-guides-mode name nil t)
-;;     (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
-;;     (setq highlight-indent-guides-method 'character)
-;;     (setq highlight-indent-guides-character ?\x254e)))
+(let* ((name "highlight-indent-guides")
+       (path (my/get-packages-file name))
+       (exists (file-directory-p path)))
+  (when exists
+    (add-to-list 'load-path path)
+    (autoload #'highlight-indent-guides-mode name nil t)
+    (setq highlight-indent-guides-method 'character)
+    (setq highlight-indent-guides-character ?\x254e)))
 
 (let* ((name "multiple-cursors")
        (path (my/get-packages-file name))
@@ -460,8 +459,7 @@ folder, otherwise delete a word."
        (exists (file-directory-p path)))
   (when exists
     (add-to-list 'load-path path)
-    (autoload #'rainbow-delimiters-mode name nil t)
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
+    (autoload #'rainbow-delimiters-mode name nil t)))
 
 (let* ((name "reformatter")
        (path (my/get-packages-file "reformatter"))
@@ -471,6 +469,7 @@ folder, otherwise delete a word."
 
 (setq hungry-delete-chars-to-skip " ")
 (autoload #'global-hungry-delete-mode "hungry-delete" nil t)
+(autoload #'hungry-delete-mode "hungry-delete" nil t)
 
 ;;; TEXT EDITING
 
@@ -983,8 +982,14 @@ Credit: xahlee.info"
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 (add-hook 'text-mode-hook #'whitespace-mode)
-(add-hook 'prog-mode-hook #'whitespace-mode)
 
+(defun my/hook--prog-mode ()
+  (editorconfig-mode 1)
+  (highlight-indent-guides-mode 1)
+  (rainbow-delimiters-mode 1)
+  (hungry-delete-mode)
+  (whitespace-mode 1))
+(add-hook 'prog-mode-hook #'my/hook--prog-mode)
 ;;; KEYBINDINGS
 
 (keymap-global-set "<escape>" 'keyboard-escape-quit)

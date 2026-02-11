@@ -30,7 +30,7 @@
 
 ;;;; Customization
 
-(defcustom my/theme 'modus-operandi
+(defcustom my/theme 'modus-operandi-tinted
   "Default Emacs theme.")
 
 (defcustom my/theme-toggle-options '(modus-operandi modus-vivendi)

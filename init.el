@@ -426,6 +426,7 @@ folder, otherwise delete a word."
        (exists (file-directory-p path)))
   (when exists
     (setq mc/list-file (my/get-var-file "mc-lists.el"))
+    (setq mc/always-run-for-all t)
     (add-to-list 'load-path path)))
 
 (let* ((name "olivetti")
@@ -952,6 +953,7 @@ Credit: xahlee.info"
   (electric-indent-mode -1)
   (global-auto-revert-mode 1)
   (save-place-mode 1)
+  (savehist-mode 1)
   (which-key-mode 1)
   (winner-mode 1)
 

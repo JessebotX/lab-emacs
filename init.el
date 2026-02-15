@@ -561,6 +561,7 @@ may still need to modify the major-mode specific indent settings."
   "Settings for `c-ts-mode', `c++-ts-mode' or `c-or-c++-ts-mode'"
   (setq-local compile-command "make ")
   (my/lang-indent-set-local 'cc)
+  (setq-local indent-line-function 'tab-to-tab-stop)
   (setq-local c-ts-mode-indent-style 'bsd)
   (setq-local c-ts-mode-indent-offset (my/lang-indent-size 'cc)))
 

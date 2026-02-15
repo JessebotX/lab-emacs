@@ -18,3 +18,4 @@
 *.elc
 /eln-cache
 /multisession
+/history

@@ -426,6 +426,7 @@ folder, otherwise delete a word."
        (exists (file-directory-p path)))
   (when exists
     (setq mc/list-file (my/get-var-file "mc-lists.el"))
+    (setq mc/always-run-for-all t)
     (add-to-list 'load-path path)))
 
 (let* ((name "olivetti")
@@ -560,6 +561,7 @@ may still need to modify the major-mode specific indent settings."
   "Settings for `c-ts-mode', `c++-ts-mode' or `c-or-c++-ts-mode'"
   (setq-local compile-command "make ")
   (my/lang-indent-set-local 'cc)
+  (setq-local indent-line-function 'tab-to-tab-stop)
   (setq-local c-ts-mode-indent-style 'bsd)
   (setq-local c-ts-mode-indent-offset (my/lang-indent-size 'cc)))
 
@@ -953,6 +955,7 @@ Credit: xahlee.info"
   (global-auto-revert-mode 1)
   (pixel-scroll-precision-mode 1)
   (save-place-mode 1)
+  (savehist-mode 1)
   (which-key-mode 1)
   (winner-mode 1)
 

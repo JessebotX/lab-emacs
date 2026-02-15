@@ -951,6 +951,7 @@ Credit: xahlee.info"
   (delete-selection-mode 1)
   (electric-indent-mode -1)
   (global-auto-revert-mode 1)
+  (pixel-scroll-precision-mode 1)
   (save-place-mode 1)
   (which-key-mode 1)
   (winner-mode 1)

@@ -37,7 +37,7 @@
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 
-(defcustom my/mode-line-padding 10
+(defcustom my/mode-line-padding nil
   "Default mode-line padding.")
 
 (defcustom my/font-family-default "Fira Code"
@@ -996,11 +996,12 @@ Credit: xahlee.info"
 
 (defun my/enable-theme-functions--hook (_theme)
   ;; mode-line padding
-  (let ((bg (face-attribute 'mode-line :background))
-        (bg-inactive (face-attribute 'mode-line-inactive :background)))
-    (set-face-attribute 'mode-line nil :box `(:line-width ,my/mode-line-padding :color ,bg))
-    (set-face-attribute 'mode-line-active nil :box `(:line-width ,my/mode-line-padding :color ,bg))
-    (set-face-attribute 'mode-line-inactive nil :box `(:line-width ,my/mode-line-padding :color ,bg-inactive))))
+  (if my/mode-line-padding
+      (let ((bg (face-attribute 'mode-line :background))
+            (bg-inactive (face-attribute 'mode-line-inactive :background)))
+        (set-face-attribute 'mode-line nil :box `(:line-width ,my/mode-line-padding :color ,bg))
+        (set-face-attribute 'mode-line-active nil :box `(:line-width ,my/mode-line-padding :color ,bg))
+        (set-face-attribute 'mode-line-inactive nil :box `(:line-width ,my/mode-line-padding :color ,bg-inactive)))))
 (add-hook 'enable-theme-functions #'my/enable-theme-functions--hook -100)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)

@@ -469,10 +469,6 @@ folder, otherwise delete a word."
   (when exists
     (add-to-list 'load-path path)))
 
-;; (setq hungry-delete-chars-to-skip " ")
-;; (autoload #'global-hungry-delete-mode "hungry-delete" nil t)
-;; (autoload #'hungry-delete-mode "hungry-delete" nil t)
-
 ;;; TEXT EDITING
 
 (defun my/backspace-whitespace-to-tab-stop ()
@@ -1011,18 +1007,12 @@ Credit: xahlee.info"
   (editorconfig-mode 1)
   (highlight-indent-guides-mode 1)
   (rainbow-delimiters-mode 1)
-  ;; (hungry-delete-mode)
   (whitespace-mode 1))
 (add-hook 'prog-mode-hook #'my/hook--prog-mode)
 ;;; KEYBINDINGS
 
 (global-set-key [remap delete-backward-char] #'my/backspace-whitespace-to-tab-stop)
 (global-set-key [remap delete-backward-char-untabify] #'my/backspace-whitespace-to-tab-stop)
-
-;; (define-key hungry-delete-mode-map [remap delete-backward-char] 'hungry-delete-backward)
-;; (define-key hungry-delete-mode-map [remap backward-delete-char-untabify] 'hungry-delete-backward)
-;; (define-key hungry-delete-mode-map [remap c-electric-backspace] 'hungry-delete-backward)
-;; (define-key hungry-delete-mode-map [remap c-electric-delete-forward] 'hungry-delete-forward)
 
 (keymap-global-set "<escape>" 'keyboard-escape-quit)
 (keymap-global-set "C-g" #'my/keyboard-quit-dwim)

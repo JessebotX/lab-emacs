@@ -37,7 +37,7 @@
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 
-(defcustom my/mode-line-padding nil
+(defcustom my/mode-line-padding 5
   "Default mode-line padding.")
 
 (defcustom my/font-family-default "Fira Code"

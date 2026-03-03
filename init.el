@@ -109,6 +109,7 @@ if non-nil, indentation will use tabs instead of spaces."
 (setq completion-ignore-case t)
 (setq custom-file (my/get-etc-file "custom.el"))
 (setq delete-by-moving-to-trash t)
+(setq display-time-default-load-average nil)
 (setq enable-recursive-minibuffers t)
 (setq find-file-visit-truename t)
 (setq jit-lock-defer-time 0)

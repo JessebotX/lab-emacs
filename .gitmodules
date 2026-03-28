@@ -1,3 +1,9 @@
 [submodule "lisp/packages/cmake-mode"]
 	path = lisp/packages/cmake-mode
 	url = https://github.com/emacsmirror/cmake-mode.git
+[submodule "lisp/packages/adaptive-wrap"]
+	path = lisp/packages/adaptive-wrap
+	url = https://github.com/emacsmirror/adaptive-wrap
+[submodule "lisp/packages/olivetti"]
+	path = lisp/packages/olivetti
+	url = https://github.com/rnkn/olivetti

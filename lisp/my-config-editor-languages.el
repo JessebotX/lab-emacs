@@ -88,6 +88,41 @@ tabs will be used instead of spaces."
             (backward-delete-char (- (match-end 1) (match-beginning 1)))
           (call-interactively 'backward-delete-char))))))
 
+;;; ├── EXTRAS
+
+(let* ((package-path (expand-file-name "lisp/packages/adaptive-wrap" user-emacs-directory))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'adaptive-wrap-prefix-mode "adaptive-wrap" nil t)
+    (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)))
+
+(let* ((package-path (expand-file-name "lisp/packages/olivetti" user-emacs-directory))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'olivetti-mode "olivetti" nil t)
+
+    (defun my/editor--olivetti-no-newline-in-fringe ()
+      "Hack to prevent cursor from going into the fringe."
+      (setq-local overflow-newline-into-fringe nil))
+    (add-hook 'olivetti-mode-hook #'my/editor--olivetti-no-newline-in-fringe)
+
+    ;;;###autoload
+    (define-minor-mode my/editor-writeroom-mode
+      "Minor mode that toggles a nice writing environment."
+      :init-value nil
+      (if my/editor-writeroom-mode
+          (progn
+            (whitespace-mode -1)
+            (my/hide-mode-line)
+            (olivetti-mode 1))
+        (progn
+          (whitespace-mode 1)
+          (my/show-mode-line)
+          (olivetti-mode -1))))
+    (make-variable-buffer-local 'my/editor-writeroom-mode)))
+
 ;;; ├── LANGUAGE: C
 
 (defun my/editor--lang-c ()
@@ -102,10 +137,13 @@ tabs will be used instead of spaces."
 
 ;;; ├── LANGUAGE: CMAKE
 
-(add-to-list 'load-path (expand-file-name "lisp/packages/cmake-mode" user-emacs-directory))
-(autoload #'cmake-mode "cmake-mode" nil t)
-(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
-(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
+(let* ((package-path (expand-file-name "lisp/packages/adaptive-wrap" user-emacs-directory))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'cmake-mode "cmake-mode" nil t)
+    (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+    (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))))
 
 (defun my/editor--lang-cmake ()
   (setq-local cmake-tab-width (my/editor-lang-indent-size 'cmake))

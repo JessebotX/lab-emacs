@@ -8,7 +8,7 @@
 ;;; ├─ GENERAL CONFIGURATION
 
 (setq-default display-line-numbers-width 4
-	      display-line-numbers-widen t
+              display-line-numbers-widen t
               indent-tabs-mode nil
               tab-width 4)
 
@@ -94,6 +94,8 @@
 (require 'my-config-themes)
 (add-hook 'after-init-hook #'my/theme-load-my-theme)
 
+(require 'my-config-mode-line)
+
 (require 'my-config-minibuffer)
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
 (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
@@ -102,24 +104,25 @@
 (require 'my-config-editor-languages)
 (global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
 (global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop)
+(keymap-global-set "C-c m t w" #'my/editor-writeroom-mode)
 
 ;;; ├─ HOOKS
 
 (add-hook 'after-init-hook
-	  (lambda ()
-	    (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
-	    (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
+          (lambda ()
+            (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
+            (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
 
-	    (blink-cursor-mode -1)
+            (blink-cursor-mode -1)
             (column-number-mode 1)
-	    (delete-selection-mode 1)
-	    (electric-indent-mode -1)
-	    (global-auto-revert-mode 1)
-	    (pixel-scroll-precision-mode 1)
-	    (save-place-mode 1)
-	    (savehist-mode 1)
-	    (which-key-mode 1)
-	    (winner-mode 1)))
+            (delete-selection-mode 1)
+            (electric-indent-mode -1)
+            (global-auto-revert-mode 1)
+            (pixel-scroll-precision-mode 1)
+            (save-place-mode 1)
+            (savehist-mode 1)
+            (which-key-mode 1)
+            (winner-mode 1)))
 
 ;;; ├─ KEYBINDINGS
 

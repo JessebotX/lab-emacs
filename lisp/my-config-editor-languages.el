@@ -164,6 +164,21 @@ tabs will be used instead of spaces."
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
   (add-hook 'c++-ts-mode-hook #'my/editor--lang-cpp))
 
+;;; ├── LANGUAGE: GO
+
+(defun my/editor--lang-go ()
+  (my/editor-lang-set-indent-local 'go)
+  (setq-local compile-command "go build "
+              go-ts-indent-offset (my/editor-lang-indent-size 'go)))
+
+(when (treesit-language-available-p 'gomod)
+  (add-to-list 'auto-mode-alist '("go\\.mod\\'" . go-mod-ts-mode))
+  (add-hook 'go-ts-mode-hook #'my/editor--lang-go))
+
+(when (treesit-language-available-p 'go)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+  (add-hook 'go-ts-mode-hook #'my/editor--lang-go))
+
 ;;; ├── LANGUAGE: LISP
 
 (defun my/editor--lang-lisp ()

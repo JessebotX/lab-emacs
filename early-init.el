@@ -94,6 +94,9 @@
       site-run-file nil
       vc-follow-symlinks nil)
 
+;; HACK
+(defun display-startup-echo-area-message () (message ""))
+
 ;;; UI ELEMENTS
 
 (setq menu-bar-mode nil

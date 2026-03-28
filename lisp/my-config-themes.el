@@ -45,8 +45,8 @@ loading (`custom-available-themes').")
         (bg-line-number-inactive unspecified)
         (bg-line-number-active unspecified)
 
-        ;; (bg-mode-line-active bg-main)
-        (bg-mode-line-active bg-dim)
+        (bg-mode-line-active bg-main)
+        ;; (bg-mode-line-active bg-dim)
         (fg-mode-line-active fg-main)
 
         (border-mode-line-active bg-dim)

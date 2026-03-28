@@ -93,6 +93,7 @@
 (add-hook 'after-init-hook #'my/theme-load-my-theme)
 
 (require 'my-config-mode-line)
+(add-hook 'enable-theme-functions #'my/subtle-mode-line-set-faces)
 
 (require 'my-config-minibuffer)
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)

@@ -168,6 +168,7 @@ tabs will be used instead of spaces."
 
 (defun my/editor--lang-lisp ()
   (my/editor-lang-set-indent-local 'lisp)
+  (outline-minor-mode 1)
   (electric-indent-local-mode 1)
   (electric-pair-local-mode 1))
 

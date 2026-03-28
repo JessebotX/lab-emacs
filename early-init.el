@@ -109,7 +109,7 @@
 ;;;; Frame margin & padding
 
 ;; Credit: `spacious-padding' package by Protesilaos
-(push '(internal-border-width . 24) default-frame-alist)
+(push '(internal-border-width . 30) default-frame-alist)
 (push '(right-divider-width   . 30) default-frame-alist)
 (push '(scroll-bar-width      . 8)  default-frame-alist)
 
@@ -127,5 +127,5 @@
 
 ;;; END
 
-(load (expand-file-name "etc/local-early-init.el" user-emacs-directory) :no-error-if-file-is-missing :nomessage) ; should be ignored in version control
+(load (locate-user-emacs-file "etc/local-early-init.el") :no-error-if-file-is-missing :nomessage) ; should be ignored in version control
 

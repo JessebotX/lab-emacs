@@ -2,7 +2,7 @@
 
 ;;; ├─ PREFACE
 
-(defconst my/auto-save-files-directory (expand-file-name "var/auto-saves" user-emacs-directory)
+(defconst my/auto-save-files-directory (locate-user-emacs-file "var/auto-saves")
   "Directory to store temporary auto-save files.")
 
 ;;; ├─ GENERAL CONFIGURATION
@@ -17,13 +17,13 @@
       auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory)
       ;; auto-window-vscroll nil
       backward-delete-char-untabify-method 'hungry
-      bookmark-default-file (expand-file-name "etc/bookmarks.el" user-emacs-directory)
+      bookmark-default-file (locate-user-emacs-file "etc/bookmarks.el")
       create-lockfiles nil
       compilation-always-kill t
       compilation-scroll-output 'first-error
       completion-ignore-case t
       completions-detailed t
-      custom-file (expand-file-name "etc/custom.el" user-emacs-directory)
+      custom-file (locate-user-emacs-file "etc/custom.el")
       delete-by-moving-to-trash t
       delete-pair-blink-delay 0
       delete-pair-push-mark t
@@ -44,16 +44,14 @@
       lazy-count-prefix-format nil
       lazy-count-suffix-format "   (%s/%s)"
       make-backup-files nil
-      mode-line-compact t
-      mode-line-percent-position nil
-      multisession-directory (expand-file-name "var/multisession" user-emacs-directory)
-      project-list-file (expand-file-name "var/projects.el" user-emacs-directory)
+      multisession-directory (locate-user-emacs-file "var/multisession")
+      project-list-file (locate-user-emacs-file "var/projects.el")
       read-answer-short t
       redisplay-skip-fontification-on-input t
       ring-bell-function 'ignore
-      save-place-file (expand-file-name "var/places.el" user-emacs-directory)
+      save-place-file (locate-user-emacs-file "var/places.el")
       save-place-limit 600
-      savehist-file (expand-file-name "var/savehist.el" user-emacs-directory)
+      savehist-file (locate-user-emacs-file "var/savehist.el")
       scroll-conservatively 8
       scroll-preserve-screen-position t
       sentence-end-double-space nil
@@ -78,7 +76,7 @@
 
 ;;; ├─ MODULES
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (locate-user-emacs-file "lisp"))
 
 (require 'my-config-utils)
 (keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
@@ -106,6 +104,23 @@
 (global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop)
 (keymap-global-set "C-c m t w" #'my/editor-writeroom-mode)
 
+;;; ├─ KEYBINDINGS
+
+(keymap-global-set "C-z" nil)
+(keymap-global-set "C-x C-k RET" nil)
+(keymap-global-set "C-x C-z" nil)
+(keymap-global-set "C-c C-b" nil)
+
+(keymap-global-set "M-[" 'backward-paragraph)
+(keymap-global-set "M-]" 'forward-paragraph)
+(keymap-global-set "M-s M-s" 'grep)
+(keymap-global-set "C-x C-b" 'ibuffer)
+(keymap-global-set "C-c -" 'kill-buffer-and-window)
+(keymap-global-set "C-c C-SPC" 'just-one-space)
+(keymap-global-set "C-c d" 'dictionary-lookup-definition)
+(keymap-global-set "C-c m l" 'display-line-numbers-mode)
+(keymap-global-set "C-c m w" 'whitespace-mode)
+
 ;;; ├─ HOOKS
 
 (add-hook 'after-init-hook
@@ -124,23 +139,6 @@
             (which-key-mode 1)
             (winner-mode 1)))
 
-;;; ├─ KEYBINDINGS
-
-(keymap-global-set "C-z" nil)
-(keymap-global-set "C-x C-k RET" nil)
-(keymap-global-set "C-x C-z" nil)
-(keymap-global-set "C-c C-b" nil)
-
-(keymap-global-set "M-[" 'backward-paragraph)
-(keymap-global-set "M-]" 'forward-paragraph)
-(keymap-global-set "M-s M-s" 'grep)
-(keymap-global-set "C-x C-b" 'ibuffer)
-(keymap-global-set "C-c -" 'kill-buffer-and-window)
-(keymap-global-set "C-c C-SPC" 'just-one-space)
-(keymap-global-set "C-c d" 'dictionary-lookup-definition)
-(keymap-global-set "C-c m l" 'display-line-numbers-mode)
-(keymap-global-set "C-c m w" 'whitespace-mode)
-
 ;;; ├─ END
 
-(load (expand-file-name "local-init.el" user-emacs-directory) :no-error-if-file-is-missing :nomessage) ; should be ignored in version control
+(load (locate-user-emacs-file "etc/local-init.el") :no-error-if-file-is-missing :nomessage) ; should be ignored in version control

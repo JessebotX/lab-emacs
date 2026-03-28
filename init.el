@@ -5,35 +5,12 @@
 (defconst my/auto-save-files-directory (expand-file-name "var/auto-saves" user-emacs-directory)
   "Directory to store temporary auto-save files.")
 
-;;; ├─ MODULES
-
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
-(require 'my-config-utils)
-(keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
-(keymap-global-set "C-g" #'my/keyboard-quit-dwim)
-
-(require 'my-config-fonts)
-(keymap-global-set "C-<f5>" #'my/theme-set)
-(keymap-global-set "<f5>" #'my/theme-toggle)
-(keymap-global-set "<f8>" 'variable-pitch-mode)
-(add-hook 'after-init-hook #'my/font-load-my-font)
-(add-hook 'after-init-hook #'my/font-load-emoji-fonts)
-
-(require 'my-config-themes)
-(add-hook 'after-init-hook #'my/theme-load-my-theme)
-
-(require 'my-config-minibuffer)
-(add-hook 'after-init-hook #'icomplete-vertical-mode)
-
-(require 'my-config-editor-languages)
-(global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
-(global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop)
-
 ;;; ├─ GENERAL CONFIGURATION
 
 (setq-default display-line-numbers-width 4
-	      display-line-numbers-widen t)
+	      display-line-numbers-widen t
+              indent-tabs-mode nil
+              tab-width 4)
 
 (setq ansi-color-for-compilation-mode t
       auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t))
@@ -59,7 +36,6 @@
       history-length 300
       ;; fast-but-imprecise-scrolling t
       ibuffer-human-readable-size t
-      indent-tabs-mode nil
       isearch-lazy-count t
       jit-lock-defer-time 0
       kill-buffer-delete-auto-save-files t
@@ -85,7 +61,6 @@
       show-paren-highlighting-openparen t
       show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t
-      tab-width 4
       undo-limit (* 13 160000)
       undo-strong-limit (* 13 240000)
       undo-outer-limit (* 13 24000000)
@@ -100,6 +75,33 @@
       whitespace-line-column nil)
 
 (put 'narrow-to-region 'disabled nil)
+
+;;; ├─ MODULES
+
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+(require 'my-config-utils)
+(keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
+(keymap-global-set "C-g" #'my/keyboard-quit-dwim)
+
+(require 'my-config-fonts)
+(keymap-global-set "C-<f5>" #'my/theme-set)
+(keymap-global-set "<f5>" #'my/theme-toggle)
+(keymap-global-set "<f8>" 'variable-pitch-mode)
+(add-hook 'after-init-hook #'my/font-load-my-font)
+(add-hook 'after-init-hook #'my/font-load-emoji-fonts)
+
+(require 'my-config-themes)
+(add-hook 'after-init-hook #'my/theme-load-my-theme)
+
+(require 'my-config-minibuffer)
+(keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
+(keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
+(add-hook 'after-init-hook #'icomplete-vertical-mode)
+
+(require 'my-config-editor-languages)
+(global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
+(global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop)
 
 ;;; ├─ HOOKS
 

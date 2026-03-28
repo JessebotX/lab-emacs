@@ -100,6 +100,18 @@ tabs will be used instead of spaces."
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
   (add-hook 'c-ts-mode-hook #'my/editor--lang-c))
 
+;;; ├── LANGUAGE: CMAKE
+
+(add-to-list 'load-path (expand-file-name "lisp/packages/cmake-mode" user-emacs-directory))
+(autoload #'cmake-mode "cmake-mode" nil t)
+(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
+
+(defun my/editor--lang-cmake ()
+  (setq-local cmake-tab-width (my/editor-lang-indent-size 'cmake))
+  (my/editor-lang-set-indent-local 'cmake))
+(add-hook 'cmake-mode-hook #'my/editor--lang-cmake)
+
 ;;; ├── LANGUAGE: CPP
 
 (defun my/editor--lang-cpp ()
@@ -113,7 +125,6 @@ tabs will be used instead of spaces."
   (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
   (add-hook 'c++-ts-mode-hook #'my/editor--lang-cpp))
-
 
 ;;; ├── LANGUAGE: LISP
 

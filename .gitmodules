@@ -1,0 +1,3 @@
+[submodule "lisp/packages/cmake-mode"]
+	path = lisp/packages/cmake-mode
+	url = https://github.com/emacsmirror/cmake-mode.git

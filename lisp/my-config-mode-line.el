@@ -76,18 +76,26 @@ Credit: doom-modeline
 (put 'my/mode-line--segment-encoding 'risky-local-variable t)
 
 (setq-default mode-line-format
-              '("%e" " "
+              '( ;; Left aligned
+                "%e"
+                " "
                 my/mode-line--segment-buffer-status
                 my/mode-line--segment-buffer-name
                 " "
-                my/mode-line--segment-major-mode-indicator
+                mode-line-position
+
+                ;; Right aligned
+                mode-line-format-right-align
+
                 " "
                 my/mode-line--segment-major-mode
                 " "
-                (:eval (propertize "(" 'face 'shadow))
+                my/mode-line--segment-major-mode-indicator
+                " "
+                ;; (:eval (propertize "(" 'face 'shadow))
                 my/mode-line--segment-eol
                 my/mode-line--segment-encoding
-                (:eval (propertize ")" 'face 'shadow))
+                ;; (:eval (propertize ")" 'face 'shadow))
                 " "
                 (:eval mode-line-misc-info)))
 

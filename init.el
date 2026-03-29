@@ -140,6 +140,8 @@
             (which-key-mode 1)
             (winner-mode 1)))
 
+(add-hook 'prog-mode-hook #'whitespace-mode)
+
 ;;; ├─ END
 
 (load (locate-user-emacs-file "etc/local-init.el") :no-error-if-file-is-missing :nomessage) ; should be ignored in version control

@@ -123,6 +123,12 @@ tabs will be used instead of spaces."
           (olivetti-mode -1))))
     (make-variable-buffer-local 'my/editor-writeroom-mode)))
 
+(let* ((package-path (locate-user-emacs-file "lisp/packages/multiple-cursors"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (require 'multiple-cursors)))
+
 ;;; ├── LANGUAGE: C
 
 (defun my/editor--lang-c ()

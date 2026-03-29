@@ -127,6 +127,7 @@ tabs will be used instead of spaces."
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p
     (add-to-list 'load-path package-path)
+    (setq mc/list-file (locate-user-emacs-file "var/mc-lists.el"))
     (add-hook 'after-init-hook
               (lambda ()
                 (require 'multiple-cursors)))))

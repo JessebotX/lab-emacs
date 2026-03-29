@@ -105,6 +105,10 @@
 (global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
 (global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop)
 (keymap-global-set "C-c m t w" #'my/editor-writeroom-mode)
+(keymap-global-set "C-S-c C-S-c" 'mc/edit-lines)
+(keymap-global-set "C->" 'mc/mark-next-like-this)
+(keymap-global-set "C-<" 'mc/mark-previous-like-this)
+(keymap-global-set "C-c C-<" 'mc/mark-all-like-this)
 
 ;;; ├─ KEYBINDINGS
 

@@ -12,6 +12,7 @@
 (define-minor-mode my/mode-line-display-position-mode
   "Toggle displaying local buffer position in the mode line."
   :group 'mode-line
+  :global t
   (if my/mode-line-display-position-mode
       (progn
         (line-number-mode 1)

@@ -200,6 +200,12 @@ tabs will be used instead of spaces."
 
 ;;; ├── LANGUAGE: MARKDOWN
 
+(let* ((package-path (locate-user-emacs-file "lisp/packages/markdown-indent-mode"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'markdown-indent-mode "markdown-indent-mode" nil t)))
+
 (defun my/editor--lang-markdown ()
   (my/editor-lang-set-indent-local 'markdown)
   (visual-line-mode 1))

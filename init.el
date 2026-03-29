@@ -95,6 +95,7 @@
 
 (require 'my-config-mode-line)
 (add-hook 'enable-theme-functions #'my/subtle-mode-line-set-faces)
+(add-hook 'after-init-hook #'my/mode-line-display-position-mode)
 
 (require 'my-config-minibuffer)
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
@@ -127,6 +128,11 @@
 (keymap-global-set "C-c m l" 'display-line-numbers-mode)
 (keymap-global-set "C-c m w" 'whitespace-mode)
 
+(keymap-global-set "C-c f b" 'bookmark-jump)
+(keymap-global-set "C-c f p" 'project-find-file)
+(with-eval-after-load 'recentf
+  (keymap-global-set "C-c f r" 'recentf))
+
 ;;; ├─ HOOKS
 
 (add-hook 'after-init-hook
@@ -134,7 +140,6 @@
             (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
             (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
 
-            (my/mode-line-display-position-mode)
             (blink-cursor-mode -1)
             (delete-selection-mode 1)
             (electric-indent-mode -1)

@@ -12,6 +12,25 @@ folder, otherwise delete a word."
         (delete-minibuffer-contents))
     (kill-word (- arg))))
 
+;;; ├─ ORDERLESS
+
+(let* ((package-path (locate-user-emacs-file "lisp/packages/orderless"))
+       (package-exists-p (file-directory-p package-path)))
+  (if package-exists-p
+      (progn
+        (add-to-list 'load-path package-path)
+        (add-hook 'minibuffer-setup-hook
+                  (lambda ()
+                    (require 'orderless)
+                    (setq completion-styles '(orderless basic))
+                    (setq completion-category-overrides '((file (styles orderless partial-completion))))
+                    ;; Emacs 31: partial-completion behaves like substring
+                    (setq completion-pcm-leading-wildcard t))))
+    (progn
+      (setq completion-styles '(flex initials basic))
+      (setq completion-category-overrides
+            '((file (styles basic partial-completion)))))))
+
 ;;; ├─ ICOMPLETE
 
 (setq icomplete-show-matches-on-no-input t

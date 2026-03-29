@@ -4,3 +4,4 @@
 /etc
 /var
 /tmp
+*.elc

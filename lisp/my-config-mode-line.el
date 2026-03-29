@@ -8,6 +8,18 @@
       mode-line-position-column-format '("(:%c)")
       mode-line-position-column-line-format '("(%l:%c)"))
 
+;;;###autoload
+(define-minor-mode my/mode-line-display-position-mode
+  "Toggle displaying local buffer position in the mode line."
+  :group 'mode-line
+  (if my/mode-line-display-position-mode
+      (progn
+        (line-number-mode 1)
+        (column-number-mode 1))
+    (progn
+      (line-number-mode -1)
+      (column-number-mode -1))))
+
 ;;; ├─ CUSTOM MODE-LINE FORMAT
 
 (defvar-local my/mode-line--segment-buffer-name

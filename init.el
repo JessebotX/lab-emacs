@@ -134,8 +134,8 @@
             (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
             (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
 
+            (my/mode-line-display-position-mode)
             (blink-cursor-mode -1)
-            (column-number-mode 1)
             (delete-selection-mode 1)
             (electric-indent-mode -1)
             (global-auto-revert-mode 1)

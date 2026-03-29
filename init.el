@@ -47,6 +47,7 @@
       multisession-directory (locate-user-emacs-file "var/multisession")
       project-list-file (locate-user-emacs-file "var/projects.el")
       read-answer-short t
+      recentf-save-file (locate-user-emacs-file "var/recentf.el")
       redisplay-skip-fontification-on-input t
       ring-bell-function 'ignore
       save-place-file (locate-user-emacs-file "var/places.el")

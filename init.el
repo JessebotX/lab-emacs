@@ -60,6 +60,7 @@
       show-paren-highlighting-openparen t
       show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t
+      treesit-extra-load-path (list (locate-user-emacs-file "var/tree-sitter"))
       undo-limit (* 13 160000)
       undo-strong-limit (* 13 240000)
       undo-outer-limit (* 13 24000000)
@@ -84,13 +85,15 @@
 (keymap-global-set "C-g" #'my/keyboard-quit-dwim)
 
 (require 'my-config-fonts)
-(keymap-global-set "C-<f5>" #'my/theme-set)
-(keymap-global-set "<f5>" #'my/theme-toggle)
 (keymap-global-set "<f8>" 'variable-pitch-mode)
+(keymap-global-set "C-c C-0" 'my/font-size-set)
+(keymap-global-set "C-c C-1" 'my/font-family-set)
 (add-hook 'after-init-hook #'my/font-load-my-font)
 (add-hook 'after-init-hook #'my/font-load-emoji-fonts)
 
 (require 'my-config-themes)
+(keymap-global-set "C-<f5>" #'my/theme-set)
+(keymap-global-set "<f5>" #'my/theme-toggle)
 (add-hook 'after-init-hook #'my/theme-load-my-theme)
 
 (require 'my-config-mode-line)

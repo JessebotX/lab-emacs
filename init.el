@@ -15,7 +15,7 @@
 (setq ansi-color-for-compilation-mode t
       auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t))
       auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory)
-      ;; auto-window-vscroll nil
+      auto-window-vscroll nil
       backward-delete-char-untabify-method 'hungry
       bookmark-default-file (locate-user-emacs-file "etc/bookmarks.el")
       create-lockfiles nil

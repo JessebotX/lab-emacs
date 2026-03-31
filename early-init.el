@@ -1,5 +1,9 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
+;;; PREFACE
+
+(startup-redirect-eln-cache (locate-user-emacs-file "var/eln-cache"))
+
 ;;; DEBUGGING / WARNINGS
 
 (defconst my/emacs-enable-debug (bound-and-true-p init-file-debug)

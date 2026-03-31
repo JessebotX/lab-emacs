@@ -1,5 +1,12 @@
 ;;; my-config-utils.el -*- lexical-binding: t; -*-
 
+(let* ((package-path (locate-user-emacs-file "lisp/packages/disable-mouse"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'disable-mouse-mode "disable-mouse" nil t)
+    (autoload #'disable-mouse-global-mode "disable-mouse" nil t)))
+
 (defun my/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 

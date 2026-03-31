@@ -17,13 +17,13 @@
       auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory)
       auto-window-vscroll nil
       backward-delete-char-untabify-method 'hungry
-      bookmark-default-file (locate-user-emacs-file "etc/bookmarks.el")
+      bookmark-default-file (locate-user-emacs-file "var/bookmarks.el")
       create-lockfiles nil
       compilation-always-kill t
       compilation-scroll-output 'first-error
       completion-ignore-case t
       completions-detailed t
-      custom-file (locate-user-emacs-file "etc/custom.el")
+      custom-file (locate-user-emacs-file "etc/emacs-custom.el")
       delete-by-moving-to-trash t
       delete-pair-blink-delay 0
       delete-pair-push-mark t

@@ -108,6 +108,21 @@ tabs will be used instead of spaces."
       (setq-local overflow-newline-into-fringe nil))
     (add-hook 'olivetti-mode-hook #'my/editor--olivetti-no-newline-in-fringe)
 
+    (with-eval-after-load 'olivetti
+      (let ((map olivetti-mode-map))
+        (define-key map [left-margin mouse-1] nil)
+        (define-key map [right-margin mouse-1] nil)
+        (define-key map [left-fringe mouse-1] nil)
+        (define-key map [right-fringe mouse-1] nil)
+        ;; This code is taken from https://github.com/joostkremers/visual-fill-column
+        (when (and (bound-and-true-p mouse-wheel-mode)
+                   (boundp 'mouse-wheel-down-event)
+                   (boundp 'mouse-wheel-up-event))
+          (define-key map (vector 'left-margin 'mouse-wheel-down-event) nil)
+          (define-key map (vector 'left-margin 'mouse-wheel-up-event) nil)
+          (define-key map (vector 'right-margin 'mouse-wheel-down-event) nil)
+          (define-key map (vector 'right-margin 'mouse-wheel-up-event) nil))))
+
     ;;;###autoload
     (define-minor-mode my/editor-writeroom-mode
       "Minor mode that toggles a nice writing environment."
@@ -116,10 +131,12 @@ tabs will be used instead of spaces."
           (progn
             (whitespace-mode -1)
             (my/hide-mode-line)
+            (disable-mouse-mode 1)
             (olivetti-mode 1))
         (progn
           (whitespace-mode 1)
           (my/show-mode-line)
+          (disable-mouse-mode -1)
           (olivetti-mode -1))))
     (make-variable-buffer-local 'my/editor-writeroom-mode)))
 

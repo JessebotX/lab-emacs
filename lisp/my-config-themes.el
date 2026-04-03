@@ -52,6 +52,11 @@ loading (`custom-available-themes').")
         (border-mode-line-active bg-dim)
         (border-mode-line-inactive bg-mode-line-inactive)))
 
+(add-hook 'enable-theme-functions
+          (defun my/themes--bold-dired-directory (_theme)
+            (with-eval-after-load 'dired
+              (set-face-attribute 'dired-directory nil :weight 'bold))))
+
 ;;; ├─ END
 
 (provide 'my-config-themes)

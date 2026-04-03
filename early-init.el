@@ -41,7 +41,7 @@
       file-name-handler-alist nil
       vc-handled-backends nil)
 
-(add-hook 'after-init-hook
+(add-hook 'emacs-startup-hook
           (lambda ()
             (setq gc-cons-threshold (* 100 1024 1024)
                   gc-cons-percentage 0.1
@@ -95,7 +95,7 @@
 
 (setq native-comp-async-on-battery-power nil
       package-enable-at-startup nil
-      site-run-file nil
+      ;; site-run-file nil
       vc-follow-symlinks nil)
 
 ;; HACK

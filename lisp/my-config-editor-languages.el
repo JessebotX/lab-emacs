@@ -163,7 +163,7 @@ tabs will be used instead of spaces."
 
 ;;; ├── LANGUAGE: CMAKE
 
-(let* ((package-path (expand-file-name "lisp/packages/adaptive-wrap" user-emacs-directory))
+(let* ((package-path (expand-file-name "lisp/packages/cmake-mode" user-emacs-directory))
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p
     (add-to-list 'load-path package-path)

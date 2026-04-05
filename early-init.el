@@ -95,7 +95,7 @@
 
 (setq native-comp-async-on-battery-power nil
       package-enable-at-startup nil
-      ;; site-run-file nil
+      site-run-file nil
       vc-follow-symlinks nil)
 
 ;; HACK

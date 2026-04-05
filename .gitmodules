@@ -1,3 +1,0 @@
-[submodule "lisp/packages/multiple-cursors"]
-	path = lisp/packages/multiple-cursors
-	url = https://github.com/magnars/multiple-cursors.el

@@ -11,7 +11,7 @@
 (defun my/font-size-set (value)
   "Set the base font size to VALUE (integer)."
   (interactive "nNew font size: ")
-  (set-face-attribute 'default nil :height value))
+  (set-face-attribute 'default (selected-frame) :height value))
 
 (defun my/font-size-decrement ()
   "Decrement base font size by 10."

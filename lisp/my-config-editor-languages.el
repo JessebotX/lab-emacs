@@ -146,7 +146,7 @@ tabs will be used instead of spaces."
     (add-to-list 'load-path package-path)
     (setq mc/list-file (locate-user-emacs-file "var/mc-lists.el"))
     (add-hook 'after-init-hook
-              (lambda ()
+              (defun my/editor--multiple-cursors-setup ()
                 (require 'multiple-cursors)))))
 
 ;;; ├── LANGUAGE: C

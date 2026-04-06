@@ -42,7 +42,7 @@
       vc-handled-backends nil)
 
 (add-hook 'emacs-startup-hook
-          (lambda ()
+          (defun my/emacs-startup-hook ()
             (setq gc-cons-threshold (* 100 1024 1024)
                   gc-cons-percentage 0.1
                   load-prefer-newer nil

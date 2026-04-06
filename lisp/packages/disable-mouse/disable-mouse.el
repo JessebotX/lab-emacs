@@ -2,6 +2,8 @@
 
 ;; Copyright (C) 2016  Steve Purcell
 
+;; Modified by Jesse
+
 ;; Author: Steve Purcell <steve@sanityinc.com>
 ;; URL: https://github.com/purcell/disable-mouse
 ;; Package-Version: 0

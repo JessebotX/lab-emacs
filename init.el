@@ -139,7 +139,7 @@
 ;;; ├─ HOOKS
 
 (add-hook 'after-init-hook
-          (lambda ()
+          (defun my/emacs-after-init-hook ()
             (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
             (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
 

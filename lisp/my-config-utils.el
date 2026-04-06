@@ -5,7 +5,15 @@
   (when package-exists-p
     (add-to-list 'load-path package-path)
     (autoload #'disable-mouse-mode "disable-mouse" nil t)
-    (autoload #'disable-mouse-global-mode "disable-mouse" nil t)))
+    (autoload #'disable-mouse-global-mode "disable-mouse" nil t)
+    (add-hook 'after-init-hook #'disable-mouse-global-mode)
+
+    (with-eval-after-load 'disable-mouse
+      (defun my/utils--disable-mouse-command (&rest arguments)
+        "Command to run for `disable-mouse-command'."
+        (interactive)
+        (message "Mouse bindings disabled."))
+      (setq disable-mouse-command #'my/utils--disable-mouse-command))))
 
 (defun my/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.

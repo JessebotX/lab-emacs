@@ -15,6 +15,20 @@
         (message "Mouse bindings disabled."))
       (setq disable-mouse-command #'my/utils--disable-mouse-command))))
 
+(defun my/switch-frame ()
+  "Select frame from `frame-list' to focus on."
+  (interactive)
+  (let* ((current (selected-frame))
+         (frames
+          (mapcar (lambda (f)
+                    (cons (format "%s%s"
+                                  (frame-parameter f 'name)
+                                  (if (eq f current) " (current)" ""))
+                          f))
+                  (frame-list)))
+         (choice (completing-read "Frame: " frames nil t)))
+    (select-frame-set-input-focus (cdr (assoc choice frames)))))
+
 (defun my/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 

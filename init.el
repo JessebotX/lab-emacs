@@ -81,6 +81,7 @@
 (add-to-list 'load-path (locate-user-emacs-file "lisp"))
 
 (require 'my-config-utils)
+(keymap-global-set "C-c f f" #'my/switch-frame)
 (keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
 (keymap-global-set "C-g" #'my/keyboard-quit-dwim)
 

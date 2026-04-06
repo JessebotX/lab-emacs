@@ -18,7 +18,7 @@
   (interactive)
   (let* ((font-size (face-attribute 'default :height))
          (new-size  (- font-size 10)))
-    (set-face-attribute 'default nil :height new-size)
+    (set-face-attribute 'default (selected-frame) :height new-size)
     (message "New font size %d" (face-attribute 'default :height))))
 
 (defun my/font-size-increment ()
@@ -26,7 +26,7 @@
   (interactive)
   (let* ((font-size (face-attribute 'default :height))
          (new-size  (+ font-size 10)))
-    (set-face-attribute 'default nil :height new-size)
+    (set-face-attribute 'default (selected-frame) :height new-size)
     (message "New font size %d" (face-attribute 'default :height))))
 
 (defun my/font-family-set (font)

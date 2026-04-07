@@ -6,7 +6,6 @@
     (add-to-list 'load-path package-path)
     (autoload #'disable-mouse-mode "disable-mouse" nil t)
     (autoload #'disable-mouse-global-mode "disable-mouse" nil t)
-    (add-hook 'after-init-hook #'disable-mouse-global-mode)
 
     (with-eval-after-load 'disable-mouse
       (defun my/utils--disable-mouse-command (&rest arguments)

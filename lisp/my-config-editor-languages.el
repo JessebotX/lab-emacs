@@ -131,12 +131,10 @@ tabs will be used instead of spaces."
           (progn
             (whitespace-mode -1)
             (my/hide-mode-line)
-            (disable-mouse-mode 1)
             (olivetti-mode 1))
         (progn
           (whitespace-mode 1)
           (my/show-mode-line)
-          (disable-mouse-mode -1)
           (olivetti-mode -1))))
     (make-variable-buffer-local 'my/editor-writeroom-mode)))
 

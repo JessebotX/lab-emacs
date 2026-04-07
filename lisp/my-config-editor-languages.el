@@ -230,12 +230,14 @@ tabs will be used instead of spaces."
 
 (when (and (treesit-language-available-p 'markdown)
            (treesit-language-available-p 'markdown-inline))
-    (progn
-      ;; TODO: Support emacs-version< 31
-      ;; (when (version< emacs-version "31.0")
-      ;;   (autoload #'markdown-ts-mode "markdown-ts-mode" nil t))
-      (add-hook 'markdown-ts-mode-hook #'my/editor--lang-markdown)
-      (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-ts-mode))))
+  (let* ((package-path (locate-user-emacs-file "lisp/packages/markdown-ts-mode"))
+         (package-exists-p (file-directory-p package-path)))
+    (when package-exists-p
+      (add-to-list 'load-path package-path)
+      (autoload #'markdown-ts-mode "markdown-ts-mode" nil t)))
+
+  (add-hook 'markdown-ts-mode-hook #'my/editor--lang-markdown)
+  (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\)\\'" . markdown-ts-mode)))
 
 ;;; ├─ END
 

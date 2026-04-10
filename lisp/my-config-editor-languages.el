@@ -6,6 +6,7 @@
   '((css        :size 2 :use-tabs nil)
     (go         :size 4 :use-tabs t)
     (html       :size 2 :use-tabs nil)
+    (javascript :size 2 :use-tabs nil)
     (lisp       :size 8 :use-tabs nil)
     (markdown   :size 2 :use-tabs nil)
     (make       :size 4 :use-tabs t)
@@ -67,7 +68,7 @@ tabs will be used instead of spaces."
 (defun my/editor--paragraph-default-local ()
   (interactive)
   (setq-local paragraph-start (default-value 'paragraph-start)
-	      paragraph-separate (default-value 'paragraph-separate)))
+              paragraph-separate (default-value 'paragraph-separate)))
 
 (defun my/editor-delete-to-tab-stop ()
   "Delete whitespace backwards to the next tab-stop, otherwise delete one character."

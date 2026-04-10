@@ -189,6 +189,19 @@ tabs will be used instead of spaces."
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
   (add-hook 'c++-ts-mode-hook #'my/editor--lang-cpp))
 
+;;; ├── LANGUAGE: CSS
+
+(defun my/editor--lang-css ()
+  (my/editor-lang-set-indent-local 'css)
+  (setq-local css-indent-offset (my/editor-lang-indent-size 'css)))
+
+(if (treesit-language-available-p 'css)
+    (progn
+      (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+      (add-hook 'css-ts-mode-hook #'my/editor--lang-css))
+  (progn
+    (add-hook 'css-mode-hook #'my/editor--lang-css)))
+
 ;;; ├── LANGUAGE: GO
 
 (defun my/editor--lang-go ()
@@ -203,6 +216,23 @@ tabs will be used instead of spaces."
 (when (treesit-language-available-p 'go)
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
   (add-hook 'go-ts-mode-hook #'my/editor--lang-go))
+
+;;; ├── LANGUAGE: HTML
+
+(defun my/editor--lang-html ()
+  (my/editor-lang-set-indent-local 'html)
+  (setq-local mhtml-ts-js-css-indent-offset (my/editor-lang-indent-size 'html))
+  (setq-local sgml-basic-offset (my/editor-lang-indent-size 'html))
+  (setq-local js-indent-level (my/editor-lang-indent-size 'js))
+  (setq-local css-indent-offset (my/editor-lang-indent-size 'css)))
+
+(if (treesit-language-available-p 'html)
+    (progn
+      (add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
+      (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
+      (add-hook 'html-ts-mode-hook #'my/editor--lang-html))
+  (progn
+      (add-hook 'html-mode-hook #'my/editor--lang-html)))
 
 ;;; ├── LANGUAGE: LISP
 

@@ -179,7 +179,7 @@ tabs will be used instead of spaces."
 
 (defun my/editor--lang-cpp ()
   (my/editor-lang-set-indent-local 'cpp)
-  (setq-local compile-command "make "
+  (setq-local compile-command "cmake --build out"
               c-ts-mode-indent-style 'bsd
               c-ts-mode-indent-offset (my/editor-lang-indent-size 'cpp)))
 
@@ -207,7 +207,7 @@ tabs will be used instead of spaces."
 (defun my/editor--lang-go ()
   (my/editor-lang-set-indent-local 'go)
   (setq-local compile-command "go build "
-              go-ts-indent-offset (my/editor-lang-indent-size 'go)))
+              go-ts-mode-indent-offset (my/editor-lang-indent-size 'go)))
 
 (when (treesit-language-available-p 'gomod)
   (add-to-list 'auto-mode-alist '("go\\.mod\\'" . go-mod-ts-mode))
@@ -229,7 +229,8 @@ tabs will be used instead of spaces."
 (if (treesit-language-available-p 'html)
     (progn
       (add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
-      (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
+      (unless (version< emacs-version "31.0")
+        (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode)))
       (add-hook 'html-ts-mode-hook #'my/editor--lang-html))
   (progn
       (add-hook 'html-mode-hook #'my/editor--lang-html)))

@@ -60,6 +60,7 @@
       show-paren-highlighting-openparen t
       show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t
+      transient-history-file (locate-user-emacs-file "var/transient/history.el")
       treesit-extra-load-path (list (locate-user-emacs-file "var/tree-sitter"))
       undo-limit (* 13 160000)
       undo-strong-limit (* 13 240000)

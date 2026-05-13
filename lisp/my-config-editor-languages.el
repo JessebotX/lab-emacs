@@ -3,7 +3,9 @@
 ;;; ├─ PREFACE
 
 (defcustom my/editor-lang-indents
-  '((css        :size 2 :use-tabs nil)
+  '((c          :size 3 :use-tabs nil)
+    (cpp        :size 3 :use-tabs nil)
+    (css        :size 2 :use-tabs nil)
     (go         :size 4 :use-tabs t)
     (html       :size 2 :use-tabs nil)
     (javascript :size 2 :use-tabs nil)

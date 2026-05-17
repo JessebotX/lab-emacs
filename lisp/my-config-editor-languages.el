@@ -158,9 +158,13 @@ tabs will be used instead of spaces."
               c-ts-mode-indent-style 'bsd
               c-ts-mode-indent-offset (my/editor-lang-indent-size 'c)))
 
+(defun my/editor--c-ts-mode ()
+  (c-ts-mode-set-style 'bsd))
+
 (when (treesit-language-available-p 'c)
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-hook 'c-ts-mode-hook #'my/editor--lang-c))
+  (add-hook 'c-ts-mode-hook #'my/editor--lang-c)
+  (add-hook 'c-ts-mode-hook #'my/editor--c-ts-mode))
 
 ;;; ├── LANGUAGE: CMAKE
 
@@ -185,11 +189,15 @@ tabs will be used instead of spaces."
               c-ts-mode-indent-style 'bsd
               c-ts-mode-indent-offset (my/editor-lang-indent-size 'cpp)))
 
+(defun my/editor--cpp-ts-mode ()
+  (c-ts-mode-set-style 'bsd))
+
 (add-to-list 'treesit-load-name-override-list '(c++ "libtree-sitter-cpp" "tree_sitter_cpp"))
 (when (treesit-language-available-p 'c++)
   (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-hook 'c++-ts-mode-hook #'my/editor--lang-cpp))
+  (add-hook 'c++-ts-mode-hook #'my/editor--lang-cpp)
+  (add-hook 'c++-ts-mode-hook #'my/editor--cpp-ts-mode))
 
 ;;; ├── LANGUAGE: CSS
 

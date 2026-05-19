@@ -4,6 +4,7 @@
 
 (defcustom my/editor-lang-indents
   '((c          :size 3 :use-tabs nil)
+    (cmake      :size 3 :use-tabs nil)
     (cpp        :size 3 :use-tabs nil)
     (css        :size 2 :use-tabs nil)
     (go         :size 4 :use-tabs t)

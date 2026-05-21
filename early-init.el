@@ -115,10 +115,10 @@
 
 ;;;; Frame margin & padding
 
-;; Credit: `spacious-padding' package by Protesilaos
-(push '(internal-border-width . 30) default-frame-alist)
-(push '(right-divider-width   . 30) default-frame-alist)
-(push '(scroll-bar-width      . 8)  default-frame-alist)
+;; ;; Credit: `spacious-padding' package by Protesilaos
+;; (push '(internal-border-width . 20) default-frame-alist)
+;; (push '(right-divider-width   . 10) default-frame-alist)
+;; (push '(scroll-bar-width      . 4)  default-frame-alist)
 
 (defun my/emacs--set-invisible-window-dividers (_theme)
   "Make window dividers for THEME invisible."

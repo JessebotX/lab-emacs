@@ -10,7 +10,7 @@
 (setq-default display-line-numbers-width 4
               display-line-numbers-widen t
               indent-tabs-mode nil
-              tab-width 4)
+              tab-width 3)
 
 (setq ansi-color-for-compilation-mode t
       auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t))

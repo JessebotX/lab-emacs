@@ -12,7 +12,8 @@
               indent-tabs-mode nil
               tab-width 3)
 
-(setq ansi-color-for-compilation-mode t
+(setq adaptive-fill-regexp "[-–!|#%;>*+·•‣⁃◦ 	]* +"
+      ansi-color-for-compilation-mode t
       auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t))
       auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory)
       auto-window-vscroll nil

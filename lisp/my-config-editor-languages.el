@@ -269,8 +269,7 @@ tabs will be used instead of spaces."
 
 (defun my/editor--lang-markdown ()
   (my/editor-lang-set-indent-local 'markdown)
-  (visual-line-mode 1)
-  (setq-local adaptive-fill-regexp "[-–!|#%;>·•‣⁃◦ 	]*"))
+  (visual-line-mode 1))
 
 (when (and (treesit-language-available-p 'markdown)
            (treesit-language-available-p 'markdown-inline))

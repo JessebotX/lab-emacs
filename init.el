@@ -28,6 +28,7 @@
       delete-by-moving-to-trash t
       delete-pair-blink-delay 0
       delete-pair-push-mark t
+      dired-listing-switches "-g -h -o -a --group-directories-first"
       dictionary-server "dict.org"
       dictionary-default-strategy "prefix"
       dired-kill-when-opening-new-dired-buffer t

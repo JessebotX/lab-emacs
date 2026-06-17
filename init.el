@@ -124,6 +124,7 @@
 (keymap-global-set "C-x C-k RET" nil)
 (keymap-global-set "C-x C-z" nil)
 (keymap-global-set "C-c C-b" nil)
+(keymap-global-set "<mouse-3>" nil)
 
 (keymap-global-set "M-[" 'backward-paragraph)
 (keymap-global-set "M-]" 'forward-paragraph)

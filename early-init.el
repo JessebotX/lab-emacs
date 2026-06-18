@@ -111,7 +111,6 @@
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars . nil) default-frame-alist)
 (push '(horizontal-scroll-bars . nil) default-frame-alist)
-(push '(font . "Maple Mono 12") default-frame-alist) ; fallback font for frames
 
 ;;;; Frame margin & padding
 
@@ -135,4 +134,3 @@
 ;;; END
 
 (load (locate-user-emacs-file "etc/local-early-init.el") :no-error-if-file-is-missing :nomessage) ; should be ignored in version control
-

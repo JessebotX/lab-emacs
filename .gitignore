@@ -3,3 +3,4 @@
 /var
 /tmp
 *.elc
+/tramp

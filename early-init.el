@@ -9,14 +9,14 @@
 (defconst my/emacs-enable-debug (bound-and-true-p init-file-debug)
   "Non-nil to enable debug.")
 
-(setq byte-compile-warnings my/emacs-enable-debug
-      byte-compile-verbose my/emacs-enable-debug
-      garbage-collection-messages my/emacs-enable-debug
-      jka-compr-verbose my/emacs-enable-debug
-      native-comp-async-report-warnings-errors (or my/emacs-enable-debug 'silent)
-      native-comp-warning-on-missing-source my/emacs-enable-debug
-      warning-minimum-level (if my/emacs-enable-debug :warning :error)
-      warning-suppress-types '((lexical-binding)))
+(setq byte-compile-warnings my/emacs-enable-debug)
+(setq byte-compile-verbose my/emacs-enable-debug)
+(setq garbage-collection-messages my/emacs-enable-debug)
+(setq jka-compr-verbose my/emacs-enable-debug)
+(setq native-comp-async-report-warnings-errors (or my/emacs-enable-debug 'silent))
+(setq native-comp-warning-on-missing-source my/emacs-enable-debug)
+(setq warning-minimum-level (if my/emacs-enable-debug :warning :error))
+(setq warning-suppress-types '((lexical-binding)))
 
 (when my/emacs-enable-debug
   (setq message-log-max 16384))
@@ -35,25 +35,25 @@
 
 (defconst my/emacs--file-name-handler-alist file-name-handler-alist)
 
-(setq gc-cons-threshold (* 256 1024 1024)
-      gc-cons-percentage 1.0
-      load-prefer-newer noninteractive
-      file-name-handler-alist nil
-      vc-handled-backends nil)
+(setq gc-cons-threshold (* 256 1024 1024))
+(setq gc-cons-percentage 1.0)
+(setq load-prefer-newer noninteractive)
+(setq file-name-handler-alist nil)
+(setq vc-handled-backends nil)
 
 (add-hook 'emacs-startup-hook
           (defun my/emacs-startup-hook ()
-            (setq gc-cons-threshold (* 100 1024 1024)
-                  gc-cons-percentage 0.1
-                  load-prefer-newer nil
-                  vc-handled-backends '(Git)
-                  file-name-handler-alist my/emacs--file-name-handler-alist)))
+            (setq gc-cons-threshold (* 100 1024 1024))
+            (setq gc-cons-percentage 0.1)
+            (setq load-prefer-newer nil)
+            (setq vc-handled-backends '(Git))
+            (setq file-name-handler-alist my/emacs--file-name-handler-alist)))
 
 ;; Disable bidirectional text scanning for a modest performance boost.
 ;; Give up some bidirectional for slightly faster re-display.
 (setq bidi-inhibit-bpa t)
-(setq-default bidi-display-reordering 'left-to-right
-              bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-display-reordering 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
 
 (setq auto-mode-case-fold nil)
 (setq inhibit-compacting-font-caches t)
@@ -73,39 +73,39 @@
 (setq default-input-method nil) ; unwanted from `set-language-environment'
 
 ;;;; FRAME
-(setq frame-resize-pixelwise t
-      frame-title-format '("%b"))
+(setq frame-resize-pixelwise t)
+(setq frame-title-format '("%b"))
 
 ;;;; SECURITY
-(setq ffap-machine-p-known 'reject ; Dont ping things that look like domain names
-      gnutls-min-prime-bits 3072   ; Stronger GnuTLS encryption
-      gnutls-verify-error t        ; Inform users of certificate issues
-      tls-checktrust t)            ; Check trust of SSL/TLS connections
+(setq ffap-machine-p-known 'reject) ; Dont ping things that look like domain names
+(setq gnutls-min-prime-bits 3072)   ; Stronger GnuTLS encryption
+(setq gnutls-verify-error t)        ; Inform users of certificate issues
+(setq tls-checktrust t)            ; Check trust of SSL/TLS connections
 
 ;;;; Misc
-(setq inhibit-startup-buffer-menu t
-      inhibit-startup-echo-area-message user-login-name
-      inhibit-startup-screen t
-      inhibit-splash-screen t
-      inhibit-x-resources t)
+(setq inhibit-startup-buffer-menu t)
+(setq inhibit-startup-echo-area-message user-login-name)
+(setq inhibit-startup-screen t)
+(setq inhibit-splash-screen t)
+(setq inhibit-x-resources t)
 
-(setq initial-buffer-choice nil
-      initial-major-mode 'fundamental-mode
-      initial-scratch-message nil)
+(setq initial-buffer-choice nil)
+(setq initial-major-mode 'fundamental-mode)
+(setq initial-scratch-message nil)
 
-(setq native-comp-async-on-battery-power nil
-      package-enable-at-startup nil
-      site-run-file nil
-      vc-follow-symlinks nil)
+(setq native-comp-async-on-battery-power nil)
+(setq package-enable-at-startup nil)
+(setq site-run-file nil)
+(setq vc-follow-symlinks nil)
 
 ;; HACK
 (defun display-startup-echo-area-message () (message ""))
 
 ;;; UI ELEMENTS
 
-(setq menu-bar-mode nil
-      tool-bar-mode nil
-      scroll-bar-mode nil)
+(setq menu-bar-mode nil)
+(setq tool-bar-mode nil)
+(setq scroll-bar-mode nil)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)

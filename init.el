@@ -7,76 +7,75 @@
 
 ;;; ├─ GENERAL CONFIGURATION
 
-(setq-default display-line-numbers-width 4
-              display-line-numbers-widen t
-              indent-tabs-mode nil
-              tab-width 3)
+(setq-default display-line-numbers-width 4)
+(setq-default display-line-numbers-widen t)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 3)
 
-(setq adaptive-fill-regexp "[-–!|#%;>*+·•‣⁃◦ 	]* +"
-      ansi-color-for-compilation-mode t
-      auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t))
-      auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory)
-      auto-window-vscroll nil
-      backward-delete-char-untabify-method 'hungry
-      bookmark-default-file (locate-user-emacs-file "var/bookmarks.el")
-      create-lockfiles nil
-      compilation-always-kill t
-      compilation-scroll-output 'first-error
-      completion-ignore-case t
-      completions-detailed t
-      custom-file (locate-user-emacs-file "etc/emacs-custom.el")
-      delete-by-moving-to-trash t
-      delete-pair-blink-delay 0
-      delete-pair-push-mark t
-      dired-listing-switches "-g -h -o -a --group-directories-first"
-      dictionary-server "dict.org"
-      dictionary-default-strategy "prefix"
-      dired-kill-when-opening-new-dired-buffer t
-      display-time-default-load-average nil
-      doc-view-resolution 200
-      global-auto-revert-non-file-buffers t
-      history-length 300
-      ;; fast-but-imprecise-scrolling t
-      ibuffer-human-readable-size t
-      isearch-lazy-count t
-      jit-lock-defer-time 0
-      kill-buffer-delete-auto-save-files t
-      kill-do-not-save-duplicates t
-      kill-region-dwim (if (version< emacs-version "31") t 'emacs-word)
-      lazy-count-prefix-format nil
-      lazy-count-suffix-format "   (%s/%s)"
-      make-backup-files nil
-      multisession-directory (locate-user-emacs-file "var/multisession")
-      project-list-file (locate-user-emacs-file "var/projects.el")
-      read-answer-short t
-      recentf-save-file (locate-user-emacs-file "var/recentf.el")
-      redisplay-skip-fontification-on-input t
-      ring-bell-function 'ignore
-      save-place-file (locate-user-emacs-file "var/places.el")
-      save-place-limit 600
-      savehist-file (locate-user-emacs-file "var/savehist.el")
-      scroll-conservatively 8
-      scroll-preserve-screen-position t
-      sentence-end-double-space nil
-      show-paren-delay 0.1
-      show-paren-highlighting-openparen t
-      show-paren-when-point-inside-paren t
-      show-paren-when-point-in-periphery t
-      tramp-histfile-override (locate-user-emacs-file "var/tramp_history")
-      transient-history-file (locate-user-emacs-file "var/transient/history.el")
-      treesit-extra-load-path (list (locate-user-emacs-file "var/tree-sitter"))
-      undo-limit (* 13 160000)
-      undo-strong-limit (* 13 240000)
-      undo-outer-limit (* 13 24000000)
-      uniquify-buffer-name-style 'forward
-      uniquify-ignore-buffers-re "^\\*"
-      uniquify-separator "/"
-      use-short-answers t
-      visible-bell nil
-      which-key-idle-delay 0.1
-      whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9]))
-      whitespace-style '(face tabs tab-mark trailing)
-      whitespace-line-column nil)
+(setq adaptive-fill-regexp "[-–!|#%;>*+·•‣⁃◦ 	]* +")
+(setq ansi-color-for-compilation-mode t)
+(setq auto-save-file-name-transforms `((".*" ,my/auto-save-files-directory t)))
+(setq auto-save-list-file-prefix (expand-file-name "sessions" my/auto-save-files-directory))
+(setq auto-window-vscroll nil)
+(setq backward-delete-char-untabify-method 'hungry)
+(setq bookmark-default-file (locate-user-emacs-file "var/bookmarks.el"))
+(setq create-lockfiles nil)
+(setq compilation-always-kill t)
+(setq compilation-scroll-output 'first-error)
+(setq completion-ignore-case t)
+(setq completions-detailed t)
+(setq custom-file (locate-user-emacs-file "etc/emacs-custom.el"))
+(setq delete-by-moving-to-trash t)
+(setq delete-pair-blink-delay 0)
+(setq delete-pair-push-mark t)
+(setq dired-listing-switches "-g -h -o -a --group-directories-first")
+(setq dictionary-server "dict.org")
+(setq dictionary-default-strategy "prefix")
+(setq dired-kill-when-opening-new-dired-buffer t)
+(setq display-time-default-load-average nil)
+(setq doc-view-resolution 200)
+(setq global-auto-revert-non-file-buffers t)
+(setq history-length 300)
+(setq fast-but-imprecise-scrolling t)
+(setq ibuffer-human-readable-size t)
+(setq isearch-lazy-count t)
+(setq jit-lock-defer-time 0)
+(setq kill-buffer-delete-auto-save-files t)
+(setq kill-do-not-save-duplicates t)
+(setq kill-region-dwim (if (version< emacs-version "31") t 'emacs-word))
+(setq lazy-count-prefix-format nil)
+(setq lazy-count-suffix-format "   (%s/%s)")
+(setq make-backup-files nil)
+(setq multisession-directory (locate-user-emacs-file "var/multisession"))
+(setq project-list-file (locate-user-emacs-file "var/projects.el"))
+(setq read-answer-short t)
+(setq recentf-save-file (locate-user-emacs-file "var/recentf.el"))
+(setq redisplay-skip-fontification-on-input t)
+(setq ring-bell-function 'ignore)
+(setq save-place-file (locate-user-emacs-file "var/places.el"))
+(setq save-place-limit 600)
+(setq savehist-file (locate-user-emacs-file "var/savehist.el"))
+(setq scroll-conservatively 8)
+(setq scroll-preserve-screen-position t)
+(setq sentence-end-double-space nil)
+(setq show-paren-delay 0.1)
+(setq show-paren-highlighting-openparen t)
+(setq show-paren-when-point-inside-paren t)
+(setq show-paren-when-point-in-periphery t)
+(setq transient-history-file (locate-user-emacs-file "var/transient/history.el"))
+(setq treesit-extra-load-path (list (locate-user-emacs-file "var/tree-sitter")))
+(setq undo-limit (* 13 160000))
+(setq undo-strong-limit (* 13 240000))
+(setq undo-outer-limit (* 13 24000000))
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-separator "/")
+(setq use-short-answers t)
+(setq visible-bell nil)
+(setq which-key-idle-delay 0.1)
+(setq whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))
+(setq whitespace-style '(face tabs tab-mark trailing))
+(setq whitespace-line-column nil)
 
 (put 'narrow-to-region 'disabled nil)
 

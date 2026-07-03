@@ -10,7 +10,7 @@
 (setq-default display-line-numbers-width 4)
 (setq-default display-line-numbers-widen t)
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 3)
+(setq-default tab-width 2)
 
 (setq adaptive-fill-regexp "[-–!|#%;>*+·•‣⁃◦ 	]* +")
 (setq ansi-color-for-compilation-mode t)

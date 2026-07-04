@@ -71,6 +71,7 @@
 (setq uniquify-ignore-buffers-re "^\\*")
 (setq uniquify-separator "/")
 (setq use-short-answers t)
+(setq view-lossage-auto-refresh t)
 (setq visible-bell nil)
 (setq which-key-idle-delay 0.1)
 (setq whitespace-display-mappings '((tab-mark 9 [#x7C 9] [92 9])))

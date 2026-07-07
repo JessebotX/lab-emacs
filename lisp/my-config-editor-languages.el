@@ -231,6 +231,7 @@ tabs will be used instead of spaces."
 ;;; ├── LANGUAGE: HTML
 
 (defun my/editor--lang-html ()
+  (my/editor--paragraph-default-local)
   (my/editor-lang-set-indent-local 'html)
   (setq-local html-ts-indent-offset (my/editor-lang-indent-size 'html))
   (setq-local html-ts-js-css-indent-offset (my/editor-lang-indent-size 'html))

@@ -151,6 +151,14 @@ tabs will be used instead of spaces."
               (defun my/editor--multiple-cursors-setup ()
                 (require 'multiple-cursors)))))
 
+;;; ├── LANGUAGE: BAT
+
+(defun my/editor--lang-bat ()
+  (my/editor-lang-set-indent-local 'bat)
+  (setq-local indent-line-function 'tab-to-tab-stop))
+
+(add-hook 'bat-mode-hook #'my/editor--lang-bat)
+
 ;;; ├── LANGUAGE: C
 
 (defun my/editor--lang-c ()

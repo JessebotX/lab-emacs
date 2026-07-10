@@ -39,7 +39,7 @@
 (setq fast-but-imprecise-scrolling t)
 (setq ibuffer-human-readable-size t)
 (setq isearch-lazy-count t)
-(setq jit-lock-defer-time 0)
+;;(setq jit-lock-defer-time nil)
 (setq kill-buffer-delete-auto-save-files t)
 (setq kill-do-not-save-duplicates t)
 (setq kill-region-dwim (if (version< emacs-version "31") t 'emacs-word))

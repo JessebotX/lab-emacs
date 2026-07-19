@@ -59,8 +59,8 @@
 (setq inhibit-compacting-font-caches t)
 
 ;; ;; Better buffer/chunk rendering
-;; (setq process-adaptive-read-buffering nil)
-;; (setq read-process-output-max (* 2 1024 1024)) ; 1024mb
+(setq process-adaptive-read-buffering nil)
+(setq read-process-output-max (* 2 1024 1024)) ; 1024mb
 
 ;; Remove latency in Emacs PGTK
 (when (boundp 'pgtk-wait-for-event-timeout)

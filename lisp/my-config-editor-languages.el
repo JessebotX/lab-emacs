@@ -3,20 +3,11 @@
 ;;; ├─ PREFACE
 
 (defcustom my/editor-lang-indents
-  '((c          :size 2 :use-tabs nil)
-    (cmake      :size 2 :use-tabs nil)
-    (cpp        :size 2 :use-tabs nil)
-    (css        :size 2 :use-tabs nil)
-    (go         :size 2 :use-tabs t)
-    (html       :size 2 :use-tabs nil)
-    (javascript :size 2 :use-tabs nil)
+  '((go         :size 3 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
+    (make       :size 3 :use-tabs t)
     (markdown   :size 2 :use-tabs nil)
-    (make       :size 2 :use-tabs t)
-    (rst        :size 2 :use-tabs nil)
-    (org        :size 8 :use-tabs nil)
-    (typst      :size 2 :use-tabs nil)
-    (yaml       :size 2 :use-tabs nil))
+    (org        :size 8 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the
 functions`my/editor-lang-indent-size' and `my/editor-lang-indent-use-tabs'.
 

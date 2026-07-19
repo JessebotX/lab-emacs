@@ -3,9 +3,9 @@
 ;;; ├─ PREFACE
 
 (defcustom my/editor-lang-indents
-  '((go         :size 3 :use-tabs t)
+  '((go         :size 2 :use-tabs t)
     (lisp       :size 8 :use-tabs nil)
-    (make       :size 3 :use-tabs t)
+    (make       :size 2 :use-tabs t)
     (markdown   :size 2 :use-tabs nil)
     (org        :size 8 :use-tabs nil))
   "List of language-specific indentation settings. Access values using the

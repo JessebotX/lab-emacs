@@ -92,6 +92,12 @@ tabs will be used instead of spaces."
     (autoload #'adaptive-wrap-prefix-mode "adaptive-wrap" nil t)
     (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)))
 
+(let* ((package-path (expand-file-name "lisp/packages/es-hints" user-emacs-directory))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (add-to-list 'load-path package-path)
+    (autoload #'es-hints-mode "es-hints" nil t)))
+
 (let* ((package-path (expand-file-name "lisp/packages/olivetti" user-emacs-directory))
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p

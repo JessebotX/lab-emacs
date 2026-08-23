@@ -38,6 +38,12 @@ loading (`custom-available-themes').")
 
 (setq modus-themes-italic-constructs t
       modus-themes-bold-constructs t
+      modus-vivendi-tinted-palette-overrides
+      '((bg-main "#0e0e0e")
+        (bg-dim "#333333")
+        (border "#333333")
+        (bg-paren-match "#454545")
+        (cursor blue))
       modus-themes-common-palette-overrides
       '((fg-line-number-inactive "gray50")
         (fg-line-number-active fg-main)

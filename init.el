@@ -96,7 +96,6 @@
 (add-hook 'after-init-hook #'my/font-load-emoji-fonts)
 
 (require 'my-config-themes)
-(keymap-global-set "C-<f5>" #'my/theme-set)
 (add-hook 'after-init-hook #'my/theme-load-my-theme)
 
 (require 'my-config-mode-line)
@@ -139,6 +138,7 @@
 
 (keymap-global-set "C-c f b" 'bookmark-jump)
 (keymap-global-set "C-c f p" 'project-find-file)
+(keymap-global-set "C-<f5>" 'compile)
 (keymap-global-set "<f5>" 'project-compile)
 (with-eval-after-load 'recentf
   (keymap-global-set "C-c f r" 'recentf))

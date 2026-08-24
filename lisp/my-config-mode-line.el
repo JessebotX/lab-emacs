@@ -106,10 +106,10 @@ Credit: doom-modeline
                 my/mode-line--segment-major-mode-indicator
                 " "
                 ;; (:eval (propertize "(" 'face 'shadow))
-                my/mode-line--segment-eol
-                my/mode-line--segment-encoding
+                ;; my/mode-line--segment-eol
+                ;; my/mode-line--segment-encoding
                 ;; (:eval (propertize ")" 'face 'shadow))
-                " "
+                ;; " "
                 (:eval mode-line-misc-info)))
 
 ;;; ├─ TOGGLE MODE-LINE

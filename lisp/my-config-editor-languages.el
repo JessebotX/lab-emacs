@@ -290,6 +290,16 @@ tabs will be used instead of spaces."
     (add-hook 'markdown-ts-mode-hook #'my/editor--lang-markdown)
     (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\|mdx\\)\\'" . markdown-ts-mode))))
 
+;;; ├── LANGUAGE: JSON
+
+(when (treesit-language-available-p 'json)
+  (add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode)))
+
+;;; ├── LANGUAGE: TOML
+
+(when (treesit-language-available-p 'toml)
+  (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode)))
+
 ;;; ├─ END
 
 (provide 'my-config-editor-languages)

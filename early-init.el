@@ -29,7 +29,7 @@
   (unless (memq initial-window-system '(x pgtk))
     (setq command-line-x-option-alist nil)))
 
-(setq ad-redefinition-accept 'accept) ; Legacy advice API warnings
+(setq ad-redefinition-action 'accept) ; Legacy advice API warnings
 
 ;;; SPEED UP EMACS
 

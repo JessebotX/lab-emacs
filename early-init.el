@@ -35,7 +35,7 @@
 
 (defconst my/emacs--file-name-handler-alist file-name-handler-alist)
 
-(setq gc-cons-threshold (* 256 1024 1024))
+(setq gc-cons-threshold 536870912)
 (setq gc-cons-percentage 1.0)
 (setq load-prefer-newer noninteractive)
 (setq file-name-handler-alist nil)
@@ -43,7 +43,7 @@
 
 (add-hook 'emacs-startup-hook
           (defun my/emacs-startup-hook ()
-            (setq gc-cons-threshold (* 100 1024 1024))
+            (setq gc-cons-threshold 104857600)
             (setq gc-cons-percentage 0.1)
             (setq load-prefer-newer nil)
             (setq vc-handled-backends '(Git))
@@ -60,7 +60,7 @@
 
 ;; ;; Better buffer/chunk rendering
 (setq process-adaptive-read-buffering nil)
-(setq read-process-output-max (* 2 1024 1024)) ; 1024mb
+(setq read-process-output-max 2097152)
 
 ;; Remove latency in Emacs PGTK
 (when (boundp 'pgtk-wait-for-event-timeout)

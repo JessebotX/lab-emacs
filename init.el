@@ -71,6 +71,7 @@
 (setq uniquify-ignore-buffers-re "^\\*")
 (setq uniquify-separator "/")
 (setq use-short-answers t)
+(setq user-lisp-directory (locate-user-emacs-file "lisp"))
 (setq view-lossage-auto-refresh t)
 (setq visible-bell nil)
 (setq which-key-idle-delay 0.1)
@@ -97,6 +98,7 @@
 
 (require 'my-config-themes)
 (add-hook 'after-init-hook #'my/theme-load-my-theme)
+(keymap-global-set "<f9>" #'my/theme-toggle)
 
 (require 'my-config-mode-line)
 (add-hook 'enable-theme-functions #'my/subtle-mode-line-set-faces)

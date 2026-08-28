@@ -44,7 +44,7 @@ then return the default use-tabs value defined in
   (let ((val (cdr (assoc lang my/language-indent-settings))))
     (plist-get val :use-tabs)))
 
-(defun my/editor-lang-set-indent-local (lang)
+(defun my/language-set-indent-local (lang)
   "Set default emacs indent rules based on LANG in local buffer. Note: you
 may still need to modify the major-mode specific indent settings."
   (setq-local tab-width (my/language-indent-size lang))
@@ -87,18 +87,35 @@ tabs will be used instead of spaces."
 
 ;;; LANGUAGE: C
 
-(defun my/editor--lang-c ()
-  (my/editor-lang-set-indent-local 'c)
-  (setq-local compile-command "ninja ")
-  (setq-local c-ts-mode-indent-style 'bsd)
-  (setq-local c-ts-mode-indent-offset (my/language-indent-size 'c)))
-
-(defun my/editor--c-ts-mode ()
-  (c-ts-mode-set-style 'bsd))
-
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-(add-hook 'c-ts-mode-hook #'my/editor--lang-c)
-(add-hook 'c-ts-mode-hook #'my/editor--c-ts-mode)
+(add-hook 'c-ts-mode-hook
+          (defun my/--c-ts-mode ()
+            (c-ts-mode-set-style 'bsd)
+            (my/language-set-indent-local 'c)
+            (setq-local compile-command "ninja ")
+            (setq-local c-ts-mode-indent-style 'bsd)
+            (setq-local c-ts-mode-indent-offset (my/language-indent-size 'c))))
+
+;;; LANGUAGE: CMAKE
+
+(let* ((package-path (my/locate-user-lisp-file "packages/cmake-mode"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (autoload #'cmake-mode "cmake-mode" nil t)
+    (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+    (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
+    (add-hook 'cmake-mode-hook
+              (defun my/--cmake-mode ()
+                (setq-local cmake-tab-width (my/editor-lang-indent-size 'cmake))
+                (my/language-set-indent-local 'cmake)))))
+
+;;; LANGUAGE: CSS
+
+(add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+(add-hook 'css-ts-mode-hook
+          (defun my/--css-ts-mode ()
+            (my/language-set-indent-local 'css)
+            (setq-local css-indent-offset (my/editor-lang-indent-size 'css))))
 
 ;;; LANGUAGE: C++
 
@@ -108,17 +125,33 @@ tabs will be used instead of spaces."
 (add-hook 'c++-ts-mode-hook
           (defun my/--c++-ts-mode ()
             (setq-local compile-command "ninja ")
-            (my/editor-lang-set-indent-local 'cpp)
+            (my/language-set-indent-local 'cpp)
             (c-ts-mode-set-style 'bsd)
             (setq-local c-ts-mode-indent-style 'bsd)
             (setq-local c-ts-mode-indent-offset (my/language-indent-size 'cpp))))
+
+;;; LANGUAGE: HTML
+
+(add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
+(unless (version< emacs-version "31.0")
+  (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode)))
+(add-hook 'html-ts-mode-hook
+          (defun my/--html-ts-mode ()
+            (my/editor--paragraph-default-local)
+            (my/language-set-indent-local 'html)
+            (setq-local html-ts-indent-offset (my/editor-lang-indent-size 'html))
+            (setq-local html-ts-js-css-indent-offset (my/editor-lang-indent-size 'html))
+            (setq-local mhtml-ts-js-css-indent-offset (my/editor-lang-indent-size 'html))
+            (setq-local sgml-basic-offset (my/editor-lang-indent-size 'html))
+            (setq-local js-indent-level (my/editor-lang-indent-size 'js))
+            (setq-local css-indent-offset (my/editor-lang-indent-size 'css))))
 
 ;;; LANGUAGE: JSON
 
 (add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
 (add-hook 'json-ts-mode-hook
           (defun my/--json-ts-mode ()
-            (my/editor-lang-set-indent-local 'json)))
+            (my/language-set-indent-local 'json)))
 (with-eval-after-load 'json-ts-mode
   (my/set json-ts-indent-offset (my/language-indent-size 'json)))
 
@@ -129,7 +162,7 @@ tabs will be used instead of spaces."
   (add-to-list 'auto-mode-alist (cons re 'markdown-ts-mode)))
 (add-hook 'markdown-ts-mode
           (defun my/--markdown-ts-mode ()
-            (my/editor-lang-set-indent-local 'markdown)
+            (my/language-set-indent-local 'markdown)
             (visual-line-mode 1)))
 
 (with-eval-after-load 'markdown-ts-mode
@@ -139,13 +172,13 @@ tabs will be used instead of spaces."
 
 (add-hook 'lisp-mode-hook
           (defun my/--lisp-mode ()
-            (my/editor-lang-set-indent-local 'lisp)
+            (my/language-set-indent-local 'lisp)
             (outline-minor-mode 1)
             (electric-indent-local-mode 1)
             (electric-pair-local-mode 1)))
 (add-hook 'emacs-lisp-mode-hook
           (defun my/--emacs-lisp-mode ()
-            (my/editor-lang-set-indent-local 'lisp)
+            (my/language-set-indent-local 'lisp)
             (outline-minor-mode 1)
             (electric-indent-local-mode 1)
             (electric-pair-local-mode 1)))
@@ -155,7 +188,7 @@ tabs will be used instead of spaces."
 (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
 (add-hook 'json-ts-mode-hook
           (defun my/--json-ts-mode ()
-            (my/editor-lang-set-indent-local 'toml)))
+            (my/language-set-indent-local 'toml)))
 (with-eval-after-load 'toml-ts-mode
   (my/set toml-ts-indent-offset (my/language-indent-size 'toml)))
 

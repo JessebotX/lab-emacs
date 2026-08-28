@@ -1,18 +1,4 @@
-;;; my-config-utils.el -*- lexical-binding: t; -*-
-
-(let* ((package-path (locate-user-emacs-file "lisp/packages/disable-mouse"))
-       (package-exists-p (file-directory-p package-path)))
-  (when package-exists-p
-    (add-to-list 'load-path package-path)
-    (autoload #'disable-mouse-mode "disable-mouse" nil t)
-    (autoload #'disable-mouse-global-mode "disable-mouse" nil t)
-
-    (with-eval-after-load 'disable-mouse
-      (defun my/utils--disable-mouse-command (&rest arguments)
-        "Command to run for `disable-mouse-command'."
-        (interactive)
-        (message "Mouse bindings disabled."))
-      (setq disable-mouse-command #'my/utils--disable-mouse-command))))
+;;; my-config-utils.el -*- lexical-binding: t -*-
 
 (defun my/switch-frame ()
   "Select frame from `frame-list' to focus on."
@@ -66,12 +52,6 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
 buffer/file contents."
   (interactive)
   (diff-buffer-with-file (current-buffer)))
-
-(add-to-list 'save-some-buffers-action-alist
-             (list "d"
-                   (lambda (buffer)
-                     (diff-buffer-with-file (buffer-file-name buffer)))
-                   "show diff between the buffer and its file"))
 
 (defun my/open-terminal ()
   "Open the current dir in a new terminal window.
@@ -128,6 +108,6 @@ Credit: xahlee.info"
                   shell-command-switch
                   (format "xdg-open '%s'" (expand-file-name default-directory))))))
 
-;;; ├─ END
+;;; END
 
 (provide 'my-config-utils)

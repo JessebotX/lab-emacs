@@ -1,7 +1,0 @@
-elpa
-*.elc
-/.ecukes-failing-scenarios
-
-# ELPA-generated files
-/multiple-cursors-pkg.el
-/multiple-cursors-autoloads.el

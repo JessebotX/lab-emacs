@@ -2,22 +2,6 @@
 
 (require 'my-core)
 
-;;; MODULES
-
-;; (defun my/switch-frame ()
-;;   "Select frame from `frame-list' to focus on."
-;;   (interactive)
-;;   (let* ((current (selected-frame))
-;;          (frames
-;;           (mapcar (lambda (f)
-;;                     (cons (format "%s%s"
-;;                                   (frame-parameter f 'name)
-;;                                   (if (eq f current) " (current)" ""))
-;;                           f))
-;;                   (frame-list)))
-;;          (choice (completing-read "Frame: " frames nil t)))
-;;     (select-frame-set-input-focus (cdr (assoc choice frames)))))
-
 (defun my/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
 
@@ -112,20 +96,217 @@ Credit: xahlee.info"
                   shell-command-switch
                   (format "xdg-open '%s'" (expand-file-name default-directory))))))
 
+;;; MINIBUFFER & COMPLETIONS
+
+(defun my/minibuffer--backward-kill (arg)
+  "When minibuffer is completing a file name, delete up to parent
+folder, otherwise delete a word."
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+    (kill-word (- arg))))
+
+(my/set completion-ignore-case t)
+(my/set completions-detailed t)
+
+;;; FONTS & THEMES
+
+(defcustom my/font-family "Maple Mono"
+  "Default font family.")
+
+(defcustom my/font-size 140
+  "Default font size.")
+
+(defun my/font-size-set (value)
+  "Set the base font size to VALUE (integer)."
+  (interactive "nNew font size: ")
+  (set-face-attribute 'default (selected-frame) :height value))
+
+(defun my/font-size-decrement ()
+  "Decrement base font size by 10."
+  (interactive)
+  (let* ((font-size (face-attribute 'default :height))
+         (new-size  (- font-size 10)))
+    (set-face-attribute 'default (selected-frame) :height new-size)
+    (message "New font size %d" (face-attribute 'default :height))))
+
+(defun my/font-size-increment ()
+  "Increment base font size by 10."
+  (interactive)
+  (let* ((font-size (face-attribute 'default :height))
+         (new-size  (+ font-size 10)))
+    (set-face-attribute 'default (selected-frame) :height new-size)
+    (message "New font size %d" (face-attribute 'default :height))))
+
+(defun my/font-family-set (font)
+  "Set emacs `default' face's font family."
+  (interactive (list (completing-read "Font: " (font-family-list))))
+  (set-face-attribute 'default nil :family font))
+
+(defun my/font-family-variable-pitch-set (font)
+  "Set emacs `variable-pitch' face's font family."
+  (interactive (list (completing-read "Font: " (font-family-list))))
+  (set-face-attribute 'variable-pitch nil :family font))
+
+(defun my/font-load-my-font ()
+  "Set `default' font face using `my/font-family' and `my/font-size'."
+  (interactive)
+  (set-face-attribute 'default nil :family my/font-family :height my/font-size))
+
+(defun my/font-load-emoji-fonts ()
+  "Enable fonts for emojis."
+  (interactive)
+  (set-fontset-font
+   t 'emoji
+   (cond
+    ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+    ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+    ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+    ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+    ((member "Symbola" (font-family-list)) "Symbola"))))
+
+;;; THEMES
+
+(defcustom my/theme 'modus-operandi-tinted
+  "Default Emacs theme.")
+
+(defcustom my/theme-toggle-options '(modus-operandi-tinted modus-vivendi-tinted)
+  "Two Emacs themes to toggle between that are available for
+loading (`custom-available-themes').")
+
+(defun my/theme-set (theme)
+  "Set the current emacs theme to THEME. Disables all other themes."
+  (interactive
+   (list (intern (completing-read "Theme: " (custom-available-themes)))))
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme theme t)
+  (enable-theme theme))
+
+(defun my/theme-load-my-theme ()
+  "Set/reset theme based on the value of `my/theme'."
+  (interactive)
+  (my/theme-set my/theme))
+
+(defun my/theme-toggle ()
+  "Toggle between the two themes stored in `my/theme-toggle-options'"
+  (interactive)
+  (if (= (length my/theme-toggle-options) 2)
+      (let ((theme-1 (car my/theme-toggle-options))
+            (theme-2 (car (cdr my/theme-toggle-options))))
+        (if (member theme-1 custom-enabled-themes)
+            (my/theme-set theme-2)
+          (my/theme-set theme-1)))
+    (message "Variable `my/theme-toggle-options' must have exactly 2 options.")))
+
+(with-eval-after-load 'modus-themes
+  (my/set modus-themes-italic-constructs t)
+  (my/set modus-themes-bold-constructs t)
+  (my/set modus-themes-common-palette-overrides
+          '((fg-line-number-inactive "gray50")
+            (fg-line-number-active fg-main)
+
+            (bg-line-number-inactive unspecified)
+            (bg-line-number-active unspecified)
+
+            (bg-mode-line-active bg-main)
+            ;; (bg-mode-line-active bg-dim)
+            (fg-mode-line-active fg-main)
+
+            (border-mode-line-active bg-dim)
+            (border-mode-line-inactive bg-mode-line-inactive)))
+  (my/set modus-vivendi-tinted-palette-overrides
+          '((bg-main "#111111")
+            (bg-dim "#333333")
+            (fg-main "#dddddd")
+            (border "#333333")
+            (bg-paren-match "#454545")
+            (cursor blue))))
+
+;;; MODE-LINE
+
+(with-eval-after-load 'time
+  (my/set display-time-default-load-average nil))
+(with-eval-after-load 'project
+  (my/set project-mode-line t))
+
+(autoload 'my/mode-line-mode "my-mode-line")
+
+;;;; Buffer location display
+(my/set mode-line-percent-position nil)
+(my/set mode-line-position-line-format '("(%l:)"))
+(my/set mode-line-position-column-format '("(:%c)"))
+(my/set mode-line-position-column-line-format '("(%l:%c)"))
+
+;;;###autoload
+(define-minor-mode my/mode-line-display-position-mode
+  "Toggle displaying local buffer position in the mode line."
+  :group 'mode-line
+  :global t
+  (if my/mode-line-display-position-mode
+      (progn
+        (line-number-mode 1)
+        (column-number-mode 1))
+    (progn
+      (line-number-mode -1)
+      (column-number-mode -1))))
+
+;;; OLIVETTI (WITH CUSTOM WRITE-ROOM FOCUS MODE)
+
+(let* ((package-path (my/locate-user-lisp-file "olivetti"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (autoload #'olivetti-mode "olivetti" nil t)
+
+    (add-hook 'olivetti-mode-hook
+              (defun my/--olivetti-no-newline-in-fringe ()
+                "Hack to prevent cursor from going into the fringe."
+                (setq-local overflow-newline-into-fringe nil)))
+
+    ;; Disable some mouse keybinds
+    (with-eval-after-load 'olivetti
+      (define-key olivetti-mode-map [left-margin mouse-1] nil)
+      (define-key olivetti-mode-map [right-margin mouse-1] nil)
+      (define-key olivetti-mode-map [left-fringe mouse-1] nil)
+      (define-key olivetti-mode-map [right-fringe mouse-1] nil)
+
+      (define-key olivetti-mode-map [left-margin mouse-2] nil)
+      (define-key olivetti-mode-map [right-margin mouse-2] nil)
+      (define-key olivetti-mode-map [left-fringe mouse-2] nil)
+      (define-key olivetti-mode-map [right-fringe mouse-2] nil)
+
+      (define-key olivetti-mode-map [left-margin mouse-3] nil)
+      (define-key olivetti-mode-map [right-margin mouse-3] nil)
+      (define-key olivetti-mode-map [left-fringe mouse-3] nil)
+      (define-key olivetti-mode-map [right-fringe mouse-3] nil)
+
+      ;; This code is taken from https://github.com/joostkremers/visual-fill-column
+      (when (and (bound-and-true-p mouse-wheel-mode)
+                 (boundp 'mouse-wheel-down-event)
+                 (boundp 'mouse-wheel-up-event))
+        (define-key olivetti-mode-map (vector 'left-margin 'mouse-wheel-down-event) nil)
+        (define-key olivetti-mode-map (vector 'left-margin 'mouse-wheel-up-event) nil)
+        (define-key olivetti-mode-map (vector 'right-margin 'mouse-wheel-down-event) nil)
+        (define-key olivetti-mode-map (vector 'right-margin 'mouse-wheel-up-event) nil)))
+
+    ;;;###autoload
+    (define-minor-mode my/focus-mode
+      "Minor mode that toggles a nice writing environment."
+      :init-value nil
+      (if my/focus-mode
+          (progn
+            (mode-line-invisible-mode 1)
+            (whitespace-mode -1)
+            (olivetti-mode 1))
+        (progn
+          (mode-line-invisible-mode -1)
+          (whitespace-mode 1)
+          (olivetti-mode -1))))
+
+    (make-variable-buffer-local 'my/focus-mode)))
+
 ;;; BASE CONFIGURATION
-;;;; BASIC KEYBINDINGS
-
-(keymap-global-set "C-z" nil)
-(keymap-global-set "C-x C-z" nil)
-(keymap-global-set "C-x C-k RET" nil)
-(keymap-global-set "C-c C-b" nil)
-(keymap-global-set "<mouse-3>" nil)
-
-(keymap-global-set "M-[" #'backward-paragraph)
-(keymap-global-set "M-]" #'forward-paragraph)
-(keymap-global-set "M-s M-s" #'grep)
-(keymap-global-set "C-c -" #'kill-buffer-and-window)
-(keymap-global-set "C-c C-SPC" #'just-one-space)
 
 ;;;; EMACS DATA FILES
 
@@ -144,8 +325,6 @@ Credit: xahlee.info"
 
 (my/set global-auto-revert-non-file-buffers t)
 
-(add-hook 'after-init-hook #'global-auto-revert-mode)
-
 ;;;; BOOKMARKS, RECENTS, HISTORY
 
 (my/set bookmark-default-file (my/locate-user-var-file "bookmarks.el"))
@@ -155,18 +334,9 @@ Credit: xahlee.info"
 (my/set history-length 300)
 (my/set save-place-limit 600)
 
-(add-hook 'after-init-hook #'save-place-mode)
-(add-hook 'after-init-hook #'savehist-mode)
-
-(keymap-global-set "C-c f b" #'bookmark-jump)
-(with-eval-after-load 'recentf
-  (keymap-global-set "C-c f r" #'recentf))
-
 ;;;; IBUFFER
 
 (my/set ibuffer-human-readable-size t)
-
-(keymap-global-set "C-x C-b" #'ibuffer)
 
 ;;;; DELETE PAIRS
 
@@ -188,11 +358,6 @@ Credit: xahlee.info"
 (my/set compilation-scroll-output 'first-error)
 (my/set project-list-file (my/locate-user-var-file "project.el"))
 
-(keymap-global-set "C-c f p" #'project-find-file)
-
-(keymap-global-set "<f5>" #'project-compile)
-(keymap-global-set "C-<f5>" #'compile)
-
 ;;;; DOCUMENT VIEWER
 
 (my/set doc-view-resolution 200)
@@ -202,8 +367,6 @@ Credit: xahlee.info"
 (my/set dictionary-server "dict.org")
 (my/set dictionary-default-strategy "prefix")
 
-(keymap-global-set "C-c d" #'dictionary-lookup-definition)
-
 ;;;; EDITING TEXT BASICS
 
 (my/set backward-delete-char-untabify-method 'hungry)
@@ -212,8 +375,6 @@ Credit: xahlee.info"
 (my/set sentence-end-double-space nil)
 (my/set kill-do-not-save-duplicates t)
 (my/set kill-region-dwim (if (version< emacs-version "31") t 'emacs-word))
-
-(add-hook 'after-init-hook #'delete-selection-mode)
 
 ;;;; FILE MANAGEMENT
 
@@ -246,8 +407,6 @@ Credit: xahlee.info"
 (my/set scroll-up-aggressively 0.01) ; keep point near edge of screen
 (my/set scroll-down-aggressively 0.01) ; keep point near edge of screen
 
-(add-hook 'after-init-hook #'pixel-scroll-precision-mode)
-
 ;;;; SHORT ANSWER PROMPTS
 
 (my/set read-answer-short t)
@@ -259,10 +418,6 @@ Credit: xahlee.info"
 (my/set whitespace-style '(face tabs tab-mark trailing))
 (my/set whitespace-line-column nil)
 
-(add-hook 'prog-mode-hook #'whitespace-mode)
-
-(keymap-global-set "C-c m w" #'whitespace-mode)
-
 ;;;; LINE NUMBERS
 
 (my/set display-line-numbers-width 4)
@@ -271,8 +426,6 @@ Credit: xahlee.info"
 (my/set undo-limit 2080000)
 (my/set undo-strong-limit 3120000)
 (my/set undo-outer-limit 312000000)
-
-(keymap-global-set "C-c m l" #'display-line-numbers-mode)
 
 ;;;; ERROR/WARNING BELLS
 
@@ -286,49 +439,86 @@ Credit: xahlee.info"
 
 (put 'narrow-to-region 'disabled nil)
 
-(add-hook 'after-init-hook #'winner-mode)
-(add-hook 'after-init-hook
-          (defun my/--after-init--disable-default-modes ()
-              (blink-cursor-mode -1)
-              (electric-indent-mode -1)))
-(add-hook 'after-init-hook
-          (defun my/--after-init--split-window-direction ()
-            (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
-            (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))))
-
-;;; MODULES
-
-(keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
-(keymap-global-set "C-g" #'my/keyboard-quit-dwim)
-(keymap-global-set "C-c f f" #'my/switch-frame)
-(add-to-list 'save-some-buffers-action-alist
-             (list "d"
-                   (lambda (buffer)
-                     (diff-buffer-with-file (buffer-file-name buffer)))
-                   "show diff between the buffer and its file"))
-
-(require 'my-config-completions-minibuffer)
-(with-eval-after-load 'my-config-completions-minibuffer
-  (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
-  (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill))
-
-(require 'my-config-mode-line)
-(with-eval-after-load 'my-config-mode-line
-  (add-hook 'after-init-hook #'my/mode-line-mode)
-  (add-hook 'after-init-hook #'my/mode-line-display-position-mode))
-
-(require 'my-config-fonts-themes)
-(with-eval-after-load 'my-config-fonts-themes
-  (keymap-global-set "C-c C-0" 'my/font-size-set)
-  (keymap-global-set "C-c C-1" 'my/font-family-set)
-  (add-hook 'emacs-startup-hook #'my/theme-load-my-theme)
-  (add-hook 'emacs-startup-hook #'my/font-load-my-font)
-  (add-hook 'emacs-startup-hook #'my/font-load-emoji-fonts))
+;;; EDITING
 
 (require 'my-config-editor-langs)
 (with-eval-after-load 'my-config-editor-langs
   (global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
   (global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop))
+
+;;;; KEYBINDINGS
+
+(keymap-global-set "C-z" nil)
+(keymap-global-set "C-x C-z" nil)
+(keymap-global-set "C-x C-k RET" nil)
+(keymap-global-set "C-c C-b" nil)
+(keymap-global-set "<mouse-3>" nil)
+
+(keymap-global-set "<f5>" #'project-compile)
+(keymap-global-set "C-<f5>" #'compile)
+(keymap-global-set "M-[" #'backward-paragraph)
+(keymap-global-set "M-]" #'forward-paragraph)
+(keymap-global-set "M-s M-s" #'grep)
+(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-global-set "C-c d" #'dictionary-lookup-definition)
+(keymap-global-set "C-c -" #'kill-buffer-and-window)
+(keymap-global-set "C-c C-SPC" #'just-one-space)
+(keymap-global-set "C-c f b" #'bookmark-jump)
+(with-eval-after-load 'recentf
+  (keymap-global-set "C-c f r" #'recentf))
+(keymap-global-set "C-c f p" #'project-find-file)
+(keymap-global-set "C-c m l" #'display-line-numbers-mode)
+(keymap-global-set "C-c m w" #'whitespace-mode)
+(keymap-global-set "C-c m t w" #'my/focus-mode)
+
+(keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
+(keymap-global-set "C-g" #'my/keyboard-quit-dwim)
+(keymap-global-set "C-c C-0" #'my/font-size-set)
+(keymap-global-set "C-c C-1" #'my/font-family-set)
+(keymap-global-set "C-c f f" #'my/switch-frame)
+
+(keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
+(keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
+
+;;; HOOKS & OTHER
+
+(add-hook 'emacs-startup-hook
+          (defun my/--emacs-startup ()
+            (my/theme-load-my-theme)
+            (my/font-load-my-font)
+            (my/font-load-emoji-fonts)))
+
+(add-hook 'after-init-hook
+          (defun my/--after-init ()
+            (advice-add #'split-window-below :after (lambda (&rest _) (other-window 1)))
+            (advice-add #'split-window-right :after (lambda (&rest _) (other-window 1)))
+
+            (global-auto-revert-mode 1)
+            (save-place-mode 1)
+            (savehist-mode 1)
+            (delete-selection-mode 1)
+            (pixel-scroll-precision-mode 1)
+            (winner-mode 1)
+            (my/mode-line-mode 1)
+            (my/mode-line-display-position-mode 1)
+
+            (blink-cursor-mode -1)
+            (electric-indent-mode -1)))
+
+(add-hook 'enable-theme-functions
+          (defun my/themes--bold-dired-directory (_theme)
+            (with-eval-after-load 'dired
+              (set-face-attribute 'dired-directory nil :weight 'bold))))
+
+(add-hook 'prog-mode-hook
+          (defun my/--prog-mode ()
+            (whitespace-mode)))
+
+(add-to-list 'save-some-buffers-action-alist
+             (list "d"
+                   (lambda (buffer)
+                     (diff-buffer-with-file (buffer-file-name buffer)))
+                   "show diff between the buffer and its file"))
 
 ;;; END
 

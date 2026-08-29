@@ -425,6 +425,8 @@ loading (`custom-available-themes').")
 
 ;;;; HIGHLIGHT MATCHING PARENS
 
+(my/set show-paren-context-when-offscreen t)
+
 (my/set show-paren-delay 0.1)
 (my/set show-paren-highlighting-openparen t)
 (my/set show-paren-when-point-inside-paren t)

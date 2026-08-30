@@ -108,10 +108,43 @@ folder, otherwise delete a word."
         (delete-minibuffer-contents))
     (kill-word (- arg))))
 
+(defun my/minibuffer--file-sort (files)
+  "Sort FILES to have directories first and the rest alphabetically.
+Omit the .. directory from FILES.
+
+Credit: Taken from Protesilaos at
+<https://protesilaos.com/codelog/2026-07-29-emacs-default-minibuffer-completion-overview/>"
+  ;; Remove the implicit files from the candidates.
+  (setq files (delete "../" files))
+  ;; Sort them alphabetically.
+  (setq files (minibuffer-sort-alphabetically files))
+  ;; Now put the directories before the rest.
+  (let ((directory-p (lambda (file) (string-suffix-p "/" file))))
+    (nconc (seq-filter directory-p files)
+           (seq-remove directory-p files))))
+
 (my/set completion-ignore-case t)
 (my/set read-file-name-completion-ignore-case t)
 (my/set read-buffer-completion-ignore-case t)
+(my/set completion-show-inline-help nil)
+(my/set completions-format 'one-column)
+(my/set completions-max-height 12)
+(my/set completions-sort 'historical)
 (my/set completions-detailed t)
+
+;; (let* ((package-path (my/locate-user-lisp-file "orderless"))
+;;        (package-exists-p (file-directory-p package-path)))
+;;   (when package-exists-p
+;;     (my/set completion-styles '(basic partial-completion orderless))
+;;     (my/set completion-category-overrides
+;;             '((file (styles partial-completion))))
+;;     (my/set completion-pcm-leading-wildcard t)))
+
+(setq completion-styles '(basic substring initials flex))
+(setq completion-category-overrides
+      '((file . ((styles partial-completion)
+                 (display-sort-function . my/minibuffer--file-sort)))))
+(my/set completion-pcm-leading-wildcard t)
 
 ;;; FONTS & THEMES
 
@@ -582,6 +615,8 @@ tabs will be used instead of spaces."
 (my/set lazy-count-suffix-format "   (%s/%s)")
 
 ;;;; HIGHLIGHT MATCHING PARENS
+
+(my/set show-paren-context-when-offscreen t)
 
 (my/set show-paren-delay 0.1)
 (my/set show-paren-highlighting-openparen t)

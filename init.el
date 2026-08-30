@@ -109,6 +109,8 @@ folder, otherwise delete a word."
     (kill-word (- arg))))
 
 (my/set completion-ignore-case t)
+(my/set read-file-name-completion-ignore-case t)
+(my/set read-buffer-completion-ignore-case t)
 (my/set completions-detailed t)
 
 ;;; FONTS & THEMES
@@ -233,7 +235,6 @@ loading (`custom-available-themes').")
 
 (autoload 'my/mode-line-mode "my-mode-line")
 
-;;;; Buffer location display
 (my/set mode-line-percent-position nil)
 (my/set mode-line-position-line-format '("(%l:)"))
 (my/set mode-line-position-column-format '("(:%c)"))
@@ -305,6 +306,197 @@ loading (`custom-available-themes').")
           (olivetti-mode -1))))
 
     (make-variable-buffer-local 'my/focus-mode)))
+
+;;; EDITING
+
+(defcustom my/language-indent-settings
+  '((go         :size 3 :use-tabs t)
+    (lisp       :size 8 :use-tabs nil)
+    (make       :size 3 :use-tabs t)
+    (markdown   :size 2 :use-tabs nil)
+    (org        :size 8 :use-tabs nil))
+  "List of language-specific indentation settings. Access values using the
+functions`my/language-indent-size' and `my/language-indent-use-tabs'.
+
+Elements of this alist are of the form:
+
+  (LANG-SYMBOL [:size SIZE] [:use-tabs USE-TABS])
+
+where LANG-SYMBOL is a unique key name that represents a language, SIZE
+is the width of each indent in columns, and USE-TABS is a boolean where
+if non-nil, indentation will use tabs instead of spaces."
+  :group 'indent)
+
+(defun my/language-indent-size (lang)
+  "Get the size of indentation, in columns, for LANG, where LANG is a
+symbol and a key to the `my/language-indent-settings' list.
+
+If the key or the size property of the language does not exist, then
+return the default indentation size defined in `my/indent-size-default'."
+  (let ((val (cdr (assoc lang my/language-indent-settings))))
+    (if (plist-get val :size)
+        (plist-get val :size)
+      tab-width)))
+
+(defun my/language-indent-use-tabs (lang)
+  "Get whether indentation will use tabs instead of spaces on
+indent for LANG, where LANG is a symbol and a key to the
+`my/language-indent-settings' list.
+
+If the key or the use-tabs property of the language does not exist
+then return the default use-tabs value defined in
+`my/indent-use-tabs-default'."
+  (let ((val (cdr (assoc lang my/language-indent-settings))))
+    (plist-get val :use-tabs)))
+
+(defun my/language-set-indent-local (lang)
+  "Set default emacs indent rules based on LANG in local buffer. Note: you
+may still need to modify the major-mode specific indent settings."
+  (setq-local tab-width (my/language-indent-size lang))
+  (setq-local indent-tabs-mode (my/language-indent-use-tabs lang)))
+
+(defun my/local-indent-set (size use-tabs)
+  "Configure buffer-local indentation settings, where SIZE is the
+indentation size in columns, and USE-TABS is a boolean where if non-nil,
+tabs will be used instead of spaces."
+  (interactive
+   (list
+    (read-number "Indent size (# of columns): ")
+    (y-or-n-p "Use tabs instead of spaces")))
+  (setq-local tab-width size
+              indent-tabs-mode use-tabs))
+
+(defun my/paragraph-default-navigation ()
+  "Apply default settings for what is considered a paragraph"
+  (interactive)
+  (setq-local paragraph-start (default-value 'paragraph-start))
+  (setq-local paragraph-separate (default-value 'paragraph-separate)))
+
+(defun my/backward-delete-to-tab-stop ()
+  "Delete whitespace backwards to the next tab-stop, otherwise delete one character."
+  (interactive)
+  (if (or indent-tabs-mode
+          (region-active-p)
+          (save-excursion
+            (> (point) (progn (back-to-indentation)
+                              (point)))))
+      (call-interactively 'backward-delete-char-untabify)
+    (let ((movement (% (current-column) tab-width))
+          (p (point)))
+      (when (= movement 0) (setq movement tab-width))
+      ;; Account for edge case near beginning of buffer
+      (setq movement (min (- p 1) movement))
+      (save-match-data
+        (if (string-match "[^\t ]*\\([\t ]+\\)$" (buffer-substring-no-properties (- p movement) p))
+            (backward-delete-char (- (match-end 1) (match-beginning 1)))
+          (call-interactively 'backward-delete-char))))))
+
+;;; LANGUAGE: C
+
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-hook 'c-ts-mode-hook
+          (defun my/--c-ts-mode ()
+            (c-ts-mode-set-style 'bsd)
+            (my/language-set-indent-local 'c)
+            (setq-local compile-command "ninja ")
+            (setq-local c-ts-mode-indent-style 'bsd)
+            (setq-local c-ts-mode-indent-offset (my/language-indent-size 'c))))
+
+;;; LANGUAGE: CMAKE
+
+(let* ((package-path (my/locate-user-lisp-file "packages/cmake-mode"))
+       (package-exists-p (file-directory-p package-path)))
+  (when package-exists-p
+    (autoload #'cmake-mode "cmake-mode" nil t)
+    (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+    (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
+    (add-hook 'cmake-mode-hook
+              (defun my/--cmake-mode ()
+                (setq-local cmake-tab-width (my/language-indent-size 'cmake))
+                (my/language-set-indent-local 'cmake)))))
+
+;;; LANGUAGE: CSS
+
+(add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+(add-hook 'css-ts-mode-hook
+          (defun my/--css-ts-mode ()
+            (my/language-set-indent-local 'css)
+            (setq-local css-indent-offset (my/language-indent-size 'css))))
+
+;;; LANGUAGE: C++
+
+(add-to-list 'treesit-load-name-override-list '(c++ "libtree-sitter-cpp" "tree_sitter_cpp"))
+(add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-hook 'c++-ts-mode-hook
+          (defun my/--c++-ts-mode ()
+            (setq-local compile-command "ninja ")
+            (my/language-set-indent-local 'cpp)
+            (c-ts-mode-set-style 'bsd)
+            (setq-local c-ts-mode-indent-style 'bsd)
+            (setq-local c-ts-mode-indent-offset (my/language-indent-size 'cpp))))
+
+;;; LANGUAGE: HTML
+
+(add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
+(unless (version< emacs-version "31.0")
+  (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode)))
+(add-hook 'html-ts-mode-hook
+          (defun my/--html-ts-mode ()
+            (my/paragraph-default-navigation)
+            (my/language-set-indent-local 'html)
+            (setq-local html-ts-indent-offset (my/language-indent-size 'html))
+            (setq-local html-ts-js-css-indent-offset (my/language-indent-size 'html))
+            (setq-local mhtml-ts-js-css-indent-offset (my/language-indent-size 'html))
+            (setq-local sgml-basic-offset (my/language-indent-size 'html))
+            (setq-local js-indent-level (my/language-indent-size 'js))
+            (setq-local css-indent-offset (my/language-indent-size 'css))))
+
+;;; LANGUAGE: JSON
+
+(add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
+(add-hook 'json-ts-mode-hook
+          (defun my/--json-ts-mode ()
+            (my/language-set-indent-local 'json)))
+(with-eval-after-load 'json-ts-mode
+  (my/set json-ts-indent-offset (my/language-indent-size 'json)))
+
+;;; LANGUAGE: MARKDOWN
+
+(autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
+(dolist (re '("\\.md\\'" "\\.mdx\\'" "\\.markdown\\'"))
+  (add-to-list 'auto-mode-alist (cons re 'markdown-ts-mode)))
+(add-hook 'markdown-ts-mode
+          (defun my/--markdown-ts-mode ()
+            (my/language-set-indent-local 'markdown)
+            (visual-line-mode 1)))
+
+(with-eval-after-load 'markdown-ts-mode
+  (require 'markdown-ts-mode-x))
+
+;;; LANGUAGE: LISP
+
+(add-hook 'lisp-mode-hook
+          (defun my/--lisp-mode ()
+            (my/language-set-indent-local 'lisp)
+            (outline-minor-mode 1)
+            (electric-indent-local-mode 1)
+            (electric-pair-local-mode 1)))
+(add-hook 'emacs-lisp-mode-hook
+          (defun my/--emacs-lisp-mode ()
+            (my/language-set-indent-local 'lisp)
+            (outline-minor-mode 1)
+            (electric-indent-local-mode 1)
+            (electric-pair-local-mode 1)))
+
+;;; LANGUAGE: TOML
+
+(add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
+(add-hook 'json-ts-mode-hook
+          (defun my/--json-ts-mode ()
+            (my/language-set-indent-local 'toml)))
+(with-eval-after-load 'toml-ts-mode
+  (my/set toml-ts-indent-offset (my/language-indent-size 'toml)))
 
 ;;; BASE CONFIGURATION
 
@@ -439,14 +631,7 @@ loading (`custom-available-themes').")
 
 (put 'narrow-to-region 'disabled nil)
 
-;;; EDITING
-
-(require 'my-config-editor-langs)
-(with-eval-after-load 'my-config-editor-langs
-  (global-set-key [remap delete-backward-char] #'my/editor-delete-to-tab-stop)
-  (global-set-key [remap delete-backward-char-untabify] #'my/editor-delete-to-tab-stop))
-
-;;;; KEYBINDINGS
+;;; KEYBINDINGS
 
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x C-z" nil)
@@ -479,6 +664,9 @@ loading (`custom-available-themes').")
 
 (keymap-set minibuffer-local-map "C-<backspace>" #'my/minibuffer--backward-kill)
 (keymap-set minibuffer-local-map "M-<backspace>" #'my/minibuffer--backward-kill)
+
+(global-set-key [remap delete-backward-char] #'my/backward-delete-to-tab-stop)
+(global-set-key [remap delete-backward-char-untabify] #'my/backward-delete-to-tab-stop)
 
 ;;; HOOKS & OTHER
 

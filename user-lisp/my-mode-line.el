@@ -40,9 +40,6 @@
 
                 ;; Right aligned
                 mode-line-format-right-align
-                " "
-                (vc-mode vc-mode)
-                " "
                 (:eval mode-line-misc-info)))
     (my/set mode-line-format my/mode-line--format-default)))
 

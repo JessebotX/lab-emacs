@@ -424,6 +424,13 @@ tabs will be used instead of spaces."
             (backward-delete-char (- (match-end 1) (match-beginning 1)))
           (call-interactively 'backward-delete-char))))))
 
+(my/set backward-delete-char-untabify-method 'hungry)
+(my/set tab-width 3)
+(my/set indent-tabs-mode nil)
+(my/set sentence-end-double-space nil)
+(my/set kill-do-not-save-duplicates t)
+(my/set kill-region-dwim (if (version< emacs-version "31") t 'emacs-word))
+
 ;;; LANGUAGE: C
 
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
@@ -437,10 +444,10 @@ tabs will be used instead of spaces."
 
 ;;; LANGUAGE: CMAKE
 
-(let* ((package-path (my/locate-user-lisp-file "packages/cmake-mode"))
+(let* ((package-path (my/locate-user-lisp-file "cmake-mode"))
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p
-    (autoload #'cmake-mode "cmake-mode" nil t)
+    ;; (autoload #'cmake-mode "cmake-mode" nil t)
     (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
     (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
     (add-hook 'cmake-mode-hook
@@ -591,15 +598,6 @@ tabs will be used instead of spaces."
 
 (my/set dictionary-server "dict.org")
 (my/set dictionary-default-strategy "prefix")
-
-;;;; EDITING TEXT BASICS
-
-(my/set backward-delete-char-untabify-method 'hungry)
-(my/set tab-width 3)
-(my/set indent-tabs-mode nil)
-(my/set sentence-end-double-space nil)
-(my/set kill-do-not-save-duplicates t)
-(my/set kill-region-dwim (if (version< emacs-version "31") t 'emacs-word))
 
 ;;;; FILE MANAGEMENT
 

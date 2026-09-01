@@ -2,8 +2,6 @@
 
 ;;; PREFACE
 
-(require 'my-core)
-
 (defvar my/mode-line--format-default mode-line-format)
 
 ;;; SEGMENTS
@@ -24,24 +22,24 @@
   :group 'mode-line
   :global t
   (if my/mode-line-mode
-      (my/set mode-line-format
-              '( ;; Left aligned
-                "%e"
-                mode-line-front-space
-                mode-line-mule-info
-                mode-line-client
-                mode-line-modified
-                mode-line-remote
-                mode-line-window-dedicated
-                " "
-                my/mode-line--segment-buffer-name
-                " "
-                mode-line-position
+      (setq-default mode-line-format
+                    '( ;; Left aligned
+                      "%e"
+                      mode-line-front-space
+                      mode-line-mule-info
+                      mode-line-client
+                      mode-line-modified
+                      mode-line-remote
+                      mode-line-window-dedicated
+                      " "
+                      my/mode-line--segment-buffer-name
+                      " "
+                      mode-line-position
 
-                ;; Right aligned
-                mode-line-format-right-align
-                (:eval mode-line-misc-info)))
-    (my/set mode-line-format my/mode-line--format-default)))
+                      ;; Right aligned
+                      mode-line-format-right-align
+                      (:eval mode-line-misc-info)))
+    (setq-default mode-line-format my/mode-line--format-default)))
 
 ;;; END
 

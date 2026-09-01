@@ -30,14 +30,15 @@ https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/#h:1e468b2a
    (t
     (keyboard-quit))))
 
-;; Found in: https://github.com/LionyxML/emacs-solo/
-;; A Protesilaos life savier HACK
-;; Add option "d" to whenever using C-x s or C-x C-c, allowing a quick preview
-;; of the diff (if you choose `d') of what you're asked to save.
-
 (defun my/diff-current-to-saved-file ()
   "Show diff between the current unsaved buffer/file contents and the saved
-buffer/file contents."
+buffer/file contents.
+
+Found in: https://github.com/LionyxML/emacs-solo/
+
+A Protesilaos life savier HACK Add option d to whenever using C-x s or
+C-x C-c, allowing a quick preview of the diff (if you choose `d') of
+what you're asked to save."
   (interactive)
   (diff-buffer-with-file (current-buffer)))
 
@@ -82,7 +83,7 @@ Credit: xahlee.info"
                     (format "xdg-open '%s'" (expand-file-name path)))))))
 
 (defun my/open-current-directory ()
-  "Open the current directory"
+  "Open the current directory."
   (interactive)
   (cond
    ((eq system-type 'windows-nt)
@@ -124,13 +125,16 @@ Credit: Taken from Protesilaos at
            (seq-remove directory-p files))))
 
 (my/set completion-ignore-case t)
-(my/set read-file-name-completion-ignore-case t)
-(my/set read-buffer-completion-ignore-case t)
 (my/set completion-show-inline-help nil)
 (my/set completions-format 'one-column)
 (my/set completions-max-height 12)
 (my/set completions-sort 'historical)
 (my/set completions-detailed t)
+
+(my/set read-answer-short t)
+(my/set use-short-answers t)
+(my/set read-file-name-completion-ignore-case t)
+(my/set read-buffer-completion-ignore-case t)
 
 ;; (let* ((package-path (my/locate-user-lisp-file "orderless"))
 ;;        (package-exists-p (file-directory-p package-path)))
@@ -631,11 +635,6 @@ tabs will be used instead of spaces."
 (my/set scroll-error-top-bottom t)
 (my/set scroll-up-aggressively 0.01) ; keep point near edge of screen
 (my/set scroll-down-aggressively 0.01) ; keep point near edge of screen
-
-;;;; SHORT ANSWER PROMPTS
-
-(my/set read-answer-short t)
-(my/set use-short-answers t)
 
 ;;;; WHITESPACE
 

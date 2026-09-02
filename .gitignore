@@ -1,10 +1,9 @@
-/*
-
-!early-init.el
-!init.el
-!/user-lisp/**
-
-*~
-/user-lisp/.user-lisp-autoloads.el
 *.elc
 *.eld
+*~
+.user-lisp-autoloads.el
+/tmp
+/var
+/etc
+/url
+/tramp

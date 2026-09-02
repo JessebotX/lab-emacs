@@ -3,6 +3,9 @@
 (defconst my/enable-debug (bound-and-true-p init-file-debug)
   "Non-nil to enable debug.")
 
+(defvar my/packages-enabled '()
+  "Stores a list of manually-installed packages.")
+
 (defmacro my/set (var val)
   `(funcall (or (get ',var 'custom-set) #'set-default) ',var ,val))
 

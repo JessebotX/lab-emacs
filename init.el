@@ -1,6 +1,10 @@
 ;;; -*- lexical-binding: t; -*-
 
+;;; PREFACE
+
 (require 'my-core)
+
+;;; UTILS
 
 (defun my/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
@@ -139,6 +143,7 @@ Credit: Taken from Protesilaos at
 ;; (let* ((package-path (my/locate-user-lisp-file "orderless"))
 ;;        (package-exists-p (file-directory-p package-path)))
 ;;   (when package-exists-p
+;;     (add-to-list 'my/packages-enabled "orderless")
 ;;     (my/set completion-styles '(basic partial-completion orderless))
 ;;     (my/set completion-category-overrides
 ;;             '((file (styles partial-completion))))
@@ -270,8 +275,6 @@ loading (`custom-available-themes').")
 (with-eval-after-load 'project
   (my/set project-mode-line t))
 
-(autoload 'my/mode-line-mode "my-mode-line")
-
 (my/set mode-line-percent-position nil)
 (my/set mode-line-position-line-format '("(%l:)"))
 (my/set mode-line-position-column-format '("(:%c)"))
@@ -295,7 +298,7 @@ loading (`custom-available-themes').")
 (let* ((package-path (my/locate-user-lisp-file "olivetti"))
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p
-    (autoload #'olivetti-mode "olivetti" nil t)
+    (add-to-list 'my/packages-enabled "olivetti")
 
     (add-hook 'olivetti-mode-hook
               (defun my/--olivetti-no-newline-in-fringe ()
@@ -451,7 +454,8 @@ tabs will be used instead of spaces."
 (let* ((package-path (my/locate-user-lisp-file "cmake-mode"))
        (package-exists-p (file-directory-p package-path)))
   (when package-exists-p
-    ;; (autoload #'cmake-mode "cmake-mode" nil t)
+    (add-to-list 'my/packages-enabled "cmake-mode")
+
     (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
     (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
     (add-hook 'cmake-mode-hook

@@ -514,7 +514,7 @@ tabs will be used instead of spaces."
 (autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
 (dolist (re '("\\.md\\'" "\\.mdx\\'" "\\.markdown\\'"))
   (add-to-list 'auto-mode-alist (cons re 'markdown-ts-mode)))
-(add-hook 'markdown-ts-mode
+(add-hook 'markdown-ts-mode-hook
           (defun my/--markdown-ts-mode ()
             (my/language-set-indent-local 'markdown)
             (visual-line-mode 1)))

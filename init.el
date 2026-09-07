@@ -216,7 +216,7 @@ Credit: Taken from Protesilaos at
 (defcustom my/theme 'modus-operandi-tinted
   "Default Emacs theme.")
 
-(defcustom my/theme-toggle-options '(modus-operandi-tinted modus-vivendi-tinted)
+(defcustom my/theme-toggle-options '(my-custom modus-vivendi-tinted)
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 
@@ -511,12 +511,15 @@ tabs will be used instead of spaces."
 
 ;;; LANGUAGE: MARKDOWN
 
+(autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" nil t)
+
 (autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
 (dolist (re '("\\.md\\'" "\\.mdx\\'" "\\.markdown\\'"))
   (add-to-list 'auto-mode-alist (cons re 'markdown-ts-mode)))
 (add-hook 'markdown-ts-mode-hook
           (defun my/--markdown-ts-mode ()
             (my/language-set-indent-local 'markdown)
+            (adaptive-wrap-prefix-mode 1)
             (visual-line-mode 1)))
 
 (with-eval-after-load 'markdown-ts-mode
@@ -693,6 +696,7 @@ tabs will be used instead of spaces."
 (keymap-global-set "C-c m t w" #'my/focus-mode)
 
 (keymap-global-set "<escape>" #'my/keyboard-quit-dwim)
+(keymap-global-set "<f8>" #'my/theme-toggle)
 (keymap-global-set "C-g" #'my/keyboard-quit-dwim)
 (keymap-global-set "C-c C-0" #'my/font-size-set)
 (keymap-global-set "C-c C-1" #'my/font-family-set)

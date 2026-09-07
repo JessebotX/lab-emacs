@@ -140,6 +140,10 @@ Credit: Taken from Protesilaos at
 (my/set read-file-name-completion-ignore-case t)
 (my/set read-buffer-completion-ignore-case t)
 
+(my/set read-minibuffer-restore-windows nil)
+(my/set enable-recursive-minibuffers t)
+
+
 ;; (let* ((package-path (my/locate-user-lisp-file "orderless"))
 ;;        (package-exists-p (file-directory-p package-path)))
 ;;   (when package-exists-p
@@ -430,6 +434,8 @@ tabs will be used instead of spaces."
         (if (string-match "[^\t ]*\\([\t ]+\\)$" (buffer-substring-no-properties (- p movement) p))
             (backward-delete-char (- (match-end 1) (match-beginning 1)))
           (call-interactively 'backward-delete-char))))))
+
+(autoload 'rainbow-mode "rainbow-mode" nil t)
 
 (my/set backward-delete-char-untabify-method 'hungry)
 (my/set tab-width 3)
@@ -729,6 +735,7 @@ tabs will be used instead of spaces."
             (winner-mode 1)
             (my/mode-line-mode 1)
             (my/mode-line-display-position-mode 1)
+            (minibuffer-depth-indicate-mode 1)
 
             (blink-cursor-mode -1)
             (electric-indent-mode -1)))
@@ -740,6 +747,7 @@ tabs will be used instead of spaces."
 
 (add-hook 'prog-mode-hook
           (defun my/--prog-mode ()
+            (rainbow-mode)
             (whitespace-mode)))
 
 (add-to-list 'save-some-buffers-action-alist

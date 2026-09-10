@@ -749,6 +749,7 @@ tabs will be used instead of spaces."
             (my/mode-line-mode 1)
             (my/mode-line-display-position-mode 1)
             (minibuffer-depth-indicate-mode 1)
+            (icomplete-vertical-mode 1)
 
             (blink-cursor-mode -1)
             (electric-indent-mode -1)))

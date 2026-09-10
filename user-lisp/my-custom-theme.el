@@ -49,6 +49,8 @@
 
    `(link ((t (:underline nil :foreground ,primary :weight bold))))
 
+   `(icomplete-selected-match ((t (:background ,shadow-3 :foreground ,fg))))
+
    `(markdown-ts-list-marker ((t (:weight bold :foreground ,fg))))
    `(markdown-ts-heading-1 ((t (:weight bold))))
    `(markdown-ts-heading-2 ((t (:weight bold))))

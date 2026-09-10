@@ -153,11 +153,24 @@ Credit: Taken from Protesilaos at
 ;;             '((file (styles partial-completion))))
 ;;     (my/set completion-pcm-leading-wildcard t)))
 
-(setq completion-styles '(basic substring initials flex))
-(setq completion-category-overrides
-      '((file . ((styles partial-completion)
-                 (display-sort-function . my/minibuffer--file-sort)))))
+(my/set completion-styles '(basic substring initials flex))
+(my/set completion-category-overrides
+        '((file . ((styles partial-completion)
+                   (display-sort-function . my/minibuffer--file-sort)))))
 (my/set completion-pcm-leading-wildcard t)
+
+(my/set icomplete-show-matches-on-no-input t)
+(my/set icomplete-delay-completions-threshold 0)
+(my/set icomplete-compute-delay 0)
+(my/set icomplete-in-buffer t)
+(my/set icomplete-max-delay-chars 0)
+(my/set icomplete-scroll t)
+
+(add-hook 'icomplete-mode-hook
+          (defun my/--icomplete-mode ()
+            (advice-add 'completion-at-point :after #'minibuffer-hide-completions)
+            (keymap-set icomplete-minibuffer-map "TAB" #'icomplete-force-complete)
+            (keymap-set icomplete-minibuffer-map "C-M-i" #'minibuffer-complete)))
 
 ;;; FONTS & THEMES
 
@@ -217,7 +230,7 @@ Credit: Taken from Protesilaos at
 
 ;;; THEMES
 
-(defcustom my/theme 'modus-operandi-tinted
+(defcustom my/theme 'my-custom
   "Default Emacs theme.")
 
 (defcustom my/theme-toggle-options '(my-custom modus-vivendi-tinted)

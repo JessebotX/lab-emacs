@@ -10,7 +10,7 @@
        (shadow-4 "#ddeedd")
        (primary "#304ffe")
 
-       (bg "#f3f5f1")
+       (bg "#f4f2f6")
        (fg "#111111")
        (fg-2 "#555555")
        (fg-3 "#565656")

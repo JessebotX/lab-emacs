@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
-(deftheme my-custom "My custom color theme.")
+(deftheme my-custom-light "My custom light color theme.")
 
 (let* (
 
@@ -18,7 +18,7 @@
 
        )
   (custom-theme-set-faces
-   'my-custom
+   'my-custom-light
 
    `(default ((t (:foreground ,fg :background ,bg))))
    `(cursor ((t (:background ,fg))))
@@ -63,4 +63,4 @@
 
    ))
 
-(provide-theme 'my-custom)
+(provide-theme 'my-custom-light)

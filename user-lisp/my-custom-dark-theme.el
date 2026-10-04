@@ -4,14 +4,14 @@
 
 (let* (
 
-       (shadow "#222222")
-       (shadow-2 "#333333")
-       (shadow-3 "#444444")
-       (shadow-4 "#555555")
+       (shadow "#333333")
+       (shadow-2 "#444444")
+       (shadow-3 "#555555")
+       (shadow-4 "#666666")
        (primary "#304ffe")
 
        (bg "#111111")
-       (fg "#ffffff")
+       (fg "#eeeeee")
        (fg-2 "#bbbbbb")
        (fg-3 "#aaaaaa")
        (comment "#cccccc")
@@ -21,7 +21,7 @@
    'my-custom-dark
 
    `(default ((t (:foreground ,fg :background ,bg))))
-   `(cursor ((t (:background ,fg))))
+   `(cursor ((t (:background ,primary))))
    `(bold ((t (:weight bold))))
    `(italic ((t (:slant italic))))
    `(shadow ((t (:foreground ,shadow))))

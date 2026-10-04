@@ -230,10 +230,10 @@ Credit: Taken from Protesilaos at
 
 ;;; THEMES
 
-(defcustom my/theme 'my-custom
+(defcustom my/theme 'my-custom-light
   "Default Emacs theme.")
 
-(defcustom my/theme-toggle-options '(my-custom modus-vivendi-tinted)
+(defcustom my/theme-toggle-options '(my-custom-light my-custom-dark)
   "Two Emacs themes to toggle between that are available for
 loading (`custom-available-themes').")
 

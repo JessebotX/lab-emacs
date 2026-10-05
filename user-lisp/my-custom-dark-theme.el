@@ -61,6 +61,8 @@
    `(markdown-ts-block-quote ((t (:foreground ,fg :slant italic))))
    `(markdown-ts-delimiter ((t (:weight normal :foreground ,shadow))))
 
+   `(show-paren-match ((t (:background ,shadow))))
+
    ))
 
 (provide-theme 'my-custom-dark)

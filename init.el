@@ -684,7 +684,7 @@ tabs will be used instead of spaces."
 
 ;;;; MISCELLANEOUS
 
-(my/set adaptive-fill-regexp "[-–!|#%;>*+ 	]* +")
+(my/set adaptive-fill-regexp "[-–!|#%;>*+ 	]*")
 (my/set view-lossage-auto-refresh t)
 
 (put 'narrow-to-region 'disabled nil)

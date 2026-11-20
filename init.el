@@ -4,6 +4,8 @@
 
 (require 'my-core)
 
+(add-to-list 'custom-theme-load-path user-lisp-directory)
+
 ;;; UTILS
 
 (defun my/keyboard-quit-dwim ()
